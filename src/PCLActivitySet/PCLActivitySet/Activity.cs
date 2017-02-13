@@ -1,4 +1,4 @@
-namespace ActivitySet
+namespace PCLActivitySet
 {
     public class Activity
     {

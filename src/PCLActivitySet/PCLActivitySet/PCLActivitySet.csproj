@@ -8,8 +8,8 @@
     <ProjectGuid>{3F0FA203-A45E-4466-AA79-C58AE7EAC86C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ActivitySet</RootNamespace>
-    <AssemblyName>ActivitySet</AssemblyName>
+    <RootNamespace>PCLActivitySet</RootNamespace>
+    <AssemblyName>PCLActivitySet</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>

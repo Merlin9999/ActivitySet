@@ -7,8 +7,8 @@
     <ProjectGuid>{A812A937-2CDA-4F2F-BAF2-DDA801EA28D5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ActivitySet.Test</RootNamespace>
-    <AssemblyName>ActivitySet.Test</AssemblyName>
+    <RootNamespace>PCLActivitySet.Test</RootNamespace>
+    <AssemblyName>PCLActivitySet.Test</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -53,9 +53,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ActivitySet\ActivitySet.csproj">
+    <ProjectReference Include="..\PCLActivitySet\PCLActivitySet.csproj">
       <Project>{3f0fa203-a45e-4466-aa79-c58ae7eac86c}</Project>
-      <Name>ActivitySet</Name>
+      <Name>PCLActivitySet</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
