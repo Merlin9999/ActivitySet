@@ -1,0 +1,223 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="PCLActivitySet.Recurrence.DailyProjection" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="0.75" Width="1.5" />
+    <NestedTypes>
+      <Class Name="PCLActivitySet.Recurrence.DailyProjection.ProjectionTranslator" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Recurrence\DailyProjection.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAgAAAAAAABIAABAAAgAAAAA=</HashCode>
+      <FileName>Recurrence\DailyProjection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PCLActivitySet.Recurrence.YearlyRelativeProjection" BaseTypeListCollapsed="true">
+    <Position X="11.5" Y="0.75" Width="2" />
+    <NestedTypes>
+      <Class Name="PCLActivitySet.Recurrence.YearlyRelativeProjection.ProjectionTranslator" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Recurrence\YearlyRelativeProjection.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgBAAgAgAAAAAABAAAAIEABAAAgAAAAA=</HashCode>
+      <FileName>Recurrence\YearlyRelativeProjection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PCLActivitySet.Recurrence.DateProjection">
+    <Position X="1.25" Y="4.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAIAEAAgAAAgAgAAAAAAAAgAAIEAAAAAkAAAAA=</HashCode>
+      <FileName>Recurrence\DateProjection.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="DateProjectionImpl" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="PCLActivitySet.Recurrence.DaysOfWeek">
+    <Position X="14" Y="0.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>ACQAwAAAAAAAEEAAAAEAAAAAAAAAAAAAAEAAAgAIAAA=</HashCode>
+      <FileName>Recurrence\EDaysOfWeek.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PCLActivitySet.Recurrence.DaysOfWeekExt">
+    <Position X="13.75" Y="4.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>ACQAwAIAAAAAEEAAAAEAAAAACABAAAAAAEAAAgAMAAA=</HashCode>
+      <FileName>Recurrence\EDaysOfWeekExt.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PCLActivitySet.Recurrence.DaysOfWeekFlags">
+    <Position X="13.75" Y="8.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>BCQAwAAAAAAAAEAAAAEAAAAABAAAAAAAAEAAAAAIAAA=</HashCode>
+      <FileName>Recurrence\EDaysOfWeekFlags.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PCLActivitySet.Recurrence.Month">
+    <Position X="11.25" Y="5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Recurrence\Month.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PCLActivitySet.Recurrence.MonthlyProjection" BaseTypeListCollapsed="true">
+    <Position X="4.5" Y="0.75" Width="1.75" />
+    <NestedTypes>
+      <Class Name="PCLActivitySet.Recurrence.MonthlyProjection.ProjectionTranslator" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Recurrence\MonthlyProjection.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAABAAAAAAgABIAAFAAAgAAAAA=</HashCode>
+      <FileName>Recurrence\MonthlyProjection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PCLActivitySet.Recurrence.MonthlyRelativeProjection" BaseTypeListCollapsed="true">
+    <Position X="6.75" Y="0.75" Width="2.25" />
+    <NestedTypes>
+      <Class Name="PCLActivitySet.Recurrence.MonthlyRelativeProjection.ProjectionTranslator" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Recurrence\MonthlyRelativeProjection.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAgAgABAAAABAAAAIAAFAAAgAAAAA=</HashCode>
+      <FileName>Recurrence\MonthlyRelativeProjection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PCLActivitySet.Recurrence.RelativeDate">
+    <Position X="11.25" Y="7.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Recurrence\RelativeDate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PCLActivitySet.Recurrence.WeeklyProjection" BaseTypeListCollapsed="true">
+    <Position X="2.5" Y="0.75" Width="1.5" />
+    <NestedTypes>
+      <Class Name="PCLActivitySet.Recurrence.WeeklyProjection.ProjectionTranslator" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Recurrence\WeeklyProjection.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAQAAAAIBIAABAAAgAAAAA=</HashCode>
+      <FileName>Recurrence\WeeklyProjection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PCLActivitySet.Recurrence.YearlyProjection" BaseTypeListCollapsed="true">
+    <Position X="9.5" Y="0.75" Width="1.5" />
+    <NestedTypes>
+      <Class Name="PCLActivitySet.Recurrence.YearlyProjection.ProjectionTranslator" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Recurrence\YearlyProjection.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAgAAAAAAAABAgAAIEABAAAgAAAAA=</HashCode>
+      <FileName>Recurrence\YearlyProjection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PCLActivitySet.Recurrence.DateRecurrence">
+    <Position X="1.5" Y="9" Width="2.5" />
+    <Members>
+      <Field Name="_endDate" Hidden="true" />
+      <Field Name="_maxRecurrenceCount" Hidden="true" />
+      <Field Name="_startDate" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAIAIAAAAAAAAoAAAAAAoAAAAAAEAAIAA=</HashCode>
+      <FileName>Recurrence\DateRecurrence.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="RecurFromType" />
+    </ShowAsAssociation>
+  </Class>
+  <Interface Name="PCLActivitySet.Recurrence.IDateProjection">
+    <Position X="5.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAAAAAAAAIAABAAAgAAAAA=</HashCode>
+      <FileName>Recurrence\IDateProjection.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="PCLActivitySet.Recurrence.IDateProjectionTranslator">
+    <Position X="5" Y="5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAgAAAgAgAAAAAAAAgAAAEAAAAAEAAAAA=</HashCode>
+      <FileName>Recurrence\IDateProjectionTranslator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="PCLActivitySet.Recurrence.EDateProjectionType">
+    <Position X="11.25" Y="9.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAgAAAAAAQAACAAAAAAAAgAAAAAAgA=</HashCode>
+      <FileName>Recurrence\EDateProjectionType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PCLActivitySet.Recurrence.EDaysOfWeek">
+    <Position X="17" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAIAACAAAAAAAAAAACAAIACAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Recurrence\EDaysOfWeek.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PCLActivitySet.Recurrence.EDaysOfWeekExt">
+    <Position X="17" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAICACAAAAAAAAAAACAAJACAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Recurrence\EDaysOfWeekExt.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PCLActivitySet.Recurrence.EDaysOfWeekFlags">
+    <Position X="16.75" Y="8.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAIAACAAAAAAAAAAACAAIACAIAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Recurrence\EDaysOfWeekFlags.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PCLActivitySet.Recurrence.EMonth">
+    <Position X="9.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAEgAAABRAAAAAAQAwgAAAAAAQAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Recurrence\EMonth.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PCLActivitySet.Recurrence.EWeeksInMonth">
+    <Position X="8.75" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAQAAAAAAAAIAAAAAAAAAAAACAAAAAQA=</HashCode>
+      <FileName>Recurrence\EWeeksInMonth.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PCLActivitySet.Recurrence.ERecurFromType">
+    <Position X="5.75" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>Recurrence\ERecurrenceType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

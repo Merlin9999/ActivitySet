@@ -35,6 +35,9 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="project.json" />
+    <None Include="Recurrence\_RecurrenceDiagram.cd">
+      <SubType>Designer</SubType>
+    </None>
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
@@ -42,6 +45,25 @@
     <Compile Include="Activity.cs" />
     <Compile Include="ActivitySet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Recurrence\DateRecurrence.cs" />
+    <Compile Include="Recurrence\DailyProjection.cs" />
+    <Compile Include="Recurrence\DateProjection.cs" />
+    <Compile Include="Recurrence\EDateProjectionType.cs" />
+    <Compile Include="Recurrence\EDaysOfWeek.cs" />
+    <Compile Include="Recurrence\EDaysOfWeekExt.cs" />
+    <Compile Include="Recurrence\EDaysOfWeekFlags.cs" />
+    <Compile Include="Recurrence\EMonth.cs" />
+    <Compile Include="Recurrence\ERecurrenceType.cs" />
+    <Compile Include="Recurrence\EWeeksInMonth.cs" />
+    <Compile Include="Recurrence\IDateProjection.cs" />
+    <Compile Include="Recurrence\IDateProjectionTranslator.cs" />
+    <Compile Include="Recurrence\Month.cs" />
+    <Compile Include="Recurrence\MonthlyProjection.cs" />
+    <Compile Include="Recurrence\MonthlyRelativeProjection.cs" />
+    <Compile Include="Recurrence\RelativeDate.cs" />
+    <Compile Include="Recurrence\WeeklyProjection.cs" />
+    <Compile Include="Recurrence\YearlyProjection.cs" />
+    <Compile Include="Recurrence\YearlyRelativeProjection.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
