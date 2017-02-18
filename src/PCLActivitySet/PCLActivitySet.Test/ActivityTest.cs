@@ -50,7 +50,7 @@ namespace PCLActivitySet.Test
         public void LeadTimePropertyIsReadWrite()
         {
             var activity = new Activity();
-            IDateProjection projection = new WeeklyProjection();
+            DateProjection projection = new DateProjection(new WeeklyProjection());
             activity.LeadTime = projection;
             Assert.That(activity.LeadTime, Is.SameAs(projection));
         }
@@ -59,7 +59,7 @@ namespace PCLActivitySet.Test
         public void LeadTimeDateIsNullWhenActiveDueDateIsNull()
         {
             var activity = new Activity();
-            IDateProjection leadTimeProjection = new DailyProjection() { DayCount = 7 };
+            DateProjection leadTimeProjection = new DateProjection(new DailyProjection() { DayCount = 7 });
             activity.ActiveDueDate = null;
             activity.LeadTime = leadTimeProjection;
             Assert.That(activity.LeadTimeDate, Is.Null);
@@ -72,15 +72,30 @@ namespace PCLActivitySet.Test
             activity.LeadTime = null;
             Assert.That(activity.LeadTimeDate, Is.Null);
         }
+
         [Test]
-        public void LeadTimeDateVerified()
+        public void VerifyLeadTimeDate()
         {
             var activity = new Activity();
-            IDateProjection leadTimeProjection = new DailyProjection() { DayCount = 7 };
+            DateProjection leadTimeProjection = new DateProjection(new DailyProjection() { DayCount = 7 });
             activity.ActiveDueDate = new DateTime(2017, 2, 8);
             activity.LeadTime = leadTimeProjection;
             Assert.That(activity.LeadTime, Is.SameAs(leadTimeProjection));
             Assert.That(activity.LeadTimeDate, Is.EqualTo(new DateTime(2017, 2, 1)));
+        }
+
+        [Test]
+        public void VerifyLeadTimeDateAfterDateProjectionTranslation()
+        {
+            var activity = new Activity();
+            DateProjection leadTimeProjection = new DateProjection(new WeeklyProjection() { WeekCount = 2, DaysOfWeek = EDaysOfWeekFlags.Monday});
+            activity.ActiveDueDate = new DateTime(2017, 2, 28);
+            activity.LeadTime = leadTimeProjection;
+            Assert.That(activity.LeadTime, Is.SameAs(leadTimeProjection));
+            Assert.That(activity.LeadTimeDate, Is.EqualTo(new DateTime(2017, 2, 20)));
+
+            activity.LeadTime.ProjectionType = EDateProjectionType.Daily;
+            Assert.That(activity.LeadTimeDate, Is.EqualTo(new DateTime(2017, 2, 26)));
         }
 
         [Test]
@@ -92,11 +107,11 @@ namespace PCLActivitySet.Test
         }
 
         [Test]
-        public void ConvertActivityToFluentSyntax()
+        public void FluentlyConvertActivityToFluentSyntax()
         {
             var activity = new Activity() { Name = "New Activity", ActiveDueDate = new DateTime(2017, 2, 28) };
             activity.Fluently.DailyLeadTime(3);
-            Assert.That(activity.LeadTime.GetTranslator().PeriodCount, Is.EqualTo(3));
+            Assert.That(activity.LeadTime.DateProjectionImpl.GetTranslator().PeriodCount, Is.EqualTo(3));
         }
 
         [Test]
@@ -135,10 +150,19 @@ namespace PCLActivitySet.Test
         }
 
         [Test]
-        public void FluentlyAddWithLeadTime()
+        public void FluentlyAddWithLeadTimeAsIDateProjection()
         {
             Activity activity = Activity.FluentNew("New Activity", new DateTime(2017, 2, 28))
                 .LeadTime(new WeeklyProjection() { DaysOfWeek = EDaysOfWeekFlags.Monday, WeekCount = 1 });
+            Assert.That(activity.LeadTimeDate, Is.EqualTo(new DateTime(2017, 2, 27)));
+        }
+
+        [Test]
+        public void FluentlyAddWithLeadTimeAsDateProjection()
+        {
+            var dateProjection = new DateProjection(EDateProjectionType.Weekly) {DaysOfWeekFlags = EDaysOfWeekFlags.Monday, PeriodCount = 1,};
+            Activity activity = Activity.FluentNew("New Activity", new DateTime(2017, 2, 28))
+                .LeadTime(dateProjection);
             Assert.That(activity.LeadTimeDate, Is.EqualTo(new DateTime(2017, 2, 27)));
         }
 

@@ -11,7 +11,7 @@ namespace PCLActivitySet
     {
         public string Name { get; set; }
         public DateTime? ActiveDueDate { get; set; }
-        public IDateProjection LeadTime { get; set; }
+        public DateProjection LeadTime { get; set; }
         public DateTime? LeadTimeDate =>
             this.LeadTime == null || this.ActiveDueDate == null
                 ? (DateTime?) null

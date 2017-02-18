@@ -41,45 +41,51 @@ namespace PCLActivitySet
             return this;
         }
 
-        public FluentlyModifyActivity LeadTime(IDateProjection projection)
+        public FluentlyModifyActivity LeadTime(IDateProjection dateProjection)
         {
-            this._activity.LeadTime = projection;
+            this._activity.LeadTime = new DateProjection(dateProjection);
+            return this;
+        }
+
+        public FluentlyModifyActivity LeadTime(DateProjection dateProjection)
+        {
+            this._activity.LeadTime = dateProjection;
             return this;
         }
 
         public FluentlyModifyActivity DailyLeadTime(int dayCount)
         {
-            this._activity.LeadTime = new DailyProjection() { DayCount = dayCount};
+            this._activity.LeadTime = new DateProjection(new DailyProjection() { DayCount = dayCount});
             return this;
         }
 
         public FluentlyModifyActivity WeeklyLeadTime(int weekCount, EDaysOfWeekFlags daysOfWeek)
         {
-            this._activity.LeadTime = new WeeklyProjection() {DaysOfWeek = daysOfWeek, WeekCount = weekCount};
+            this._activity.LeadTime = new DateProjection(new WeeklyProjection() {DaysOfWeek = daysOfWeek, WeekCount = weekCount});
             return this;
         }
 
         public FluentlyModifyActivity MonthlyLeadTime(int monthCount, int dayOfMonth)
         {
-            this._activity.LeadTime = new MonthlyProjection() {MonthCount = monthCount, DayOfMonth = dayOfMonth};
+            this._activity.LeadTime = new DateProjection(new MonthlyProjection() {MonthCount = monthCount, DayOfMonth = dayOfMonth});
             return this;
         }
 
         public FluentlyModifyActivity MonthlyLeadTime(int monthCount, EWeeksInMonth weeksInMonth, EDaysOfWeekExt daysOfWeek)
         {
-            this._activity.LeadTime = new MonthlyRelativeProjection() { MonthCount = monthCount, WeeksInMonth = weeksInMonth, DaysOfWeekExt = daysOfWeek};
+            this._activity.LeadTime = new DateProjection(new MonthlyRelativeProjection() { MonthCount = monthCount, WeeksInMonth = weeksInMonth, DaysOfWeekExt = daysOfWeek});
             return this;
         }
 
         public FluentlyModifyActivity YearlyLeadTime(EMonth month, int dayOfMonth)
         {
-            this._activity.LeadTime = new YearlyProjection() { Month = month, DayOfMonth = dayOfMonth };
+            this._activity.LeadTime = new DateProjection(new YearlyProjection() { Month = month, DayOfMonth = dayOfMonth });
             return this;
         }
 
         public FluentlyModifyActivity YearlyLeadTime(EMonth month, EWeeksInMonth weeksInMonth, EDaysOfWeekExt daysOfWeek)
         {
-            this._activity.LeadTime = new YearlyRelativeProjection() { Month = month, WeeksInMonth = weeksInMonth, DaysOfWeekExt = daysOfWeek };
+            this._activity.LeadTime = new DateProjection(new YearlyRelativeProjection() { Month = month, WeeksInMonth = weeksInMonth, DaysOfWeekExt = daysOfWeek });
             return this;
         }
     }
