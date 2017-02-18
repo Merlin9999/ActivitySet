@@ -44,6 +44,7 @@
     <Compile Include="AbstractEntity.cs" />
     <Compile Include="Activity.cs" />
     <Compile Include="ActivitySet.cs" />
+    <Compile Include="FluentlyModifyActivity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Recurrence\DateRecurrence.cs" />
     <Compile Include="Recurrence\DailyProjection.cs" />

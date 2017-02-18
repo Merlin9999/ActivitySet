@@ -41,11 +41,6 @@ namespace PCLActivitySet
             return this._activitySet.Remove(item);
         }
 
-        public void Add(string name)
-        {
-            this._activitySet.Add(new Activity() {Name = name});
-        }
-
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();

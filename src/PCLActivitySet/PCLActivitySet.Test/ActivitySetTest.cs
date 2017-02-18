@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NUnit.Framework;
+using PCLActivitySet.Recurrence;
 
 namespace PCLActivitySet.Test
 {
@@ -117,15 +119,6 @@ namespace PCLActivitySet.Test
             var activityArray = new Activity[2];
             activitySet.CopyTo(activityArray, 0);
             Assert.That(activitySet, Is.EquivalentTo(activityArray));
-        }
-
-        [Test]
-        public void FluentAddWithName()
-        {
-            var activitySet = new ActivitySet();
-            activitySet.Add(name: "New Activity");
-            Assert.That(activitySet.Any(), Is.True);
-            Assert.That(activitySet.Count, Is.EqualTo(1));
         }
     }
 }
