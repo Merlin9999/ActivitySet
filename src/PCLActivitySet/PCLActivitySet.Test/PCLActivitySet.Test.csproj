@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractEntityTest.cs" />
+    <Compile Include="ActivityHistoryItemTest.cs" />
     <Compile Include="ActivitySetTest.cs" />
     <Compile Include="ActivityTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

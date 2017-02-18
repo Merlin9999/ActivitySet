@@ -74,6 +74,51 @@ namespace PCLActivitySet.Test
         }
 
         [Test]
+        public void CompletionHistoryDefaultsToEmpty()
+        {
+            var activity = new Activity();
+            Assert.That(activity.CompletionHistory, Is.Not.Null);
+            Assert.That(activity.CompletionHistory, Is.Empty);
+        }
+
+        [Test]
+        public void SignalCompletedWithNoReccurence()
+        {
+            string activityName = "New Activity";
+            DateTime origActiveDueDate = new DateTime(2017, 2, 28);
+            DateTime completionDate = new DateTime(2017, 2, 14);
+            var activity = new Activity() {Name = activityName, ActiveDueDate = origActiveDueDate};
+
+            activity.SignalCompleted(completionDate);
+            Assert.That(activity.CompletionHistory, Is.Not.Empty);
+            Assert.That(activity.ActiveDueDate, Is.Null);
+
+            ActivityHistoryItem item = activity.CompletionHistory.First();
+            Assert.That(item.Name, Is.EqualTo(activityName));
+            Assert.That(item.DueDate, Is.EqualTo(origActiveDueDate));
+            Assert.That(item.CompletedDate, Is.EqualTo(completionDate));
+        }
+
+        //[Test]
+        //public void SignalCompletedWithReccurence()
+        //{
+        //    string activityName = "New Activity";
+        //    DateTime origActiveDueDate = new DateTime(2017, 2, 28);
+        //    DateTime nextActiveDueDate = new DateTime(2017, 3, 28);
+        //    DateTime completionDate = new DateTime(2017, 2, 14);
+        //    var activity = new Activity() { Name = activityName, ActiveDueDate = origActiveDueDate };
+
+        //    activity.SignalCompleted(completionDate);
+        //    Assert.That(activity.CompletionHistory, Is.Not.Empty);
+        //    Assert.That(activity.ActiveDueDate, Is.EqualTo(nextActiveDueDate));
+
+        //    ActivityHistoryItem item = activity.CompletionHistory.First();
+        //    Assert.That(item.Name, Is.EqualTo(activityName));
+        //    Assert.That(item.DueDate, Is.EqualTo(origActiveDueDate));
+        //    Assert.That(item.CompletedDate, Is.EqualTo(completionDate));
+        //}
+
+        [Test]
         public void VerifyLeadTimeDate()
         {
             var activity = new Activity();
