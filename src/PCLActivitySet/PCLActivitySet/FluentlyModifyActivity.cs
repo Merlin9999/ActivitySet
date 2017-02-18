@@ -53,27 +53,27 @@ namespace PCLActivitySet
             return this;
         }
 
-        public FluentlyModifyActivity DailyLeadTime(int dayCount)
+        public FluentlyModifyActivity DailyLeadTime(int periodCount)
         {
-            this._activity.LeadTime = new DateProjection(new DailyProjection() { DayCount = dayCount});
+            this._activity.LeadTime = new DateProjection(new DailyProjection() { DayCount = periodCount});
             return this;
         }
 
-        public FluentlyModifyActivity WeeklyLeadTime(int weekCount, EDaysOfWeekFlags daysOfWeek)
+        public FluentlyModifyActivity WeeklyLeadTime(int periodCount, EDaysOfWeekFlags daysOfWeek)
         {
-            this._activity.LeadTime = new DateProjection(new WeeklyProjection() {DaysOfWeek = daysOfWeek, WeekCount = weekCount});
+            this._activity.LeadTime = new DateProjection(new WeeklyProjection() {DaysOfWeek = daysOfWeek, WeekCount = periodCount});
             return this;
         }
 
-        public FluentlyModifyActivity MonthlyLeadTime(int monthCount, int dayOfMonth)
+        public FluentlyModifyActivity MonthlyLeadTime(int periodCount, int dayOfMonth)
         {
-            this._activity.LeadTime = new DateProjection(new MonthlyProjection() {MonthCount = monthCount, DayOfMonth = dayOfMonth});
+            this._activity.LeadTime = new DateProjection(new MonthlyProjection() {MonthCount = periodCount, DayOfMonth = dayOfMonth});
             return this;
         }
 
-        public FluentlyModifyActivity MonthlyLeadTime(int monthCount, EWeeksInMonth weeksInMonth, EDaysOfWeekExt daysOfWeek)
+        public FluentlyModifyActivity MonthlyLeadTime(int periodCount, EWeeksInMonth weeksInMonth, EDaysOfWeekExt daysOfWeek)
         {
-            this._activity.LeadTime = new DateProjection(new MonthlyRelativeProjection() { MonthCount = monthCount, WeeksInMonth = weeksInMonth, DaysOfWeekExt = daysOfWeek});
+            this._activity.LeadTime = new DateProjection(new MonthlyRelativeProjection() { MonthCount = periodCount, WeeksInMonth = weeksInMonth, DaysOfWeekExt = daysOfWeek});
             return this;
         }
 
