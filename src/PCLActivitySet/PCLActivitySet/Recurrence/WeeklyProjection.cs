@@ -21,10 +21,10 @@ namespace PCLActivitySet.Recurrence
                 throw new InvalidOperationException("No days of the week selected.");
 
             DateTime date = fromDate;
-            HashSet<EDaysOfWeekFlags> dowSet = DaysOfWeekFlags.AsSeperatedValues(this.DaysOfWeek);
+            HashSet<EDaysOfWeekFlags> dowSet = DaysOfWeekFlags.AsSeperateValues(this.DaysOfWeek);
 
             // back up to the last week day that is in DaysOfWeek property and add (WeekCount * 7) days.
-            while (!dowSet.Contains(DaysOfWeekFlags.ConvertFrom(date)))
+            while (!dowSet.Contains(DaysOfWeekFlags.ConvertFrom(date.DayOfWeek)))
                 date = date.AddDays(-1);
             return date.AddDays(this.WeekCount * 7).Date;
         }
@@ -37,10 +37,10 @@ namespace PCLActivitySet.Recurrence
                 throw new InvalidOperationException("No days of the week selected.");
 
             DateTime date = fromDate;
-            HashSet<EDaysOfWeekFlags> dowSet = DaysOfWeekFlags.AsSeperatedValues(this.DaysOfWeek);
+            HashSet<EDaysOfWeekFlags> dowSet = DaysOfWeekFlags.AsSeperateValues(this.DaysOfWeek);
 
             // move up to the next week day that is in DaysOfWeek property and subtract (WeekCount * 7) days.
-            while (!dowSet.Contains(DaysOfWeekFlags.ConvertFrom(date)))
+            while (!dowSet.Contains(DaysOfWeekFlags.ConvertFrom(date.DayOfWeek)))
                 date = date.AddDays(1);
             return date.AddDays(-(this.WeekCount * 7)).Date;
         }

@@ -18,18 +18,17 @@ namespace PCLActivitySet.Recurrence
 
     public static class DaysOfWeekFlags
     {
-        public static bool DateMatches(DateTime date, EDaysOfWeekFlags dowFlags)
+        public static bool DateMatches(this DateTime date, EDaysOfWeekFlags dowFlags)
         {
-            return (ConvertFrom(date) & dowFlags) != 0;
+            return (ConvertFrom(date.DayOfWeek) & dowFlags) != 0;
         }
 
-        public static HashSet<EDaysOfWeekFlags> AsSeperatedValues(EDaysOfWeekFlags daysOfWeek)
+        public static HashSet<EDaysOfWeekFlags> AsSeperateValues(this EDaysOfWeekFlags daysOfWeek)
         {
             HashSet<EDaysOfWeekFlags> retVal = new HashSet<EDaysOfWeekFlags>();
 
             foreach (EDaysOfWeekFlags d in Enum.GetValues(typeof(EDaysOfWeekFlags)))
             {
-                // Note: This naturally excludes the "None" value by design.
                 if ((daysOfWeek & d) != 0)
                     retVal.Add(d);
             }
@@ -37,48 +36,48 @@ namespace PCLActivitySet.Recurrence
             return retVal;
         }
 
-        public static bool HasWeekDays(EDaysOfWeekFlags daysOfWeek)
+        public static bool HasWeekDays(this EDaysOfWeekFlags daysOfWeek)
         {
             return HasWeekDays(daysOfWeek, false);
         }
 
-        public static bool HasWeekDays(EDaysOfWeekFlags daysOfWeek, bool allowNone)
+        public static bool HasWeekDays(this EDaysOfWeekFlags daysOfWeek, bool allowNone)
         {
             if (allowNone && daysOfWeek == EDaysOfWeekFlags.None)
                 return true;
             return (WeekDays & daysOfWeek) != 0;
         }
 
-        public static bool HasWeekendDays(EDaysOfWeekFlags daysOfWeek)
+        public static bool HasWeekendDays(this EDaysOfWeekFlags daysOfWeek)
         {
             return HasWeekendDays(daysOfWeek, false);
         }
 
-        public static bool HasWeekendDays(EDaysOfWeekFlags daysOfWeek, bool allowNone)
+        public static bool HasWeekendDays(this EDaysOfWeekFlags daysOfWeek, bool allowNone)
         {
             if (allowNone && daysOfWeek == EDaysOfWeekFlags.None)
                 return true;
             return (WeekendDays & daysOfWeek) != 0;
         }
 
-        public static bool HasOnlyWeekDays(EDaysOfWeekFlags daysOfWeek)
+        public static bool HasOnlyWeekDays(this EDaysOfWeekFlags daysOfWeek)
         {
             return HasOnlyWeekDays(daysOfWeek, false);
         }
 
-        public static bool HasOnlyWeekDays(EDaysOfWeekFlags daysOfWeek, bool allowNone)
+        public static bool HasOnlyWeekDays(this EDaysOfWeekFlags daysOfWeek, bool allowNone)
         {
             if (allowNone && daysOfWeek == EDaysOfWeekFlags.None)
                 return true;
             return (WeekDays & daysOfWeek) != 0 && (WeekendDays & daysOfWeek) == 0;
         }
 
-        public static bool HasOnlyWeekendDays(EDaysOfWeekFlags daysOfWeek)
+        public static bool HasOnlyWeekendDays(this EDaysOfWeekFlags daysOfWeek)
         {
             return HasOnlyWeekendDays(daysOfWeek, false);
         }
 
-        public static bool HasOnlyWeekendDays(EDaysOfWeekFlags daysOfWeek, bool allowNone)
+        public static bool HasOnlyWeekendDays(this EDaysOfWeekFlags daysOfWeek, bool allowNone)
         {
             if (allowNone && daysOfWeek == EDaysOfWeekFlags.None)
                 return true;
@@ -104,8 +103,12 @@ namespace PCLActivitySet.Recurrence
 
         public static EDaysOfWeekFlags ConvertFrom(EDaysOfWeekExt dayOfWeek)
         {
-            if (DaysOfWeekExt.IsDayGroupClassifier(dayOfWeek))
-                throw new ArgumentException($"Day Group Classifiers of the type {typeof(EDaysOfWeekExt)} cannnot be converted to the type {typeof(EDaysOfWeekFlags)}.");
+            if (dayOfWeek == EDaysOfWeekExt.WeekDay)
+                return WeekDays;
+            if (dayOfWeek == EDaysOfWeekExt.WeekendDay)
+                return WeekendDays;
+            if (dayOfWeek == EDaysOfWeekExt.EveryDay)
+                return EveryDay;
 
             if (Enum.IsDefined(typeof(EDaysOfWeekExt), dayOfWeek))
                 return (EDaysOfWeekFlags)Enum.Parse(typeof(EDaysOfWeekFlags), Enum.GetName(typeof(EDaysOfWeekExt), dayOfWeek));
@@ -121,9 +124,9 @@ namespace PCLActivitySet.Recurrence
             return retVal;
         }
 
-        public static EDaysOfWeekFlags ConvertFrom(DateTime dt)
+        public static EDaysOfWeekFlags ConvertFrom(DayOfWeek dow)
         {
-            switch (dt.DayOfWeek)
+            switch (dow)
             {
                 case DayOfWeek.Sunday:
                     return EDaysOfWeekFlags.Sunday;
@@ -140,7 +143,7 @@ namespace PCLActivitySet.Recurrence
                 case DayOfWeek.Saturday:
                     return EDaysOfWeekFlags.Saturday;
                 default:
-                    throw new InvalidOperationException("Invalid Day Of Week");
+                    throw new ArgumentException($"Invalid Day Of Week ({dow})");
             }
         }
 

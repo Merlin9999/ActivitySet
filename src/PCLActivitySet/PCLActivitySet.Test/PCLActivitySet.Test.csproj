@@ -51,6 +51,10 @@
     <Compile Include="ActivitySetTest.cs" />
     <Compile Include="ActivityTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Recurrence\DaysOfWeekExtTest.cs" />
+    <Compile Include="Recurrence\DaysOfWeekFlagsTest.cs" />
+    <Compile Include="Recurrence\DaysOfWeekTest.cs" />
+    <Compile Include="Recurrence\MonthTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

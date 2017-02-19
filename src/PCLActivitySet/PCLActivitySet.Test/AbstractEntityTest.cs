@@ -35,6 +35,19 @@ namespace PCLActivitySet.Test
         }
 
         [Test]
+        public void EqualsReturnsFalseWhenComparingWithNull()
+        {
+            Assert.That(new TestEntity().Equals(null), Is.False);
+        }
+
+        [Test]
+        public void EqualsTakingObjectParam()
+        {
+            var entity = new TestEntity();
+            Assert.That(entity.Equals((object)entity), Is.True);
+        }
+
+        [Test]
         public void HashCodeMatchesWhenGuidsAreTheSame()
         {
             var guid = Guid.NewGuid();

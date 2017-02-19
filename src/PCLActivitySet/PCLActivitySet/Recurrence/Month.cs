@@ -7,7 +7,7 @@ namespace PCLActivitySet.Recurrence
         public static int GetMonthNumber(EMonth month)
         {
             if (!Enum.IsDefined(typeof(EMonth), month))
-                throw new InvalidOperationException($"The month value ({month}) is not defined!");
+                throw new ArgumentException($"The month value ({month}) is not defined!");
 
             return (int)month;
         }
@@ -15,7 +15,7 @@ namespace PCLActivitySet.Recurrence
         public static EMonth GetMonth(int month)
         {
             if (!Enum.IsDefined(typeof(EMonth), month))
-                throw new InvalidOperationException($"The month value ({month}) is not defined!");
+                throw new ArgumentException($"The month value ({month}) is not defined!");
 
             return (EMonth)month;
         }

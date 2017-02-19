@@ -20,9 +20,9 @@ namespace PCLActivitySet.Recurrence
 
     public static class DaysOfWeekExt
     {
-        public static bool DateMatches(DateTime date, EDaysOfWeekExt dowe)
+        public static bool DateMatches(this DateTime date, EDaysOfWeekExt dowe)
         {
-            EDaysOfWeekExt dateDowe = ConvertFrom(date);
+            EDaysOfWeekExt dateDowe = ConvertFrom(date.DayOfWeek);
 
             switch (dowe)
             {
@@ -37,91 +37,97 @@ namespace PCLActivitySet.Recurrence
             }
         }
 
-        public static bool IsWeekDay(EDaysOfWeekExt dayOfWeek)
+        public static bool IsWeekDay(this EDaysOfWeekExt dayOfWeek)
         {
             return WeekDays.Contains(dayOfWeek);
         }
 
-        public static bool IsWeekendDay(EDaysOfWeekExt dayOfWeek)
+        public static bool IsWeekendDay(this EDaysOfWeekExt dayOfWeek)
         {
             return WeekendDays.Contains(dayOfWeek);
         }
 
-        public static bool IsDayGroupClassifier(EDaysOfWeekExt dayOfWeek)
+        public static bool IsDayGroupClassifier(this EDaysOfWeekExt dayOfWeek)
         {
             return DayGroupClassifiers.Contains(dayOfWeek);
         }
 
-        public static bool HasWeekDays(IEnumerable<EDaysOfWeekExt> daysOfWeek)
+        public static bool HasWeekDays(this IEnumerable<EDaysOfWeekExt> daysOfWeek)
         {
             return HasWeekDays(daysOfWeek, false);
         }
 
-        public static bool HasWeekDays(IEnumerable<EDaysOfWeekExt> daysOfWeek, bool allowEmpty)
+        public static bool HasWeekDays(this IEnumerable<EDaysOfWeekExt> daysOfWeek, bool allowEmpty)
         {
-            if (allowEmpty && !daysOfWeek.Any(d => true))
+            IList<EDaysOfWeekExt> daysOfWeekList = daysOfWeek as IList<EDaysOfWeekExt> ?? daysOfWeek.ToList();
+            if (allowEmpty && !daysOfWeekList.Any())
                 return true;
-            return daysOfWeek.Any(d => IsWeekDay(d));
+            return daysOfWeekList.Any(IsWeekDay);
         }
 
-        public static bool HasWeekendDays(IEnumerable<EDaysOfWeekExt> daysOfWeek)
+        public static bool HasWeekendDays(this IEnumerable<EDaysOfWeekExt> daysOfWeek)
         {
             return HasWeekendDays(daysOfWeek, false);
         }
 
-        public static bool HasWeekendDays(IEnumerable<EDaysOfWeekExt> daysOfWeek, bool allowEmpty)
+        public static bool HasWeekendDays(this IEnumerable<EDaysOfWeekExt> daysOfWeek, bool allowEmpty)
         {
-            if (allowEmpty && !daysOfWeek.Any(d => true))
+            IList<EDaysOfWeekExt> daysOfWeekList = daysOfWeek as IList<EDaysOfWeekExt> ?? daysOfWeek.ToList();
+            if (allowEmpty && !daysOfWeekList.Any())
                 return true;
-            return daysOfWeek.Any(d => IsWeekendDay(d));
+            return daysOfWeekList.Any(IsWeekendDay);
         }
 
-        public static bool HasDayGroupClassifier(IEnumerable<EDaysOfWeekExt> daysOfWeek)
+        public static bool HasDayGroupClassifier(this IEnumerable<EDaysOfWeekExt> daysOfWeek)
         {
             return HasDayGroupClassifier(daysOfWeek, false);
         }
 
-        public static bool HasDayGroupClassifier(IEnumerable<EDaysOfWeekExt> daysOfWeek, bool allowEmpty)
+        public static bool HasDayGroupClassifier(this IEnumerable<EDaysOfWeekExt> daysOfWeek, bool allowEmpty)
         {
-            if (allowEmpty && !daysOfWeek.Any(d => true))
+            IList<EDaysOfWeekExt> daysOfWeekList = daysOfWeek as IList<EDaysOfWeekExt> ?? daysOfWeek.ToList();
+            if (allowEmpty && !daysOfWeekList.Any())
                 return true;
-            return daysOfWeek.Any(d => IsDayGroupClassifier(d));
+            return daysOfWeekList.Any(IsDayGroupClassifier);
         }
 
-        public static bool HasOnlyWeekDays(IEnumerable<EDaysOfWeekExt> daysOfWeek)
+        public static bool HasOnlyWeekDays(this IEnumerable<EDaysOfWeekExt> daysOfWeek)
         {
             return HasOnlyWeekDays(daysOfWeek, false);
         }
 
-        public static bool HasOnlyWeekDays(IEnumerable<EDaysOfWeekExt> daysOfWeek, bool allowEmpty)
+        public static bool HasOnlyWeekDays(this IEnumerable<EDaysOfWeekExt> daysOfWeek, bool allowEmpty)
         {
-            if (!allowEmpty && !daysOfWeek.Any(d => true))
+            IList<EDaysOfWeekExt> daysOfWeekList = daysOfWeek as IList<EDaysOfWeekExt> ?? daysOfWeek.ToList();
+            if (!allowEmpty && !daysOfWeekList.Any())
                 return false;
-            return daysOfWeek.All(d => IsWeekDay(d));
+            return daysOfWeekList.All(IsWeekDay);
         }
 
-        public static bool HasOnlyWeekendDays(IEnumerable<EDaysOfWeekExt> daysOfWeek)
+        public static bool HasOnlyWeekendDays(this IEnumerable<EDaysOfWeekExt> daysOfWeek)
         {
             return HasOnlyWeekendDays(daysOfWeek, false);
         }
 
-        public static bool HasOnlyWeekendDays(IEnumerable<EDaysOfWeekExt> daysOfWeek, bool allowEmpty)
+        public static bool HasOnlyWeekendDays(this IEnumerable<EDaysOfWeekExt> daysOfWeek, bool allowEmpty)
         {
-            if (!allowEmpty && !daysOfWeek.Any(d => true))
+            IList<EDaysOfWeekExt> daysOfWeekList = daysOfWeek as IList<EDaysOfWeekExt> ?? daysOfWeek.ToList();
+            if (!allowEmpty && !daysOfWeekList.Any())
                 return false;
-            return daysOfWeek.All(d => IsWeekendDay(d));
+            return daysOfWeekList.All(IsWeekendDay);
         }
 
-        public static bool HasOnlyDayGroupClassifiers(IEnumerable<EDaysOfWeekExt> daysOfWeek)
+        public static bool HasOnlyDayGroupClassifiers(this IEnumerable<EDaysOfWeekExt> daysOfWeek)
         {
             return HasOnlyDayGroupClassifiers(daysOfWeek, false);
         }
 
-        public static bool HasOnlyDayGroupClassifiers(IEnumerable<EDaysOfWeekExt> daysOfWeek, bool allowEmpty)
+        public static bool HasOnlyDayGroupClassifiers(this IEnumerable<EDaysOfWeekExt> daysOfWeek, bool allowEmpty)
         {
-            if (!allowEmpty && !daysOfWeek.Any(d => true))
+            IList<EDaysOfWeekExt> daysOfWeekList = daysOfWeek as IList<EDaysOfWeekExt> ?? daysOfWeek.ToList();
+            if (!allowEmpty && !daysOfWeekList.Any())
                 return false;
-            return daysOfWeek.All(d => IsDayGroupClassifier(d));
+            return daysOfWeekList.All(IsDayGroupClassifier);
         }
 
         public static EDaysOfWeekExt ConvertFrom(EDaysOfWeek dayOfWeek)
@@ -136,15 +142,15 @@ namespace PCLActivitySet.Recurrence
         {
             HashSet<EDaysOfWeekExt> retVal = new HashSet<EDaysOfWeekExt>();
 
-            foreach (EDaysOfWeekFlags d in DaysOfWeekFlags.AsSeperatedValues(daysOfWeek))
+            foreach (EDaysOfWeekFlags d in DaysOfWeekFlags.AsSeperateValues(daysOfWeek))
                 retVal.Add((EDaysOfWeekExt)Enum.Parse(typeof(EDaysOfWeekExt), Enum.GetName(typeof(EDaysOfWeekFlags), d)));
 
             return retVal;
         }
 
-        public static EDaysOfWeekExt ConvertFrom(DateTime dt)
+        public static EDaysOfWeekExt ConvertFrom(DayOfWeek dow)
         {
-            switch (dt.DayOfWeek)
+            switch (dow)
             {
                 case DayOfWeek.Sunday:
                     return EDaysOfWeekExt.Sunday;
@@ -161,12 +167,12 @@ namespace PCLActivitySet.Recurrence
                 case DayOfWeek.Saturday:
                     return EDaysOfWeekExt.Saturday;
                 default:
-                    throw new InvalidOperationException("Invalid Day Of Week");
+                    throw new ArgumentException($"Invalid Day Of Week ({dow})");
             }
         }
-        
-        public static readonly EDaysOfWeekExt[] WeekDays = { EDaysOfWeekExt.Monday, EDaysOfWeekExt.Tuesday, EDaysOfWeekExt.Wednesday, EDaysOfWeekExt.Thursday, EDaysOfWeekExt.Friday, EDaysOfWeekExt.WeekDay };
-        public static readonly EDaysOfWeekExt[] WeekendDays = { EDaysOfWeekExt.Saturday, EDaysOfWeekExt.Sunday, EDaysOfWeekExt.WeekendDay };
+
+        public static readonly EDaysOfWeekExt[] WeekDays = { EDaysOfWeekExt.Monday, EDaysOfWeekExt.Tuesday, EDaysOfWeekExt.Wednesday, EDaysOfWeekExt.Thursday, EDaysOfWeekExt.Friday };
+        public static readonly EDaysOfWeekExt[] WeekendDays = { EDaysOfWeekExt.Saturday, EDaysOfWeekExt.Sunday };
         public static readonly EDaysOfWeekExt[] DayGroupClassifiers = { EDaysOfWeekExt.WeekDay, EDaysOfWeekExt.WeekendDay, EDaysOfWeekExt.EveryDay };
     }
 

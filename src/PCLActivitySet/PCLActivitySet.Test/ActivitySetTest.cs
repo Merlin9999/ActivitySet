@@ -120,5 +120,11 @@ namespace PCLActivitySet.Test
             activitySet.CopyTo(activityArray, 0);
             Assert.That(activitySet, Is.EquivalentTo(activityArray));
         }
+
+        [Test]
+        public void ReadOnlyReturnsFalse()
+        {
+            Assert.That(new ActivitySet().IsReadOnly, Is.False);
+        }
     }
 }
