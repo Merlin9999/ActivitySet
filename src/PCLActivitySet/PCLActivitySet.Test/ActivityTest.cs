@@ -236,7 +236,7 @@ namespace PCLActivitySet.Test
         }
 
         [Test]
-        public void FluentlyAddWithLeadTimeAsIDateProjection()
+        public void FluentlyCreateWithLeadTimeAsIDateProjection()
         {
             Activity activity = Activity.FluentNew("New Activity", new DateTime(2017, 2, 28))
                 .LeadTime(new WeeklyProjection() { DaysOfWeek = EDaysOfWeekFlags.Monday, WeekCount = 1 });
@@ -244,7 +244,7 @@ namespace PCLActivitySet.Test
         }
 
         [Test]
-        public void FluentlyAddWithLeadTimeAsDateProjection()
+        public void FluentlyCreateWithLeadTimeAsDateProjection()
         {
             var dateProjection = new DateProjection(EDateProjectionType.Weekly) {DaysOfWeekFlags = EDaysOfWeekFlags.Monday, PeriodCount = 1,};
             Activity activity = Activity.FluentNew("New Activity", new DateTime(2017, 2, 28))
@@ -253,7 +253,7 @@ namespace PCLActivitySet.Test
         }
 
         [Test]
-        public void FluentlyAddWithDailyLeadTime()
+        public void FluentlyCreateWithDailyLeadTime()
         {
             Activity activity = Activity.FluentNew("New Activity", new DateTime(2017, 2, 28))
                 .DailyLeadTime(7);
@@ -261,7 +261,7 @@ namespace PCLActivitySet.Test
         }
 
         [Test]
-        public void FluentlyAddWithWeeklyLeadTime()
+        public void FluentlyCreateWithWeeklyLeadTime()
         {
             Activity activity = Activity.FluentNew("New Activity", new DateTime(2017, 2, 28))
                 .WeeklyLeadTime(1, EDaysOfWeekFlags.Monday);
@@ -269,7 +269,7 @@ namespace PCLActivitySet.Test
         }
 
         [Test]
-        public void FluentlyAddWithMonthlyLeadTime()
+        public void FluentlyCreateWithMonthlyLeadTime()
         {
             Activity activity = Activity.FluentNew("New Activity", new DateTime(2017, 2, 28))
                 .MonthlyLeadTime(3, 8);
@@ -277,7 +277,7 @@ namespace PCLActivitySet.Test
         }
 
         [Test]
-        public void FluentlyAddWithMonthlyRelativeLeadTime()
+        public void FluentlyCreateWithMonthlyRelativeLeadTime()
         {
             Activity activity = Activity.FluentNew("New Activity", new DateTime(2017, 2, 28))
                 .MonthlyLeadTime(1, EWeeksInMonth.Second, EDaysOfWeekExt.Monday);
@@ -285,7 +285,7 @@ namespace PCLActivitySet.Test
         }
 
         [Test]
-        public void FluentlyAddWithYearlyLeadTime()
+        public void FluentlyCreateWithYearlyLeadTime()
         {
             Activity activity = Activity.FluentNew("New Activity", new DateTime(2017, 2, 28))
                 .YearlyLeadTime(EMonth.March, 8);
@@ -293,7 +293,7 @@ namespace PCLActivitySet.Test
         }
 
         [Test]
-        public void FluentlyAddWithYearlyRelativeLeadTime()
+        public void FluentlyCreateWithYearlyRelativeLeadTime()
         {
             Activity activity = Activity.FluentNew("New Activity", new DateTime(2017, 2, 28))
                 .YearlyLeadTime(EMonth.April, EWeeksInMonth.Second, EDaysOfWeekExt.Monday);
