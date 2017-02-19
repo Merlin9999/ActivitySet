@@ -2,11 +2,11 @@
 
 namespace PCLActivitySet.Recurrence
 {
-    public static class RelativeDate
+    internal static class RelativeDate
     {
         public static DateTime GetDate(int year, int month, EWeeksInMonth weekInMonth, EDaysOfWeek dayOfWeek)
         {
-            return GetDate(year, Month.GetMonth(month), weekInMonth, dayOfWeek);
+            return GetDate(year, Month.GetMonth(month), weekInMonth, DaysOfWeekExt.ConvertFrom(dayOfWeek));
         }
 
         public static DateTime GetDate(int year, EMonth month, EWeeksInMonth weekInMonth, EDaysOfWeek dayOfWeek)
@@ -45,17 +45,17 @@ namespace PCLActivitySet.Recurrence
                     lookForward = false;
                     break;
                 default:
-                    throw new InvalidOperationException($"Unrecognized Week in Month ({weekInMonth})!");
+                    throw new ArgumentException($"Unrecognized Week in Month ({weekInMonth})!");
             }
 
             if (lookForward)
             {
-                while (!DaysOfWeekExt.DateMatches(date, dayOfWeekExt))
+                while (!date.DateMatches(dayOfWeekExt))
                     date = date.AddDays(1);
             }
             else
             {
-                while (!DaysOfWeekExt.DateMatches(date, dayOfWeekExt))
+                while (!date.DateMatches(dayOfWeekExt))
                     date = date.AddDays(-1);
             }
 

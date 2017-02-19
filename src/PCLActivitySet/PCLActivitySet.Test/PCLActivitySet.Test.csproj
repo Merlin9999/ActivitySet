@@ -55,6 +55,7 @@
     <Compile Include="Recurrence\DaysOfWeekFlagsTest.cs" />
     <Compile Include="Recurrence\DaysOfWeekTest.cs" />
     <Compile Include="Recurrence\MonthTest.cs" />
+    <Compile Include="Recurrence\RelativeDateTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
