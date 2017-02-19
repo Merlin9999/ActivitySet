@@ -41,6 +41,53 @@ namespace PCLActivitySet.Test
         }
 
         [Test]
+        public void ActiveDueDatePropertyHandlesCompletionHistoryRewind()
+        {
+            Activity activity = Activity.FluentNew("New Activity", new DateTime(2017, 2, 28))
+                .Recurrence(ERecurFromType.FromCompletedDate, x => x.Daily(1));
+            activity.SignalCompleted(new DateTime(2017, 3, 1));
+            activity.SignalCompleted(new DateTime(2017, 3, 2));
+            activity.SignalCompleted(new DateTime(2017, 3, 3));
+            activity.SignalCompleted(new DateTime(2017, 3, 4));
+            activity.SignalCompleted(new DateTime(2017, 3, 5));
+            Assert.That(activity.CompletionHistory.Count, Is.EqualTo(5));
+
+            activity.ActiveDueDate = new DateTime(2017, 3, 3);
+            Assert.That(activity.CompletionHistory.Count, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void ActiveDueDatePropertyLeavesCompletionHistoryWhenSetToNull()
+        {
+            Activity activity = Activity.FluentNew("New Activity", new DateTime(2017, 2, 28))
+                .Recurrence(ERecurFromType.FromCompletedDate, x => x.Daily(1));
+            activity.SignalCompleted(new DateTime(2017, 3, 1));
+            activity.SignalCompleted(new DateTime(2017, 3, 2));
+            activity.SignalCompleted(new DateTime(2017, 3, 3));
+            activity.SignalCompleted(new DateTime(2017, 3, 4));
+            activity.SignalCompleted(new DateTime(2017, 3, 5));
+            Assert.That(activity.CompletionHistory.Count, Is.EqualTo(5));
+
+            activity.ActiveDueDate = null;
+            Assert.That(activity.CompletionHistory.Count, Is.EqualTo(5));
+        }
+
+        [Test]
+        public void ResetActiveDueDateFromLastHistoryItem()
+        {
+            Activity activity = Activity.FluentNew("New Activity", new DateTime(2017, 2, 28))
+                .Recurrence(ERecurFromType.FromCompletedDate, x => x.Daily(1));
+            activity.SignalCompleted(new DateTime(2017, 3, 1));
+            Assert.That(activity.ActiveDueDate, Is.EqualTo(new DateTime(2017, 3, 2)));
+
+            activity.ActiveDueDate = null;
+            Assert.That(activity.ActiveDueDate, Is.Null);
+
+            activity.ResetActiveDueDateFromLastHistoryItem();
+            Assert.That(activity.ActiveDueDate, Is.EqualTo(new DateTime(2017, 3, 2)));
+        }
+
+        [Test]
         public void LeadTimePropertyDefaultsToNull()
         {
             var activity = new Activity();
@@ -65,6 +112,7 @@ namespace PCLActivitySet.Test
             activity.LeadTime = leadTimeProjection;
             Assert.That(activity.LeadTimeDate, Is.Null);
         }
+
         [Test]
         public void LeadTimeDateIsNullWhenLeadTimeIsNull()
         {

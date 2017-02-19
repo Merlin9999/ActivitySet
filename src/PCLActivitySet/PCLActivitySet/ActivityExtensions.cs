@@ -17,5 +17,16 @@ namespace PCLActivitySet
                 ? activity.Recurrence.GetNext(activity.ActiveDueDate.Value, dateCompleted, activity.CompletionHistory.Count)
                 : null;
         }
+
+        public static void ResetActiveDueDateFromLastHistoryItem(this Activity activity)
+        {
+            if (activity.CompletionHistory.Any())
+            {
+                ActivityHistoryItem historyItem = activity.CompletionHistory.Last();
+                activity.ActiveDueDate = activity.Recurrence?.GetNext(historyItem.DueDate ?? historyItem.CompletedDate, 
+                    historyItem.CompletedDate, activity.CompletionHistory.Count);
+            }
+        }
+
     }
 }
