@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using PCLActivitySet.Recurrence;
@@ -55,37 +56,64 @@ namespace PCLActivitySet
 
         public FluentlyModifyActivity DailyLeadTime(int periodCount)
         {
-            this._activity.LeadTime = new DateProjection(new DailyProjection() { DayCount = periodCount});
+            this._activity.LeadTime = new DateProjection(new DateProjectionCreateHelper().Daily(periodCount));
             return this;
         }
 
         public FluentlyModifyActivity WeeklyLeadTime(int periodCount, EDaysOfWeekFlags daysOfWeek)
         {
-            this._activity.LeadTime = new DateProjection(new WeeklyProjection() {DaysOfWeek = daysOfWeek, WeekCount = periodCount});
+            this._activity.LeadTime = new DateProjection(new DateProjectionCreateHelper().Weekly(periodCount, daysOfWeek));
             return this;
         }
 
         public FluentlyModifyActivity MonthlyLeadTime(int periodCount, int dayOfMonth)
         {
-            this._activity.LeadTime = new DateProjection(new MonthlyProjection() {MonthCount = periodCount, DayOfMonth = dayOfMonth});
+            this._activity.LeadTime = new DateProjection(new DateProjectionCreateHelper().Monthly(periodCount, dayOfMonth));
             return this;
         }
 
         public FluentlyModifyActivity MonthlyLeadTime(int periodCount, EWeeksInMonth weeksInMonth, EDaysOfWeekExt daysOfWeek)
         {
-            this._activity.LeadTime = new DateProjection(new MonthlyRelativeProjection() { MonthCount = periodCount, WeeksInMonth = weeksInMonth, DaysOfWeekExt = daysOfWeek});
+            this._activity.LeadTime = new DateProjection(new DateProjectionCreateHelper().Monthly(periodCount, weeksInMonth, daysOfWeek));
             return this;
         }
 
         public FluentlyModifyActivity YearlyLeadTime(EMonth month, int dayOfMonth)
         {
-            this._activity.LeadTime = new DateProjection(new YearlyProjection() { Month = month, DayOfMonth = dayOfMonth });
+            this._activity.LeadTime = new DateProjection(new DateProjectionCreateHelper().Yearly(month, dayOfMonth));
             return this;
         }
 
         public FluentlyModifyActivity YearlyLeadTime(EMonth month, EWeeksInMonth weeksInMonth, EDaysOfWeekExt daysOfWeek)
         {
-            this._activity.LeadTime = new DateProjection(new YearlyRelativeProjection() { Month = month, WeeksInMonth = weeksInMonth, DaysOfWeekExt = daysOfWeek });
+            this._activity.LeadTime = new DateProjection(new DateProjectionCreateHelper().Yearly(month, weeksInMonth, daysOfWeek));
+            return this;
+        }
+
+        public FluentlyModifyActivity Recurrence(DateRecurrence dateRecurrence)
+        {
+            this._activity.Recurrence = dateRecurrence;
+            return this;
+        }
+
+        public FluentlyModifyActivity Recurrence(ERecurFromType recurFromType, Func<DateProjectionCreateHelper, IDateProjection> dateProjectionFactory)
+        {
+            IDateProjection dateProjection = dateProjectionFactory(new DateProjectionCreateHelper());
+            this._activity.Recurrence = new DateRecurrence(dateProjection, recurFromType);
+            return this;
+        }
+
+        public FluentlyModifyActivity Recurrence(ERecurFromType recurFromType, int maxRecurrenceCount, Func<DateProjectionCreateHelper, IDateProjection> dateProjectionFactory)
+        {
+            IDateProjection dateProjection = dateProjectionFactory(new DateProjectionCreateHelper());
+            this._activity.Recurrence = new DateRecurrence(dateProjection, recurFromType, maxRecurrenceCount);
+            return this;
+        }
+
+        public FluentlyModifyActivity Recurrence(ERecurFromType recurFromType, DateTime startDate, DateTime endDate, Func<DateProjectionCreateHelper, IDateProjection> dateProjectionFactory)
+        {
+            IDateProjection dateProjection = dateProjectionFactory(new DateProjectionCreateHelper());
+            this._activity.Recurrence = new DateRecurrence(dateProjection, recurFromType, startDate, endDate);
             return this;
         }
     }

@@ -313,5 +313,103 @@ namespace PCLActivitySet.Test
             Assert.That(activity.Name, Is.EqualTo(activityName));
             Assert.That(activity.ActiveDueDate, Is.EqualTo(activityActiveDueDate));
         }
+
+        [Test]
+        public void FluentlyCreateRecurFromTypeRecurrence()
+        {
+            Activity activity = Activity.FluentNew("New Activity", new DateTime(2017, 2, 28))
+                .Recurrence(ERecurFromType.FromDueDate, x => x.Daily(7));
+            Assert.That(activity.Recurrence, Is.Not.Null);
+        }
+
+        [Test]
+        public void FluentlyCreateRecurFromTypeAndMaxRecCountRecurrence()
+        {
+            Activity activity = Activity.FluentNew("New Activity", new DateTime(2017, 2, 28))
+                .Recurrence(ERecurFromType.FromCompletedDate, 2, x => x.Daily(7));
+            Assert.That(activity.Recurrence, Is.Not.Null);
+        }
+
+        [Test]
+        public void FluentlyCreateRecurFromTypeAndDateRangeRecurrence()
+        {
+            Activity activity = Activity.FluentNew("New Activity", new DateTime(2017, 2, 28))
+                .Recurrence(ERecurFromType.FromCompletedDate, new DateTime(2017,2,28), new DateTime(2017,3,29), x => x.Daily(7));
+            Assert.That(activity.Recurrence, Is.Not.Null);
+        }
+
+        [Test]
+        public void FluentlyCreateWithRecurrenceAsIDateProjection()
+        {
+            Activity activity = Activity.FluentNew("New Activity", new DateTime(2017, 2, 28))
+                .Recurrence(ERecurFromType.FromCompletedDate, x => new DailyProjection() { DayCount = 5 });
+            activity.SignalCompleted(new DateTime(2017, 2, 14));
+            Assert.That(activity.ActiveDueDate, Is.EqualTo(new DateTime(2017, 2, 19)));
+        }
+
+        [Test]
+        public void FluentlyCreateWithRecurrenceAsDateRecurrence()
+        {
+            var dateRecurrence = new DateRecurrence(EDateProjectionType.Daily, ERecurFromType.FromDueDate) { PeriodCount = 4, };
+            Activity activity = Activity.FluentNew("New Activity", new DateTime(2017, 2, 28))
+                .Recurrence(dateRecurrence);
+            activity.SignalCompleted(new DateTime(2017, 2, 14));
+            Assert.That(activity.ActiveDueDate, Is.EqualTo(new DateTime(2017, 3, 4)));
+        }
+
+        [Test]
+        public void FluentlyCreateWithDailyRecurrence()
+        {
+            Activity activity = Activity.FluentNew("New Activity", new DateTime(2017, 2, 28))
+                .Recurrence(ERecurFromType.FromDueDate, x => x.Daily(9));
+            activity.SignalCompleted(new DateTime(2017, 2, 14));
+            Assert.That(activity.ActiveDueDate, Is.EqualTo(new DateTime(2017, 3, 9)));
+        }
+
+        [Test]
+        public void FluentlyCreateWithWeeklyRecurrence()
+        {
+            Activity activity = Activity.FluentNew("New Activity", new DateTime(2017, 2, 28))
+                .Recurrence(ERecurFromType.FromDueDate, x=> x.Weekly(1, EDaysOfWeekFlags.Monday));
+            activity.SignalCompleted(new DateTime(2017, 2, 14));
+            Assert.That(activity.ActiveDueDate, Is.EqualTo(new DateTime(2017, 3, 6)));
+        }
+
+        [Test]
+        public void FluentlyCreateWithMonthlyRecurrence()
+        {
+            Activity activity = Activity.FluentNew("New Activity", new DateTime(2017, 2, 28))
+                .Recurrence(ERecurFromType.FromDueDate, x => x.Monthly(3, 8));
+            activity.SignalCompleted(new DateTime(2017, 2, 14));
+            Assert.That(activity.ActiveDueDate, Is.EqualTo(new DateTime(2017, 5, 8)));
+        }
+
+        [Test]
+        public void FluentlyCreateWithMonthlyRelativeRecurrence()
+        {
+            Activity activity = Activity.FluentNew("New Activity", new DateTime(2017, 2, 28))
+                .Recurrence(ERecurFromType.FromCompletedDate,  x => x.Monthly(2, EWeeksInMonth.Third, EDaysOfWeekExt.Monday));
+            activity.SignalCompleted(new DateTime(2017, 2, 14));
+            Assert.That(activity.ActiveDueDate, Is.EqualTo(new DateTime(2017, 3, 20)));
+        }
+
+        [Test]
+        public void FluentlyCreateWithYearlyRecurrence()
+        {
+            Activity activity = Activity.FluentNew("New Activity", new DateTime(2017, 2, 28))
+                .Recurrence(ERecurFromType.FromDueDate, x => x.Yearly(EMonth.March, 8));
+            activity.SignalCompleted(new DateTime(2017, 2, 14));
+            Assert.That(activity.ActiveDueDate, Is.EqualTo(new DateTime(2017, 3, 8)));
+        }
+
+        [Test]
+        public void FluentlyCreateWithYearlyRelativeRecurrence()
+        {
+            Activity activity = Activity.FluentNew("New Activity", new DateTime(2017, 2, 28))
+                .Recurrence(ERecurFromType.FromDueDate, x => x.Yearly(EMonth.April, EWeeksInMonth.Second, EDaysOfWeekExt.Monday));
+            activity.SignalCompleted(new DateTime(2017, 2, 14));
+            Assert.That(activity.ActiveDueDate, Is.EqualTo(new DateTime(2017, 4, 10)));
+        }
+
     }
 }
