@@ -46,6 +46,7 @@
     <Compile Include="ActivityExtensions.cs" />
     <Compile Include="ActivityHistoryItem.cs" />
     <Compile Include="ActivityInternalExtensions.cs" />
+    <Compile Include="ActivityProjectionItem.cs" />
     <Compile Include="ActivitySet.cs" />
     <Compile Include="DateProjectionCreateHelper.cs" />
     <Compile Include="FluentlyModifyActivity.cs" />

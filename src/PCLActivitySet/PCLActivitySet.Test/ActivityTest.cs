@@ -241,6 +241,43 @@ namespace PCLActivitySet.Test
         }
 
         [Test]
+        public void GetProjectedFutureDueDates()
+        {
+            string activityName = "New Activity";
+            Activity activity = Activity.FluentNew(activityName, new DateTime(2017, 2, 28))
+                .Recurrence(ERecurFromType.FromActiveDueDate, x => x.Daily(1));
+            List<ActivityProjectionItem> activityProjectedDueDates = activity.GetProjectedFutureDueDates(new DateTime(2017, 3, 5)).ToList();
+            Assert.That(activityProjectedDueDates.Count, Is.EqualTo(5));
+            Assert.That(activityProjectedDueDates[0].Name, Is.EqualTo(activityName));
+            Assert.That(activityProjectedDueDates[0].DueDate, Is.EqualTo(new DateTime(2017, 3, 1)));
+            Assert.That(activityProjectedDueDates[1].Name, Is.EqualTo(activityName));
+            Assert.That(activityProjectedDueDates[1].DueDate, Is.EqualTo(new DateTime(2017, 3, 2)));
+            Assert.That(activityProjectedDueDates[2].Name, Is.EqualTo(activityName));
+            Assert.That(activityProjectedDueDates[2].DueDate, Is.EqualTo(new DateTime(2017, 3, 3)));
+            Assert.That(activityProjectedDueDates[3].Name, Is.EqualTo(activityName));
+            Assert.That(activityProjectedDueDates[3].DueDate, Is.EqualTo(new DateTime(2017, 3, 4)));
+            Assert.That(activityProjectedDueDates[4].Name, Is.EqualTo(activityName));
+            Assert.That(activityProjectedDueDates[4].DueDate, Is.EqualTo(new DateTime(2017, 3, 5)));
+        }
+
+        [Test]
+        public void GetProjectedFutureDueDatesWithActiveDueDateNull()
+        {
+            Activity activity = Activity.FluentNew("New Activity")
+                .Recurrence(ERecurFromType.FromActiveDueDate, x => x.Daily(1));
+            List<ActivityProjectionItem> activityProjectedDueDates = activity.GetProjectedFutureDueDates(new DateTime(2017, 3, 2)).ToList();
+            Assert.That(activityProjectedDueDates.Count, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void GetProjectedFutureDueDatesWithRecurrenceNull()
+        {
+            Activity activity = Activity.FluentNew("New Activity", new DateTime(2017, 2, 28));
+            List<ActivityProjectionItem> activityProjectedDueDates = activity.GetProjectedFutureDueDates(new DateTime(2017, 3, 2)).ToList();
+            Assert.That(activityProjectedDueDates.Count, Is.EqualTo(0));
+        }
+
+        [Test]
         public void VerifyLeadTimeDate()
         {
             var activity = new Activity();

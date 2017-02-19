@@ -30,5 +30,20 @@ namespace PCLActivitySet
             }
         }
 
+        public static IEnumerable<ActivityProjectionItem> GetProjectedFutureDueDates(this Activity activity, DateTime endDate)
+        {
+            if (activity.Recurrence != null && activity.ActiveDueDate != null)
+            {
+                endDate = endDate.AddDays(1).Date;
+                DateTime? dt = activity.Recurrence.GetNext(activity.ActiveDueDate.Value, activity.CompletionHistory.Count);
+                int projectedDateCount = 1;
+
+                while (dt.HasValue && dt.Value < endDate)
+                {
+                    yield return new ActivityProjectionItem(activity.Name, dt.Value);
+                    dt = activity.Recurrence.GetNext(dt.Value, activity.CompletionHistory.Count + projectedDateCount++);
+                }
+            }
+        }
     }
 }
