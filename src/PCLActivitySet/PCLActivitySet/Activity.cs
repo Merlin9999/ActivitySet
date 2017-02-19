@@ -10,6 +10,8 @@ namespace PCLActivitySet
     [DebuggerDisplay("{Name} : {GetType().Name}")]
     public class Activity : AbstractEntity<Activity>
     {
+        private List<ActivityHistoryItem> _completionHistory;
+
         public Activity()
         {
             this.CompletionHistory = new List<ActivityHistoryItem>();
@@ -24,11 +26,15 @@ namespace PCLActivitySet
                 ? (DateTime?) null
                 : this.LeadTime.GetPrevious(this.ActiveDueDate.Value);
 
-        //public DateRecurrence Recurrence  { get; set; }
+        public DateRecurrence Recurrence  { get; set; }
 
         public FluentlyModifyActivity Fluently => new FluentlyModifyActivity(this);
 
-        public List<ActivityHistoryItem> CompletionHistory { get; set; }
+        public List<ActivityHistoryItem> CompletionHistory
+        {
+            get { return this._completionHistory; }
+            set { this._completionHistory = value ?? new List<ActivityHistoryItem>(); }
+        }
 
         public static FluentlyModifyActivity FluentNew(string name, DateTime? activeDueDate = null)
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using PCLActivitySet.Recurrence;
@@ -82,6 +83,41 @@ namespace PCLActivitySet.Test
         }
 
         [Test]
+        public void CompletionHistoryIsReadWrite()
+        {
+            var activity = new Activity();
+            var newCompletionHistory = new List<ActivityHistoryItem>();
+            Assert.That(activity.CompletionHistory, Is.Not.SameAs(newCompletionHistory));
+            activity.CompletionHistory = newCompletionHistory;
+            Assert.That(activity.CompletionHistory, Is.SameAs(newCompletionHistory));
+        }
+
+        [Test]
+        public void CompletionHistoryIsEmptyWhenAssignedNull()
+        {
+            var activity = new Activity();
+            activity.CompletionHistory = null;
+            Assert.That(activity.CompletionHistory, Is.Not.Null);
+            Assert.That(activity.CompletionHistory, Is.Empty);
+        }
+
+        [Test]
+        public void RecurrenceDefaultsToNull()
+        {
+            var activity = new Activity();
+            Assert.That(activity.Recurrence, Is.Null);
+        }
+
+        [Test]
+        public void RecurrenceIsReadWrite()
+        {
+            var activity = new Activity();
+            DateRecurrence recurrence = new DateRecurrence();
+            activity.Recurrence = recurrence;
+            Assert.That(activity.Recurrence, Is.SameAs(recurrence));
+        }
+
+        [Test]
         public void SignalCompletedWithNoReccurence()
         {
             string activityName = "New Activity";
@@ -99,24 +135,29 @@ namespace PCLActivitySet.Test
             Assert.That(item.CompletedDate, Is.EqualTo(completionDate));
         }
 
-        //[Test]
-        //public void SignalCompletedWithReccurence()
-        //{
-        //    string activityName = "New Activity";
-        //    DateTime origActiveDueDate = new DateTime(2017, 2, 28);
-        //    DateTime nextActiveDueDate = new DateTime(2017, 3, 28);
-        //    DateTime completionDate = new DateTime(2017, 2, 14);
-        //    var activity = new Activity() { Name = activityName, ActiveDueDate = origActiveDueDate };
+        [Test]
+        public void SignalCompletedWithReccurence()
+        {
+            string activityName = "New Activity";
+            DateTime origActiveDueDate = new DateTime(2017, 2, 28);
+            DateTime nextActiveDueDate = new DateTime(2017, 3, 28);
+            DateTime completionDate = new DateTime(2017, 2, 14);
+            var activity = new Activity() { Name = activityName, ActiveDueDate = origActiveDueDate };
+            activity.Recurrence = new DateRecurrence()
+            {
+                RecurFromType = ERecurFromType.FromDueDate,
+                DateProjectionImpl = new MonthlyProjection() { MonthCount = 1, DayOfMonth = 28 },
+            };
 
-        //    activity.SignalCompleted(completionDate);
-        //    Assert.That(activity.CompletionHistory, Is.Not.Empty);
-        //    Assert.That(activity.ActiveDueDate, Is.EqualTo(nextActiveDueDate));
+            activity.SignalCompleted(completionDate);
+            Assert.That(activity.CompletionHistory, Is.Not.Empty);
+            Assert.That(activity.ActiveDueDate, Is.EqualTo(nextActiveDueDate));
 
-        //    ActivityHistoryItem item = activity.CompletionHistory.First();
-        //    Assert.That(item.Name, Is.EqualTo(activityName));
-        //    Assert.That(item.DueDate, Is.EqualTo(origActiveDueDate));
-        //    Assert.That(item.CompletedDate, Is.EqualTo(completionDate));
-        //}
+            ActivityHistoryItem item = activity.CompletionHistory.First();
+            Assert.That(item.Name, Is.EqualTo(activityName));
+            Assert.That(item.DueDate, Is.EqualTo(origActiveDueDate));
+            Assert.That(item.CompletedDate, Is.EqualTo(completionDate));
+        }
 
         [Test]
         public void VerifyLeadTimeDate()
