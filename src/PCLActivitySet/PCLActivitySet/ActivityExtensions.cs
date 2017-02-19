@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PCLActivitySet.Recurrence;
 
 namespace PCLActivitySet
 {
@@ -11,7 +12,7 @@ namespace PCLActivitySet
         public static void SignalCompleted(this Activity activity, DateTime dateCompleted)
         {
             dateCompleted = dateCompleted.Date;
-            
+
             activity.CompletionHistory.Add(new ActivityHistoryItem(activity.Name, activity.ActiveDueDate, dateCompleted));
             activity.ActiveDueDate = activity.Recurrence != null && activity.ActiveDueDate != null
                 ? activity.Recurrence.GetNext(activity.ActiveDueDate.Value, dateCompleted, activity.CompletionHistory.Count)
@@ -23,8 +24,9 @@ namespace PCLActivitySet
             if (activity.CompletionHistory.Any())
             {
                 ActivityHistoryItem historyItem = activity.CompletionHistory.Last();
-                activity.ActiveDueDate = activity.Recurrence?.GetNext(historyItem.DueDate ?? historyItem.CompletedDate, 
-                    historyItem.CompletedDate, activity.CompletionHistory.Count);
+                activity.ActiveDueDate = historyItem.DueDate == null && activity.Recurrence.RecurFromType == ERecurFromType.FromActiveDueDate
+                    ? null
+                    : activity.Recurrence?.GetNext(historyItem.DueDate ?? DateTime.MaxValue, historyItem.CompletedDate, activity.CompletionHistory.Count);
             }
         }
 

@@ -9,7 +9,7 @@ namespace PCLActivitySet.Recurrence
             this.MaxRecurrenceCount = 0;
             this.StartDate = DateTime.MinValue;
             this.EndDate = DateTime.MaxValue;
-            this.RecurFromType = ERecurFromType.FromDueDate;
+            this.RecurFromType = ERecurFromType.FromActiveDueDate;
         }
 
         public DateRecurrence(EDateProjectionType recurType, ERecurFromType recurFrom)
@@ -93,7 +93,7 @@ namespace PCLActivitySet.Recurrence
             DateTime dt;
             switch (this.RecurFromType)
             {
-                case ERecurFromType.FromDueDate:
+                case ERecurFromType.FromActiveDueDate:
                     dt = this.GetNext(dueDate);
                     break;
                 case ERecurFromType.FromCompletedDate:

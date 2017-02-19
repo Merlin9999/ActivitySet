@@ -2,7 +2,7 @@
 {
     public enum ERecurFromType
     {
-        FromDueDate,
+        FromActiveDueDate,
         FromCompletedDate,
     }
 

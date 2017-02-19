@@ -88,6 +88,39 @@ namespace PCLActivitySet.Test
         }
 
         [Test]
+        public void ResetActiveDueDateWhenRecurFromDueDateAndHistoryDueDateIsNull()
+        {
+            Activity activity = Activity.FluentNew("New Activity")
+                .Recurrence(ERecurFromType.FromCompletedDate, x => x.Daily(1));
+            activity.SignalCompleted(new DateTime(2017, 3, 1));
+            Assert.That(activity.ActiveDueDate, Is.Null);
+
+            var tempActiveDueDate = new DateTime(2017, 3, 28);
+            activity.ActiveDueDate = tempActiveDueDate;
+            Assert.That(activity.ActiveDueDate, Is.EqualTo(tempActiveDueDate));
+
+            activity.Recurrence.RecurFromType = ERecurFromType.FromActiveDueDate;
+            activity.ResetActiveDueDateFromLastHistoryItem();
+            Assert.That(activity.ActiveDueDate, Is.Null);
+        }
+
+        [Test]
+        public void ResetActiveDueDateWhenRecurFromCompletionDateAndHistoryDueDateIsNull()
+        {
+            Activity activity = Activity.FluentNew("New Activity")
+                .Recurrence(ERecurFromType.FromCompletedDate, x => x.Daily(1));
+            activity.SignalCompleted(new DateTime(2017, 3, 1));
+            Assert.That(activity.ActiveDueDate, Is.Null);
+
+            var tempActiveDueDate = new DateTime(2017, 3, 28);
+            activity.ActiveDueDate = tempActiveDueDate;
+            Assert.That(activity.ActiveDueDate, Is.EqualTo(tempActiveDueDate));
+
+            activity.ResetActiveDueDateFromLastHistoryItem();
+            Assert.That(activity.ActiveDueDate, Is.EqualTo(new DateTime(2017, 3, 2)));
+        }
+
+        [Test]
         public void LeadTimePropertyDefaultsToNull()
         {
             var activity = new Activity();
@@ -193,7 +226,7 @@ namespace PCLActivitySet.Test
             var activity = new Activity() { Name = activityName, ActiveDueDate = origActiveDueDate };
             activity.Recurrence = new DateRecurrence()
             {
-                RecurFromType = ERecurFromType.FromDueDate,
+                RecurFromType = ERecurFromType.FromActiveDueDate,
                 DateProjectionImpl = new MonthlyProjection() { MonthCount = 1, DayOfMonth = 28 },
             };
 
@@ -366,7 +399,7 @@ namespace PCLActivitySet.Test
         public void FluentlyCreateRecurFromTypeRecurrence()
         {
             Activity activity = Activity.FluentNew("New Activity", new DateTime(2017, 2, 28))
-                .Recurrence(ERecurFromType.FromDueDate, x => x.Daily(7));
+                .Recurrence(ERecurFromType.FromActiveDueDate, x => x.Daily(7));
             Assert.That(activity.Recurrence, Is.Not.Null);
         }
 
@@ -398,7 +431,7 @@ namespace PCLActivitySet.Test
         [Test]
         public void FluentlyCreateWithRecurrenceAsDateRecurrence()
         {
-            var dateRecurrence = new DateRecurrence(EDateProjectionType.Daily, ERecurFromType.FromDueDate) { PeriodCount = 4, };
+            var dateRecurrence = new DateRecurrence(EDateProjectionType.Daily, ERecurFromType.FromActiveDueDate) { PeriodCount = 4, };
             Activity activity = Activity.FluentNew("New Activity", new DateTime(2017, 2, 28))
                 .Recurrence(dateRecurrence);
             activity.SignalCompleted(new DateTime(2017, 2, 14));
@@ -409,7 +442,7 @@ namespace PCLActivitySet.Test
         public void FluentlyCreateWithDailyRecurrence()
         {
             Activity activity = Activity.FluentNew("New Activity", new DateTime(2017, 2, 28))
-                .Recurrence(ERecurFromType.FromDueDate, x => x.Daily(9));
+                .Recurrence(ERecurFromType.FromActiveDueDate, x => x.Daily(9));
             activity.SignalCompleted(new DateTime(2017, 2, 14));
             Assert.That(activity.ActiveDueDate, Is.EqualTo(new DateTime(2017, 3, 9)));
         }
@@ -418,7 +451,7 @@ namespace PCLActivitySet.Test
         public void FluentlyCreateWithWeeklyRecurrence()
         {
             Activity activity = Activity.FluentNew("New Activity", new DateTime(2017, 2, 28))
-                .Recurrence(ERecurFromType.FromDueDate, x=> x.Weekly(1, EDaysOfWeekFlags.Monday));
+                .Recurrence(ERecurFromType.FromActiveDueDate, x=> x.Weekly(1, EDaysOfWeekFlags.Monday));
             activity.SignalCompleted(new DateTime(2017, 2, 14));
             Assert.That(activity.ActiveDueDate, Is.EqualTo(new DateTime(2017, 3, 6)));
         }
@@ -427,7 +460,7 @@ namespace PCLActivitySet.Test
         public void FluentlyCreateWithMonthlyRecurrence()
         {
             Activity activity = Activity.FluentNew("New Activity", new DateTime(2017, 2, 28))
-                .Recurrence(ERecurFromType.FromDueDate, x => x.Monthly(3, 8));
+                .Recurrence(ERecurFromType.FromActiveDueDate, x => x.Monthly(3, 8));
             activity.SignalCompleted(new DateTime(2017, 2, 14));
             Assert.That(activity.ActiveDueDate, Is.EqualTo(new DateTime(2017, 5, 8)));
         }
@@ -445,7 +478,7 @@ namespace PCLActivitySet.Test
         public void FluentlyCreateWithYearlyRecurrence()
         {
             Activity activity = Activity.FluentNew("New Activity", new DateTime(2017, 2, 28))
-                .Recurrence(ERecurFromType.FromDueDate, x => x.Yearly(EMonth.March, 8));
+                .Recurrence(ERecurFromType.FromActiveDueDate, x => x.Yearly(EMonth.March, 8));
             activity.SignalCompleted(new DateTime(2017, 2, 14));
             Assert.That(activity.ActiveDueDate, Is.EqualTo(new DateTime(2017, 3, 8)));
         }
@@ -454,7 +487,7 @@ namespace PCLActivitySet.Test
         public void FluentlyCreateWithYearlyRelativeRecurrence()
         {
             Activity activity = Activity.FluentNew("New Activity", new DateTime(2017, 2, 28))
-                .Recurrence(ERecurFromType.FromDueDate, x => x.Yearly(EMonth.April, EWeeksInMonth.Second, EDaysOfWeekExt.Monday));
+                .Recurrence(ERecurFromType.FromActiveDueDate, x => x.Yearly(EMonth.April, EWeeksInMonth.Second, EDaysOfWeekExt.Monday));
             activity.SignalCompleted(new DateTime(2017, 2, 14));
             Assert.That(activity.ActiveDueDate, Is.EqualTo(new DateTime(2017, 4, 10)));
         }
