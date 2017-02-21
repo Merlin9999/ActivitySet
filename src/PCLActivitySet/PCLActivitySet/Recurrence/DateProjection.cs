@@ -8,7 +8,6 @@ namespace PCLActivitySet.Recurrence
     {
         public DateProjection()
         {
-            // Must have a place to store property values.
             this.DateProjectionImpl = new DailyProjection();
         }
 
@@ -159,7 +158,7 @@ namespace PCLActivitySet.Recurrence
                 case EDateProjectionType.YearlyRelative:
                     return new YearlyRelativeProjection();
                 default:
-                    throw new NotImplementedException($"Unrecognized value ({type}) for the Date Projection type enum ({typeof(EDateProjectionType)}).");
+                    throw new InvalidOperationException($"Unrecognized value ({type}) for the Date Projection type enum ({typeof(EDateProjectionType)}).");
             }
         }
 
