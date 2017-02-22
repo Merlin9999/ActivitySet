@@ -53,6 +53,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Recurrence\DailyProjectionTest.cs" />
     <Compile Include="Recurrence\DateProjectionTest.cs" />
+    <Compile Include="Recurrence\DateRecurrenceTest.cs" />
     <Compile Include="Recurrence\DaysOfWeekExtTest.cs" />
     <Compile Include="Recurrence\DaysOfWeekFlagsTest.cs" />
     <Compile Include="Recurrence\DaysOfWeekTest.cs" />

@@ -4,6 +4,10 @@ namespace PCLActivitySet.Recurrence
 {
     public class DateRecurrence : DateProjection
     {
+        private int _maxRecurrenceCount;
+        private DateTime _startDate;
+        private DateTime _endDate;
+
         public DateRecurrence()
         {
             this.MaxRecurrenceCount = 0;
@@ -39,10 +43,7 @@ namespace PCLActivitySet.Recurrence
             this.EndDate = endDate;
 
             if (this.StartDate > this.EndDate)
-            {
-                this.StartDate = DateTime.MinValue;
-                this.EndDate = DateTime.MaxValue;
-            }
+                throw new ArgumentException($"Start date ({startDate}) is after the end date ({endDate}).");
 
             this.RecurFromType = recurFrom;
         }
@@ -74,10 +75,7 @@ namespace PCLActivitySet.Recurrence
             this.EndDate = endDate;
 
             if (this.StartDate > this.EndDate)
-            {
-                this.StartDate = DateTime.MinValue;
-                this.EndDate = DateTime.MaxValue;
-            }
+                throw new ArgumentException($"Start date ({startDate}) is after the end date ({endDate}).");
 
             this.RecurFromType = recurFrom;
         }
@@ -120,21 +118,18 @@ namespace PCLActivitySet.Recurrence
             get { return this._maxRecurrenceCount; }
             set { this._maxRecurrenceCount = value < 0 ? 0 : value; }
         }
-        private int _maxRecurrenceCount;
 
         public DateTime StartDate
         {
             get { return this._startDate; }
             set { this._startDate = value.Date; }
         }
-        private DateTime _startDate;
 
         public DateTime EndDate
         {
             get { return this._endDate; }
             set { this._endDate = value.Date; }
         }
-        private DateTime _endDate;
 
     }
 
