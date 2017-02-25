@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
 using PCLActivitySet.Recurrence;
@@ -12,15 +13,18 @@ namespace PCLActivitySet
     {
         private DateTime? _activeDueDate;
         private List<ActivityHistoryItem> _completionHistory;
+        private readonly HashSet<Guid> _setOfContextGuids;
 
         public Activity()
         {
             this.CompletionHistory = new List<ActivityHistoryItem>();
+            this._setOfContextGuids = new HashSet<Guid>();
         }
 
         public string Name { get; set; }
 
         public Guid? ActivityListGuid { get; set; }
+
 
         public DateTime? ActiveDueDate
         {
@@ -51,7 +55,21 @@ namespace PCLActivitySet
         }
 
         public FluentlyModifyActivity Fluently => new FluentlyModifyActivity(this);
-        
+
+        public IEnumerable<Guid> ContextGuids => this._setOfContextGuids;
+
+        public void AddContexts(IEnumerable<ActivityContext> contexts)
+        {
+            foreach (Guid contextGuid in contexts.Select(ctx => ctx.Guid))
+                this._setOfContextGuids.Add(contextGuid);
+        }
+
+        public void RemoveContexts(IEnumerable<ActivityContext> contexts)
+        {
+            foreach (Guid contextGuid in contexts.Select(ctx => ctx.Guid))
+                this._setOfContextGuids.Remove(contextGuid);
+        }
+
         public static FluentlyModifyActivity FluentNew(string name)
         {
             return new FluentlyModifyActivity(new Activity() {Name = name});

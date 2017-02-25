@@ -154,6 +154,7 @@ namespace PCLActivitySet.Test
             board.RemoveList(list);
             Assert.That(board.InBox.Activities, Is.Not.Empty);
         }
+
         [Test]
         public void CanMoveActivityToActivityList()
         {
@@ -219,7 +220,7 @@ namespace PCLActivitySet.Test
         {
             var board = new ActivityBoard();
             board.AddNewContext("Context Name");
-            Assert.That(board.ActivityContexts, Is.Not.Empty);
+            Assert.That(board.Contexts, Is.Not.Empty);
         }
 
         [Test]
@@ -228,14 +229,121 @@ namespace PCLActivitySet.Test
             var board = new ActivityBoard();
             ActivityContext context = board.AddNewContext("Context Name");
             board.RemoveContext(context);
-            Assert.That(board.ActivityContexts, Is.Empty);
+            Assert.That(board.Contexts, Is.Empty);
         }
 
-        //[Test]
-        //public void ActivityWithNullContextShowsWhenNoContextSelected()
-        //{
-        //    Assert.Fail("Finish!");
-        //}
+        [Test]
+        public void CanSelectContexts()
+        {
+            var board = new ActivityBoard();
+            board.AddNewContext("Context 1");
+            board.AddNewContext("Context 2");
+            board.AddNewContext("Context 3");
+            ActivityContext context4 = board.AddNewContext("Context 4");
+            ActivityContext context5 = board.AddNewContext("Context 5");
+            board.AddSelectedContexts(context4, context5);
+
+            Assert.That(board.SelectedContextGuids, Is.Not.Empty);
+            Assert.That(board.SelectedContextGuids.Count(), Is.EqualTo(2));
+        }
+
+        [Test]
+        public void CanDeselectContexts()
+        {
+            var board = new ActivityBoard();
+            ActivityContext context1 = board.AddNewContext("Context 1");
+            ActivityContext context2 = board.AddNewContext("Context 2");
+            ActivityContext context3 = board.AddNewContext("Context 3");
+            ActivityContext context4 = board.AddNewContext("Context 4");
+            ActivityContext context5 = board.AddNewContext("Context 5");
+            board.AddSelectedContexts(context1, context2, context3, context4, context5);
+            board.RemoveSelectedContexts(context2, context4);
+
+            Assert.That(board.SelectedContextGuids, Is.Not.Empty);
+            Assert.That(board.SelectedContextGuids.Count(), Is.EqualTo(3));
+        }
+
+        [Test]
+        public void DeselectContextsRemovesThoseContextsFromActivities()
+        {
+            var board = new ActivityBoard();
+            ActivityContext context1 = board.AddNewContext("Context 1");
+            ActivityContext context2 = board.AddNewContext("Context 2");
+            board.AddSelectedContexts(context1, context2);
+            Activity activity = Activity.FluentNew("New Activity")
+                .AddToBoard(board)
+                .Contexts(context2);
+            board.RemoveSelectedContexts(context2);
+
+            Assert.That(activity.ContextGuids, Is.Empty);
+        }
+
+        [Test]
+        public void ActivityWithEmptyContextsShows()
+        {
+            var board = new ActivityBoard();
+            ActivityContext context1 = board.AddNewContext("Context 1");
+            ActivityContext context2 = board.AddNewContext("Context 2");
+            Activity activity = Activity.FluentNew("New Activity")
+                .AddToBoard(board);
+            board.AddSelectedContexts(context1);
+
+            Assert.That(activity.ContextGuids, Is.Empty);
+            Assert.That(board.SelectedContextGuids, Is.Not.Empty);
+            Assert.That(board.Activities, Is.Not.Empty);
+            Assert.That(board.Activities.Count(), Is.EqualTo(1));
+        }
+
+        [Test]
+        public void ActivityWithContextShowsWhenNoContextSelected()
+        {
+            var board = new ActivityBoard();
+            ActivityContext context1 = board.AddNewContext("Context 1");
+            ActivityContext context2 = board.AddNewContext("Context 2");
+            Activity activity = Activity.FluentNew("New Activity")
+                .AddToBoard(board)
+                .Contexts(context1);
+
+            Assert.That(activity.ContextGuids, Is.Not.Empty);
+            Assert.That(board.SelectedContextGuids, Is.Empty);
+            Assert.That(board.Activities, Is.Not.Empty);
+            Assert.That(board.Activities.Count(), Is.EqualTo(1));
+        }
+
+        [Test]
+        public void ActivityWithContextMatchingSelectedContextShows()
+        {
+            var board = new ActivityBoard();
+            ActivityContext context1 = board.AddNewContext("Context 1");
+            ActivityContext context2 = board.AddNewContext("Context 2");
+            Activity activity = Activity.FluentNew("New Activity")
+                .AddToBoard(board)
+                .Contexts(context1);
+            board.AddSelectedContexts(context1);
+
+            Assert.That(activity.ContextGuids, Is.Not.Empty);
+            Assert.That(board.SelectedContextGuids, Is.Not.Empty);
+            Assert.That(board.Activities, Is.Not.Empty);
+            Assert.That(board.Activities.Count(), Is.EqualTo(1));
+        }
+
+        [Test]
+        public void ActivityWithContextNotMatchingSelectedContextDoesNotShow()
+        {
+            var board = new ActivityBoard();
+            ActivityContext context1 = board.AddNewContext("Context 1");
+            ActivityContext context2 = board.AddNewContext("Context 2");
+            Activity activity = Activity.FluentNew("New Activity")
+                .AddToBoard(board)
+                .Contexts(context1);
+            board.AddSelectedContexts(context2);
+
+            Assert.That(activity.ContextGuids, Is.Not.Empty);
+            Assert.That(board.SelectedContextGuids, Is.Not.Empty);
+            Assert.That(board.Activities, Is.Empty);
+        }
+
+
 
     }
 }

@@ -129,12 +129,24 @@ namespace PCLActivitySet
 
     public class FluentlyModifyActivityAndBoard : AbstractFluentlyModifyActivity<FluentlyModifyActivityAndBoard>
     {
-        private ActivityBoard _board;
+        protected ActivityBoard Board;
 
         public FluentlyModifyActivityAndBoard(Activity activity, ActivityBoard board) 
             : base(activity)
         {
-            this._board = board;
+            this.Board = board;
+        }
+
+        public FluentlyModifyActivityAndBoard Contexts(params ActivityContext[] contexts)
+        {
+            return this.Contexts(contexts.AsEnumerable());
+        }
+
+        public FluentlyModifyActivityAndBoard Contexts(IEnumerable<ActivityContext> contexts)
+        {
+            IEnumerable<ActivityContext> requestedContextsInBoard = contexts.Where(ctx => this.Board.Contexts.Contains(ctx));
+            this.Activity.AddContexts(requestedContextsInBoard);
+            return this;
         }
     }
 }
