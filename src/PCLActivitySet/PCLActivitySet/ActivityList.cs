@@ -17,6 +17,6 @@ namespace PCLActivitySet
 
         public string Name { get; set; }
 
-        public virtual IEnumerable<Activity> Activities => this._owningBoard.Where(activity => activity.ActivityListGuid == this.Guid);
+        public virtual IEnumerable<Activity> Activities => this._owningBoard.Activities.Where(activity => activity.ActivityListGuid == this.Guid);
     }
 }

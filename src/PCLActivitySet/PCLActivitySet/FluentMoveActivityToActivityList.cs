@@ -10,7 +10,7 @@ namespace PCLActivitySet
 
         public FluentMoveActivityToActivityList(ActivityBoard board, Activity activityToMove)
         {
-            if (!board.Contains(activityToMove))
+            if (!board.ContainsActivity(activityToMove))
                 throw new ArgumentException($"Cannot move an {nameof(Activity)} that is not owned by the referenced {nameof(ActivityBoard)}.");
             this._board = board;
             this._activityToMove = activityToMove;

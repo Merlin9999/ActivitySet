@@ -13,119 +13,101 @@ namespace PCLActivitySet.Test
         [Test]
         public void NamePropertyDefaultsToNull()
         {
-            var activitySet = new ActivityBoard();
-            Assert.That(activitySet.Name, Is.Null);
+            var activityBoard = new ActivityBoard();
+            Assert.That(activityBoard.Name, Is.Null);
         }
 
         [Test]
         public void NamePropertyIsReadWrite()
         {
-            var activitySet = new ActivityBoard();
+            var activityBoard = new ActivityBoard();
             string testName = "Test Name";
-            activitySet.Name = testName;
-            Assert.That(activitySet.Name, Is.EqualTo(testName));
+            activityBoard.Name = testName;
+            Assert.That(activityBoard.Name, Is.EqualTo(testName));
         }
 
         [Test]
         public void CanAddActivity()
         {
-            var activitySet = new ActivityBoard();
-            activitySet.Add(new Activity() { Name = "New Activity" });
-            Assert.That(activitySet.Any(), Is.True);
-            Assert.That(activitySet.Count, Is.EqualTo(1));
+            var activityBoard = new ActivityBoard();
+            Activity.FluentNew("New Activity").AddTo(activityBoard);
+            Assert.That(activityBoard.Activities.Any(), Is.True);
+            Assert.That(activityBoard.Activities.Count(), Is.EqualTo(1));
         }
 
         [Test]
         public void CanAddTwoActivities()
         {
-            var activitySet = new ActivityBoard();
-            activitySet.Add(new Activity() { Name = "First New Activity" });
-            activitySet.Add(new Activity() { Name = "Second New Activity" });
-            Assert.That(activitySet.Any(), Is.True);
-            Assert.That(activitySet.Count, Is.EqualTo(2));
+            var activityBoard = new ActivityBoard();
+            Activity.FluentNew("First New Activity").AddTo(activityBoard);
+            Activity.FluentNew("Second New Activity").AddTo(activityBoard);
+            Assert.That(activityBoard.Activities.Any(), Is.True);
+            Assert.That(activityBoard.Activities.Count(), Is.EqualTo(2));
         }
 
         [Test]
         public void AddingSameActivityTwiceYieldsOneActivity()
         {
-            var activitySet = new ActivityBoard();
+            var activityBoard = new ActivityBoard();
             var activity = new Activity() { Name = "New Activity" };
-            activitySet.Add(activity);
-            activitySet.Add(activity);
-            Assert.That(activitySet.Any(), Is.True);
-            Assert.That(activitySet.Count, Is.EqualTo(1));
+            Activity.FluentNew("New Activity")
+                .AddTo(activityBoard)
+                .AddTo(activityBoard);
+            Assert.That(activityBoard.Activities.Any(), Is.True);
+            Assert.That(activityBoard.Activities.Count(), Is.EqualTo(1));
         }
 
         [Test]
         public void ClearRemovesAllActivities()
         {
-            var activitySet = new ActivityBoard();
-            activitySet.Add(new Activity() { Name = "First New Activity" });
-            activitySet.Add(new Activity() { Name = "Second New Activity" });
-            activitySet.Clear();
-            Assert.That(activitySet.Any(), Is.False);
-            Assert.That(activitySet.Count, Is.EqualTo(0));
+            var activityBoard = new ActivityBoard();
+            Activity.FluentNew("First New Activity").AddTo(activityBoard);
+            Activity.FluentNew("Second New Activity").AddTo(activityBoard);
+            activityBoard.RemoveAllActivities();
+            Assert.That(activityBoard.Activities.Any(), Is.False);
+            Assert.That(activityBoard.Activities.Count(), Is.EqualTo(0));
         }
 
         [Test]
         public void RemoveRemovesOneActivityIfGuidMatches()
         {
-            var activitySet = new ActivityBoard();
-            var activity = new Activity() { Name = "First New Activity" };
-            activitySet.Add(activity);
-            activitySet.Add(new Activity() { Name = "Second New Activity" });
-            activitySet.Remove(activity);
-            Assert.That(activitySet.Any(), Is.True);
-            Assert.That(activitySet.Count, Is.EqualTo(1));
+            var activityBoard = new ActivityBoard();
+            Activity activity = Activity.FluentNew("First New Activity").AddTo(activityBoard);
+            Activity.FluentNew("Second New Activity").AddTo(activityBoard);
+            activityBoard.RemoveActivity(activity);
+            Assert.That(activityBoard.Activities.Any(), Is.True);
+            Assert.That(activityBoard.Activities.Count(), Is.EqualTo(1));
         }
 
         [Test]
         public void RemoveRemovesNoActivityIfGuidDoesntMatch()
         {
-            var activitySet = new ActivityBoard();
+            var activityBoard = new ActivityBoard();
             var activityToRemove = new Activity() { Name = "Activity to Remove" };
-            activitySet.Add(new Activity() { Name = "First New Activity" });
-            activitySet.Add(new Activity() { Name = "Second New Activity" });
-            activitySet.Remove(activityToRemove);
-            Assert.That(activitySet.Any(), Is.True);
-            Assert.That(activitySet.Count, Is.EqualTo(2));
+            Activity.FluentNew("First New Activity").AddTo(activityBoard);
+            Activity.FluentNew("Second New Activity").AddTo(activityBoard);
+            activityBoard.RemoveActivity(activityToRemove);
+            Assert.That(activityBoard.Activities.Any(), Is.True);
+            Assert.That(activityBoard.Activities.Count(), Is.EqualTo(2));
         }
 
         [Test]
         public void ContainsReturnsTrueWhenActivityGuidMatches()
         {
-            var activitySet = new ActivityBoard();
-            var activity = new Activity() { Name = "First New Activity" };
-            activitySet.Add(activity);
-            activitySet.Add(new Activity() { Name = "Second New Activity" });
-            Assert.That(activitySet.Contains(activity), Is.True);
+            var activityBoard = new ActivityBoard();
+            Activity activity = Activity.FluentNew("First New Activity").AddTo(activityBoard);
+            Activity.FluentNew("Second New Activity").AddTo(activityBoard);
+            Assert.That(activityBoard.ContainsActivity(activity), Is.True);
         }
 
         [Test]
         public void ContainsReturnsFalseWhenActivityGuidDoesntMatch()
         {
-            var activitySet = new ActivityBoard();
+            var activityBoard = new ActivityBoard();
             var activity = new Activity() { Name = "Activity to not find" };
-            activitySet.Add(new Activity() { Name = "First New Activity" });
-            activitySet.Add(new Activity() { Name = "Second New Activity" });
-            Assert.That(activitySet.Contains(activity), Is.False);
-        }
-
-        [Test]
-        public void VerifyCopyTo()
-        {
-            var activitySet = new ActivityBoard();
-            activitySet.Add(new Activity() { Name = "First New Activity" });
-            activitySet.Add(new Activity() { Name = "Second New Activity" });
-            var activityArray = new Activity[2];
-            activitySet.CopyTo(activityArray, 0);
-            Assert.That(activitySet, Is.EquivalentTo(activityArray));
-        }
-
-        [Test]
-        public void ReadOnlyReturnsFalse()
-        {
-            Assert.That(new ActivityBoard().IsReadOnly, Is.False);
+            Activity.FluentNew("First New Activity").AddTo(activityBoard);
+            Activity.FluentNew("Second New Activity").AddTo(activityBoard);
+            Assert.That(activityBoard.ContainsActivity(activity), Is.False);
         }
 
         [Test]
@@ -146,7 +128,7 @@ namespace PCLActivitySet.Test
         {
             var board = new ActivityBoard();
             string activityListName = "Doing";
-            ActivityList list = board.CreateList(activityListName);
+            ActivityList list = board.AddNewList(activityListName);
             Assert.That(list.Name, Is.EqualTo(activityListName));
             Assert.That(board.ActivityLists, Has.Member(list));
         }
@@ -161,7 +143,7 @@ namespace PCLActivitySet.Test
                 .Recurrence(ERecurFromType.FromActiveDueDate, x => x.Daily(14))
                 .AddTo(board)
                 .ToActivity;
-            ActivityList list = board.CreateList("Doing");
+            ActivityList list = board.AddNewList("Doing");
             board.MoveActivity(activity).ToList(list);
             Assert.That(list.Activities, Has.Member(activity));
             Assert.That(board.InBox.Activities, Has.No.Member(activity));
@@ -177,7 +159,7 @@ namespace PCLActivitySet.Test
                 .Recurrence(ERecurFromType.FromActiveDueDate, x => x.Daily(14))
                 .AddTo(board)
                 .ToActivity;
-            ActivityList list = board.CreateList("Doing");
+            ActivityList list = board.AddNewList("Doing");
             board.MoveActivity(activity).ToList(list);
             board.MoveActivity(activity).ToList(board.InBox);
             Assert.That(list.Activities, Has.No.Member(activity));
@@ -207,7 +189,7 @@ namespace PCLActivitySet.Test
                 .DailyLeadTime(3)
                 .Recurrence(ERecurFromType.FromActiveDueDate, x => x.Daily(14))
                 .ToActivity;
-            ActivityList list = board.CreateList("Doing");
+            ActivityList list = board.AddNewList("Doing");
             Assert.That(() => board.MoveActivity(activity).ToList(list), Throws.TypeOf<ArgumentException>());
         }
 

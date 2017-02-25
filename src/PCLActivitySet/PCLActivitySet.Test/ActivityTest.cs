@@ -435,15 +435,15 @@ namespace PCLActivitySet.Test
         }
 
         [Test]
-        public void FluentlyCreateAndAddToActivitySet()
+        public void FluentlyCreateAndAddToActivityBoard()
         {
-            var activitySet = new ActivityBoard();
+            var activityBoard = new ActivityBoard();
             string activityName = "Activity Name";
             DateTime? activityActiveDueDate = new DateTime(2017,2,28);
             Activity.FluentNew(activityName, activityActiveDueDate)
-                .AddTo(activitySet);
-            Assert.That(activitySet.Count, Is.EqualTo(1));
-            var activity = activitySet.First();
+                .AddTo(activityBoard);
+            Assert.That(activityBoard.Activities.Count(), Is.EqualTo(1));
+            var activity = activityBoard.Activities.First();
             Assert.That(activity.Name, Is.EqualTo(activityName));
             Assert.That(activity.ActiveDueDate, Is.EqualTo(activityActiveDueDate));
         }
