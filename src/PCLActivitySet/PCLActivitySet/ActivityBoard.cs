@@ -8,34 +8,20 @@ namespace PCLActivitySet
     [DebuggerDisplay("{Name} : {GetType().Name}")]
     public class ActivityBoard
     {
-        internal HashSet<Activity> ActivitySet { get; } = new HashSet<Activity>();
+        private HashSet<Activity> ActivitySet { get; } = new HashSet<Activity>();
         private List<ActivityList> _listOfActivityLists;
-        private readonly ActivityList _inBox;
         private List<ActivityList> ListOfActivityLists => this._listOfActivityLists ?? (this._listOfActivityLists = new List<ActivityList>());
 
         public ActivityBoard()
         {
-            this._inBox = new InBoxActivityList(this) {Name = "InBox"};
+            this.InBox = new InBoxActivityList(this) {Name = "InBox"};
         }
 
         public string Name { get; set; }
 
-        public IEnumerable<Activity> Activities => this.ActivitySet;
-
-        public ActivityList InBox => this._inBox;
-
-        public IEnumerable<ActivityList> ActivityLists => this.ListOfActivityLists;
-
-        public ActivityList AddNewList(string activityListName)
+        public void AddActivity(Activity activity)
         {
-            var list = new ActivityList(this) {Name = activityListName};
-            this.ListOfActivityLists.Add(list);
-            return list;
-        }
-
-        public FluentMoveActivityToActivityList MoveActivity(Activity activityToMove)
-        {
-            return new FluentMoveActivityToActivityList(this, activityToMove);
+            this.ActivitySet.Add(activity);
         }
 
         public void RemoveAllActivities()
@@ -51,6 +37,24 @@ namespace PCLActivitySet
         public bool ContainsActivity(Activity activity)
         {
             return this.ActivitySet.Contains(activity);
+        }
+
+        public IEnumerable<Activity> Activities => this.ActivitySet;
+
+        public ActivityList InBox { get; }
+
+        public IEnumerable<ActivityList> ActivityLists => this.ListOfActivityLists;
+
+        public ActivityList AddNewList(string activityListName)
+        {
+            var list = new ActivityList(this) {Name = activityListName};
+            this.ListOfActivityLists.Add(list);
+            return list;
+        }
+
+        public FluentMoveActivityToActivityList MoveActivity(Activity activityToMove)
+        {
+            return new FluentMoveActivityToActivityList(this, activityToMove);
         }
     }
 }
