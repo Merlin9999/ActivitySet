@@ -31,8 +31,8 @@ namespace PCLActivitySet.Test
         {
             var activityBoard = new ActivityBoard();
             Activity.FluentNew("New Activity").AddToBoard(activityBoard);
-            Assert.That(activityBoard.Activities.Any(), Is.True);
-            Assert.That(activityBoard.Activities.Count(), Is.EqualTo(1));
+            Assert.That(activityBoard.UnfilteredActivities.Any(), Is.True);
+            Assert.That(activityBoard.UnfilteredActivities.Count(), Is.EqualTo(1));
         }
 
         [Test]
@@ -41,8 +41,8 @@ namespace PCLActivitySet.Test
             var activityBoard = new ActivityBoard();
             Activity.FluentNew("First New Activity").AddToBoard(activityBoard);
             Activity.FluentNew("Second New Activity").AddToBoard(activityBoard);
-            Assert.That(activityBoard.Activities.Any(), Is.True);
-            Assert.That(activityBoard.Activities.Count(), Is.EqualTo(2));
+            Assert.That(activityBoard.UnfilteredActivities.Any(), Is.True);
+            Assert.That(activityBoard.UnfilteredActivities.Count(), Is.EqualTo(2));
         }
 
         [Test]
@@ -53,8 +53,8 @@ namespace PCLActivitySet.Test
             Activity.FluentNew("New Activity")
                 .AddToBoard(activityBoard)
                 .AddToBoard(activityBoard);
-            Assert.That(activityBoard.Activities.Any(), Is.True);
-            Assert.That(activityBoard.Activities.Count(), Is.EqualTo(1));
+            Assert.That(activityBoard.UnfilteredActivities.Any(), Is.True);
+            Assert.That(activityBoard.UnfilteredActivities.Count(), Is.EqualTo(1));
         }
 
         [Test]
@@ -64,8 +64,8 @@ namespace PCLActivitySet.Test
             Activity.FluentNew("First New Activity").AddToBoard(activityBoard);
             Activity.FluentNew("Second New Activity").AddToBoard(activityBoard);
             activityBoard.RemoveAllActivities();
-            Assert.That(activityBoard.Activities.Any(), Is.False);
-            Assert.That(activityBoard.Activities.Count(), Is.EqualTo(0));
+            Assert.That(activityBoard.UnfilteredActivities.Any(), Is.False);
+            Assert.That(activityBoard.UnfilteredActivities.Count(), Is.EqualTo(0));
         }
 
         [Test]
@@ -75,8 +75,8 @@ namespace PCLActivitySet.Test
             Activity activity = Activity.FluentNew("First New Activity").AddToBoard(activityBoard);
             Activity.FluentNew("Second New Activity").AddToBoard(activityBoard);
             activityBoard.RemoveActivity(activity);
-            Assert.That(activityBoard.Activities.Any(), Is.True);
-            Assert.That(activityBoard.Activities.Count(), Is.EqualTo(1));
+            Assert.That(activityBoard.UnfilteredActivities.Any(), Is.True);
+            Assert.That(activityBoard.UnfilteredActivities.Count(), Is.EqualTo(1));
         }
 
         [Test]
@@ -87,8 +87,8 @@ namespace PCLActivitySet.Test
             Activity.FluentNew("First New Activity").AddToBoard(activityBoard);
             Activity.FluentNew("Second New Activity").AddToBoard(activityBoard);
             activityBoard.RemoveActivity(activityToRemove);
-            Assert.That(activityBoard.Activities.Any(), Is.True);
-            Assert.That(activityBoard.Activities.Count(), Is.EqualTo(2));
+            Assert.That(activityBoard.UnfilteredActivities.Any(), Is.True);
+            Assert.That(activityBoard.UnfilteredActivities.Count(), Is.EqualTo(2));
         }
 
         [Test]
@@ -213,6 +213,29 @@ namespace PCLActivitySet.Test
             ActivityList list = board.AddNewList("Doing");
             Assert.That(() => board.MoveActivity(activity).ToList(list), Throws.TypeOf<ArgumentException>());
         }
+
+        [Test]
+        public void CanCreateContext()
+        {
+            var board = new ActivityBoard();
+            board.AddNewContext("Context Name");
+            Assert.That(board.ActivityContexts, Is.Not.Empty);
+        }
+
+        [Test]
+        public void CanRemoveContext()
+        {
+            var board = new ActivityBoard();
+            ActivityContext context = board.AddNewContext("Context Name");
+            board.RemoveContext(context);
+            Assert.That(board.ActivityContexts, Is.Empty);
+        }
+
+        //[Test]
+        //public void ActivityWithNullContextShowsWhenNoContextSelected()
+        //{
+        //    Assert.Fail("Finish!");
+        //}
 
     }
 }

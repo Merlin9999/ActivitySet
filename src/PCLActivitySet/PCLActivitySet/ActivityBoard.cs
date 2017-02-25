@@ -11,7 +11,9 @@ namespace PCLActivitySet
     {
         private HashSet<Activity> ActivitySet { get; } = new HashSet<Activity>();
         private List<ActivityList> _listOfActivityLists;
+        private List<ActivityContext> _listOfActivityContexts;
         private List<ActivityList> ListOfActivityLists => this._listOfActivityLists ?? (this._listOfActivityLists = new List<ActivityList>());
+        private List<ActivityContext> ListOfActivityContexts => this._listOfActivityContexts ?? (this._listOfActivityContexts = new List<ActivityContext>());
 
         public ActivityBoard()
         {
@@ -40,11 +42,11 @@ namespace PCLActivitySet
             return this.ActivitySet.Contains(activity);
         }
 
-        public IEnumerable<Activity> Activities => this.ActivitySet;
+        public IEnumerable<Activity> UnfilteredActivities => this.ActivitySet;
+
+        public IEnumerable<Activity> Activities => this.UnfilteredActivities;
 
         public ActivityList InBox { get; }
-
-        public IEnumerable<ActivityList> ActivityLists => this.ListOfActivityLists;
 
         public ActivityList AddNewList(string activityListName)
         {
@@ -53,18 +55,39 @@ namespace PCLActivitySet
             return list;
         }
 
+        public void RemoveList(ActivityList list)
+        {
+            IEnumerable<Activity> activitiesInListToBeRemoved = this.UnfilteredActivities
+                .Where(a => a.ActivityListGuid == list.Guid);
+            foreach (Activity affectedActivity in activitiesInListToBeRemoved)
+                affectedActivity.ActivityListGuid = null;
+            this.ListOfActivityLists.Remove(list);
+        }
+
+        public IEnumerable<ActivityList> ActivityLists => this.ListOfActivityLists;
+
         public FluentlyMoveActivityToActivityList MoveActivity(Activity activityToMove)
         {
             return new FluentlyMoveActivityToActivityList(this, activityToMove);
         }
 
-        public void RemoveList(ActivityList list)
+        public ActivityContext AddNewContext(string contextName)
         {
-            IEnumerable<Activity> activitiesInListToBeRemoved = this.Activities
-                .Where(a => a.ActivityListGuid == list.Guid);
-            foreach (Activity affectedActivity in activitiesInListToBeRemoved)
-                affectedActivity.ActivityListGuid = null;
-            this.ListOfActivityLists.Remove(list);
+            var context = new ActivityContext() {Name = contextName};
+            this.ListOfActivityContexts.Add(context);
+            return context;
+        }
+
+        public IEnumerable<ActivityContext> ActivityContexts => this.ListOfActivityContexts;
+
+        public void RemoveContext(ActivityContext context)
+        {
+            //IEnumerable<Activity> activitiesInContextToBeRemoved = this.UnfilteredActivities
+            //    .Where(a => a.ActivityListGuid == context.Guid);
+            //foreach (Activity affectedActivity in activitiesInContextToBeRemoved)
+            //    affectedActivity.ActivityContextGuid = null;
+
+            this.ListOfActivityContexts.Remove(context);
         }
     }
 }

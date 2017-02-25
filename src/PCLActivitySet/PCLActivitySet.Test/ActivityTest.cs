@@ -457,8 +457,8 @@ namespace PCLActivitySet.Test
             Activity.FluentNew(activityName)
                 .ActiveDueDate(activityActiveDueDate)
                 .AddToBoard(activityBoard);
-            Assert.That(activityBoard.Activities.Count(), Is.EqualTo(1));
-            var activity = activityBoard.Activities.First();
+            Assert.That(activityBoard.UnfilteredActivities.Count(), Is.EqualTo(1));
+            var activity = activityBoard.UnfilteredActivities.First();
             Assert.That(activity.Name, Is.EqualTo(activityName));
             Assert.That(activity.ActiveDueDate, Is.EqualTo(activityActiveDueDate));
         }

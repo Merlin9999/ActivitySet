@@ -10,6 +10,6 @@ namespace PCLActivitySet
         {
         }
 
-        public override IEnumerable<Activity> Activities => this._owningBoard.Activities.Where(activity => activity.ActivityListGuid == null);
+        public override IEnumerable<Activity> Activities => this.OwningBoard.Activities.Where(activity => activity.ActivityListGuid == null);
     }
 }

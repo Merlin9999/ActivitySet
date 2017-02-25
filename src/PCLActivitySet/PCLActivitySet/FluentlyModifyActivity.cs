@@ -8,113 +8,133 @@ using PCLActivitySet.Recurrence;
 
 namespace PCLActivitySet
 {
-    public class FluentlyModifyActivity
+    public abstract class AbstractFluentlyModifyActivity<TReturn>
+        where TReturn : AbstractFluentlyModifyActivity<TReturn>
     {
-        private readonly Activity _activity;
+        protected Activity Activity;
 
-        public Activity ToActivity => this._activity;
+        public Activity ToActivity => this.Activity;
 
-        public static implicit operator Activity(FluentlyModifyActivity _this)
+        public static implicit operator Activity(AbstractFluentlyModifyActivity<TReturn> _this)
         {
-            return _this._activity;
+            return _this.Activity;
         }
 
-        public FluentlyModifyActivity(Activity activity)
+        protected AbstractFluentlyModifyActivity(Activity activity)
         {
-            this._activity = activity;
+            this.Activity = activity;
         }
 
-        public FluentlyModifyActivity Name(string newName)
+        public FluentlyModifyActivityAndBoard AddToBoard(ActivityBoard activityBoard)
         {
-            this._activity.Name = newName;
-            return this;
+            activityBoard.AddActivity(this.Activity);
+            return new FluentlyModifyActivityAndBoard(this, activityBoard);
         }
 
-        public FluentlyModifyActivity ActiveDueDate(DateTime newActiveDueDate)
+        public TReturn Name(string newName)
         {
-            this._activity.ActiveDueDate = newActiveDueDate;
-            return this;
+            this.Activity.Name = newName;
+            return (TReturn) this;
         }
 
-        public FluentlyModifyActivity AddToBoard(ActivityBoard activityBoard)
+        public TReturn ActiveDueDate(DateTime newActiveDueDate)
         {
-            activityBoard.AddActivity(this._activity);
-            return this;
+            this.Activity.ActiveDueDate = newActiveDueDate;
+            return (TReturn) this;
         }
 
-        public FluentlyModifyActivity LeadTime(IDateProjection dateProjection)
+        public TReturn LeadTime(IDateProjection dateProjection)
         {
-            this._activity.LeadTime = new DateProjection(dateProjection);
-            return this;
+            this.Activity.LeadTime = new DateProjection(dateProjection);
+            return (TReturn) this;
         }
 
-        public FluentlyModifyActivity LeadTime(DateProjection dateProjection)
+        public TReturn LeadTime(DateProjection dateProjection)
         {
-            this._activity.LeadTime = dateProjection;
-            return this;
+            this.Activity.LeadTime = dateProjection;
+            return (TReturn) this;
         }
 
-        public FluentlyModifyActivity DailyLeadTime(int periodCount)
+        public TReturn DailyLeadTime(int periodCount)
         {
-            this._activity.LeadTime = new DateProjection(new DateProjectionCreateHelper().Daily(periodCount));
-            return this;
+            this.Activity.LeadTime = new DateProjection(new DateProjectionCreateHelper().Daily(periodCount));
+            return (TReturn) this;
         }
 
-        public FluentlyModifyActivity WeeklyLeadTime(int periodCount, EDaysOfWeekFlags daysOfWeek)
+        public TReturn WeeklyLeadTime(int periodCount, EDaysOfWeekFlags daysOfWeek)
         {
-            this._activity.LeadTime = new DateProjection(new DateProjectionCreateHelper().Weekly(periodCount, daysOfWeek));
-            return this;
+            this.Activity.LeadTime = new DateProjection(new DateProjectionCreateHelper().Weekly(periodCount, daysOfWeek));
+            return (TReturn) this;
         }
 
-        public FluentlyModifyActivity MonthlyLeadTime(int periodCount, int dayOfMonth)
+        public TReturn MonthlyLeadTime(int periodCount, int dayOfMonth)
         {
-            this._activity.LeadTime = new DateProjection(new DateProjectionCreateHelper().Monthly(periodCount, dayOfMonth));
-            return this;
+            this.Activity.LeadTime = new DateProjection(new DateProjectionCreateHelper().Monthly(periodCount, dayOfMonth));
+            return (TReturn) this;
         }
 
-        public FluentlyModifyActivity MonthlyLeadTime(int periodCount, EWeeksInMonth weeksInMonth, EDaysOfWeekExt daysOfWeek)
+        public TReturn MonthlyLeadTime(int periodCount, EWeeksInMonth weeksInMonth, EDaysOfWeekExt daysOfWeek)
         {
-            this._activity.LeadTime = new DateProjection(new DateProjectionCreateHelper().Monthly(periodCount, weeksInMonth, daysOfWeek));
-            return this;
+            this.Activity.LeadTime = new DateProjection(new DateProjectionCreateHelper().Monthly(periodCount, weeksInMonth, daysOfWeek));
+            return (TReturn) this;
         }
 
-        public FluentlyModifyActivity YearlyLeadTime(EMonth month, int dayOfMonth)
+        public TReturn YearlyLeadTime(EMonth month, int dayOfMonth)
         {
-            this._activity.LeadTime = new DateProjection(new DateProjectionCreateHelper().Yearly(month, dayOfMonth));
-            return this;
+            this.Activity.LeadTime = new DateProjection(new DateProjectionCreateHelper().Yearly(month, dayOfMonth));
+            return (TReturn) this;
         }
 
-        public FluentlyModifyActivity YearlyLeadTime(EMonth month, EWeeksInMonth weeksInMonth, EDaysOfWeekExt daysOfWeek)
+        public TReturn YearlyLeadTime(EMonth month, EWeeksInMonth weeksInMonth, EDaysOfWeekExt daysOfWeek)
         {
-            this._activity.LeadTime = new DateProjection(new DateProjectionCreateHelper().Yearly(month, weeksInMonth, daysOfWeek));
-            return this;
+            this.Activity.LeadTime = new DateProjection(new DateProjectionCreateHelper().Yearly(month, weeksInMonth, daysOfWeek));
+            return (TReturn) this;
         }
 
-        public FluentlyModifyActivity Recurrence(DateRecurrence dateRecurrence)
+        public TReturn Recurrence(DateRecurrence dateRecurrence)
         {
-            this._activity.Recurrence = dateRecurrence;
-            return this;
+            this.Activity.Recurrence = dateRecurrence;
+            return (TReturn) this;
         }
 
-        public FluentlyModifyActivity Recurrence(ERecurFromType recurFromType, Func<DateProjectionCreateHelper, IDateProjection> dateProjectionFactory)
+        public TReturn Recurrence(ERecurFromType recurFromType, Func<DateProjectionCreateHelper, IDateProjection> dateProjectionFactory)
         {
             IDateProjection dateProjection = dateProjectionFactory(new DateProjectionCreateHelper());
-            this._activity.Recurrence = new DateRecurrence(dateProjection, recurFromType);
-            return this;
+            this.Activity.Recurrence = new DateRecurrence(dateProjection, recurFromType);
+            return (TReturn) this;
         }
 
-        public FluentlyModifyActivity Recurrence(ERecurFromType recurFromType, int maxRecurrenceCount, Func<DateProjectionCreateHelper, IDateProjection> dateProjectionFactory)
+        public TReturn Recurrence(ERecurFromType recurFromType, int maxRecurrenceCount, Func<DateProjectionCreateHelper, IDateProjection> dateProjectionFactory)
         {
             IDateProjection dateProjection = dateProjectionFactory(new DateProjectionCreateHelper());
-            this._activity.Recurrence = new DateRecurrence(dateProjection, recurFromType, maxRecurrenceCount);
-            return this;
+            this.Activity.Recurrence = new DateRecurrence(dateProjection, recurFromType, maxRecurrenceCount);
+            return (TReturn) this;
         }
 
-        public FluentlyModifyActivity Recurrence(ERecurFromType recurFromType, DateTime startDate, DateTime endDate, Func<DateProjectionCreateHelper, IDateProjection> dateProjectionFactory)
+        public TReturn Recurrence(ERecurFromType recurFromType, DateTime startDate, DateTime endDate, Func<DateProjectionCreateHelper, IDateProjection> dateProjectionFactory)
         {
             IDateProjection dateProjection = dateProjectionFactory(new DateProjectionCreateHelper());
-            this._activity.Recurrence = new DateRecurrence(dateProjection, recurFromType, startDate, endDate);
-            return this;
+            this.Activity.Recurrence = new DateRecurrence(dateProjection, recurFromType, startDate, endDate);
+            return (TReturn) this;
+        }
+    }
+
+    public class FluentlyModifyActivity : AbstractFluentlyModifyActivity<FluentlyModifyActivity>
+    {
+        public FluentlyModifyActivity(Activity activity) 
+            : base(activity)
+        {
+        }
+    }
+
+    public class FluentlyModifyActivityAndBoard : AbstractFluentlyModifyActivity<FluentlyModifyActivityAndBoard>
+    {
+        private ActivityBoard _board;
+
+        public FluentlyModifyActivityAndBoard(Activity activity, ActivityBoard board) 
+            : base(activity)
+        {
+            this._board = board;
         }
     }
 }

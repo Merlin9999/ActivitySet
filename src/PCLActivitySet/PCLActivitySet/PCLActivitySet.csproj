@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="AbstractEntity.cs" />
     <Compile Include="Activity.cs" />
+    <Compile Include="ActivityContext.cs" />
     <Compile Include="ActivityExtensions.cs" />
     <Compile Include="ActivityHistoryItem.cs" />
     <Compile Include="ActivityInternalExtensions.cs" />
