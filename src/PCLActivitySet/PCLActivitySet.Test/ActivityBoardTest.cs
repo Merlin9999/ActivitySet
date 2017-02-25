@@ -168,6 +168,23 @@ namespace PCLActivitySet.Test
         }
 
         [Test]
+        public void CanMoveActivityBackToInBox()
+        {
+            var board = new ActivityBoard();
+            Activity activity = Activity.FluentNew("An Activity")
+                .ActiveDueDate(new DateTime(2017, 2, 28))
+                .DailyLeadTime(3)
+                .Recurrence(ERecurFromType.FromActiveDueDate, x => x.Daily(14))
+                .AddTo(board)
+                .ToActivity;
+            ActivityList list = board.CreateList("Doing");
+            board.Move(activity).To(list);
+            board.Move(activity).To(board.InBox);
+            Assert.That(list.Activities, Has.No.Member(activity));
+            Assert.That(board.InBox.Activities, Has.Member(activity));
+        }
+
+        [Test]
         public void CannotMoveActivityToActivityListNotBelongingToBoard()
         {
             var board = new ActivityBoard();
