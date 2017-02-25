@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace PCLActivitySet
 {
@@ -55,6 +56,15 @@ namespace PCLActivitySet
         public FluentlyMoveActivityToActivityList MoveActivity(Activity activityToMove)
         {
             return new FluentlyMoveActivityToActivityList(this, activityToMove);
+        }
+
+        public void RemoveList(ActivityList list)
+        {
+            IEnumerable<Activity> activitiesInListToBeRemoved = this.Activities
+                .Where(a => a.ActivityListGuid == list.Guid);
+            foreach (Activity affectedActivity in activitiesInListToBeRemoved)
+                affectedActivity.ActivityListGuid = null;
+            this.ListOfActivityLists.Remove(list);
         }
     }
 }

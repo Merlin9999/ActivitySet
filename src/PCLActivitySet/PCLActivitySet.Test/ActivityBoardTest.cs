@@ -134,6 +134,27 @@ namespace PCLActivitySet.Test
         }
 
         [Test]
+        public void CanRemoveActivityList()
+        {
+            var board = new ActivityBoard();
+            string activityListName = "Doing";
+            ActivityList list = board.AddNewList(activityListName);
+            board.RemoveList(list);
+            Assert.That(board.ActivityLists, Is.Empty);
+        }
+
+        [Test]
+        public void RemovingActivityListMovesRelatedActivitiesToInBox()
+        {
+            var board = new ActivityBoard();
+            string activityListName = "Doing";
+            ActivityList list = board.AddNewList(activityListName);
+            Activity activity = Activity.FluentNew("New Activity").AddToBoard(board);
+            board.MoveActivity(activity).ToList(list);
+            board.RemoveList(list);
+            Assert.That(board.InBox.Activities, Is.Not.Empty);
+        }
+        [Test]
         public void CanMoveActivityToActivityList()
         {
             var board = new ActivityBoard();
