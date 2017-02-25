@@ -52,9 +52,9 @@ namespace PCLActivitySet
 
         public FluentlyModifyActivity Fluently => new FluentlyModifyActivity(this);
         
-        public static FluentlyModifyActivity FluentNew(string name, DateTime? activeDueDate = null)
+        public static FluentlyModifyActivity FluentNew(string name)
         {
-            return new FluentlyModifyActivity(new Activity() {Name = name, ActiveDueDate = activeDueDate});
+            return new FluentlyModifyActivity(new Activity() {Name = name});
         }
     }
 }

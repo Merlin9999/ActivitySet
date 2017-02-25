@@ -52,9 +52,9 @@ namespace PCLActivitySet
             return list;
         }
 
-        public FluentMoveActivityToActivityList MoveActivity(Activity activityToMove)
+        public FluentlyMoveActivityToActivityList MoveActivity(Activity activityToMove)
         {
-            return new FluentMoveActivityToActivityList(this, activityToMove);
+            return new FluentlyMoveActivityToActivityList(this, activityToMove);
         }
     }
 }

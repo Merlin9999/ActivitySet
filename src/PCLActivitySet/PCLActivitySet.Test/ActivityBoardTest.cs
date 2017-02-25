@@ -30,7 +30,7 @@ namespace PCLActivitySet.Test
         public void CanAddActivity()
         {
             var activityBoard = new ActivityBoard();
-            Activity.FluentNew("New Activity").AddTo(activityBoard);
+            Activity.FluentNew("New Activity").AddToBoard(activityBoard);
             Assert.That(activityBoard.Activities.Any(), Is.True);
             Assert.That(activityBoard.Activities.Count(), Is.EqualTo(1));
         }
@@ -39,8 +39,8 @@ namespace PCLActivitySet.Test
         public void CanAddTwoActivities()
         {
             var activityBoard = new ActivityBoard();
-            Activity.FluentNew("First New Activity").AddTo(activityBoard);
-            Activity.FluentNew("Second New Activity").AddTo(activityBoard);
+            Activity.FluentNew("First New Activity").AddToBoard(activityBoard);
+            Activity.FluentNew("Second New Activity").AddToBoard(activityBoard);
             Assert.That(activityBoard.Activities.Any(), Is.True);
             Assert.That(activityBoard.Activities.Count(), Is.EqualTo(2));
         }
@@ -51,8 +51,8 @@ namespace PCLActivitySet.Test
             var activityBoard = new ActivityBoard();
             var activity = new Activity() { Name = "New Activity" };
             Activity.FluentNew("New Activity")
-                .AddTo(activityBoard)
-                .AddTo(activityBoard);
+                .AddToBoard(activityBoard)
+                .AddToBoard(activityBoard);
             Assert.That(activityBoard.Activities.Any(), Is.True);
             Assert.That(activityBoard.Activities.Count(), Is.EqualTo(1));
         }
@@ -61,8 +61,8 @@ namespace PCLActivitySet.Test
         public void ClearRemovesAllActivities()
         {
             var activityBoard = new ActivityBoard();
-            Activity.FluentNew("First New Activity").AddTo(activityBoard);
-            Activity.FluentNew("Second New Activity").AddTo(activityBoard);
+            Activity.FluentNew("First New Activity").AddToBoard(activityBoard);
+            Activity.FluentNew("Second New Activity").AddToBoard(activityBoard);
             activityBoard.RemoveAllActivities();
             Assert.That(activityBoard.Activities.Any(), Is.False);
             Assert.That(activityBoard.Activities.Count(), Is.EqualTo(0));
@@ -72,8 +72,8 @@ namespace PCLActivitySet.Test
         public void RemoveRemovesOneActivityIfGuidMatches()
         {
             var activityBoard = new ActivityBoard();
-            Activity activity = Activity.FluentNew("First New Activity").AddTo(activityBoard);
-            Activity.FluentNew("Second New Activity").AddTo(activityBoard);
+            Activity activity = Activity.FluentNew("First New Activity").AddToBoard(activityBoard);
+            Activity.FluentNew("Second New Activity").AddToBoard(activityBoard);
             activityBoard.RemoveActivity(activity);
             Assert.That(activityBoard.Activities.Any(), Is.True);
             Assert.That(activityBoard.Activities.Count(), Is.EqualTo(1));
@@ -84,8 +84,8 @@ namespace PCLActivitySet.Test
         {
             var activityBoard = new ActivityBoard();
             var activityToRemove = new Activity() { Name = "Activity to Remove" };
-            Activity.FluentNew("First New Activity").AddTo(activityBoard);
-            Activity.FluentNew("Second New Activity").AddTo(activityBoard);
+            Activity.FluentNew("First New Activity").AddToBoard(activityBoard);
+            Activity.FluentNew("Second New Activity").AddToBoard(activityBoard);
             activityBoard.RemoveActivity(activityToRemove);
             Assert.That(activityBoard.Activities.Any(), Is.True);
             Assert.That(activityBoard.Activities.Count(), Is.EqualTo(2));
@@ -95,8 +95,8 @@ namespace PCLActivitySet.Test
         public void ContainsReturnsTrueWhenActivityGuidMatches()
         {
             var activityBoard = new ActivityBoard();
-            Activity activity = Activity.FluentNew("First New Activity").AddTo(activityBoard);
-            Activity.FluentNew("Second New Activity").AddTo(activityBoard);
+            Activity activity = Activity.FluentNew("First New Activity").AddToBoard(activityBoard);
+            Activity.FluentNew("Second New Activity").AddToBoard(activityBoard);
             Assert.That(activityBoard.ContainsActivity(activity), Is.True);
         }
 
@@ -105,8 +105,8 @@ namespace PCLActivitySet.Test
         {
             var activityBoard = new ActivityBoard();
             var activity = new Activity() { Name = "Activity to not find" };
-            Activity.FluentNew("First New Activity").AddTo(activityBoard);
-            Activity.FluentNew("Second New Activity").AddTo(activityBoard);
+            Activity.FluentNew("First New Activity").AddToBoard(activityBoard);
+            Activity.FluentNew("Second New Activity").AddToBoard(activityBoard);
             Assert.That(activityBoard.ContainsActivity(activity), Is.False);
         }
 
@@ -118,7 +118,7 @@ namespace PCLActivitySet.Test
                 .ActiveDueDate(new DateTime(2017, 2, 28))
                 .DailyLeadTime(3)
                 .Recurrence(ERecurFromType.FromActiveDueDate, x => x.Daily(14))
-                .AddTo(board)
+                .AddToBoard(board)
                 .ToActivity;
             Assert.That(board.InBox.Activities, Has.Member(activity));
         }
@@ -141,7 +141,7 @@ namespace PCLActivitySet.Test
                 .ActiveDueDate(new DateTime(2017, 2, 28))
                 .DailyLeadTime(3)
                 .Recurrence(ERecurFromType.FromActiveDueDate, x => x.Daily(14))
-                .AddTo(board)
+                .AddToBoard(board)
                 .ToActivity;
             ActivityList list = board.AddNewList("Doing");
             board.MoveActivity(activity).ToList(list);
@@ -157,7 +157,7 @@ namespace PCLActivitySet.Test
                 .ActiveDueDate(new DateTime(2017, 2, 28))
                 .DailyLeadTime(3)
                 .Recurrence(ERecurFromType.FromActiveDueDate, x => x.Daily(14))
-                .AddTo(board)
+                .AddToBoard(board)
                 .ToActivity;
             ActivityList list = board.AddNewList("Doing");
             board.MoveActivity(activity).ToList(list);
@@ -174,7 +174,7 @@ namespace PCLActivitySet.Test
                 .ActiveDueDate(new DateTime(2017, 2, 28))
                 .DailyLeadTime(3)
                 .Recurrence(ERecurFromType.FromActiveDueDate, x => x.Daily(14))
-                .AddTo(board)
+                .AddToBoard(board)
                 .ToActivity;
             ActivityList list = new ActivityList(board) {Name = "Bad Activity List"};
             Assert.That(() => board.MoveActivity(activity).ToList(list), Throws.TypeOf<ArgumentException>());

@@ -3,12 +3,12 @@ using System.Linq;
 
 namespace PCLActivitySet
 {
-    public class FluentMoveActivityToActivityList
+    public class FluentlyMoveActivityToActivityList
     {
         private readonly ActivityBoard _board;
         private readonly Activity _activityToMove;
 
-        public FluentMoveActivityToActivityList(ActivityBoard board, Activity activityToMove)
+        public FluentlyMoveActivityToActivityList(ActivityBoard board, Activity activityToMove)
         {
             if (!board.ContainsActivity(activityToMove))
                 throw new ArgumentException($"Cannot move an {nameof(Activity)} that is not owned by the referenced {nameof(ActivityBoard)}.");

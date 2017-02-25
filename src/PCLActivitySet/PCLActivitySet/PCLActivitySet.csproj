@@ -51,7 +51,7 @@
     <Compile Include="ActivityBoard.cs" />
     <Compile Include="DateProjectionCreateHelper.cs" />
     <Compile Include="FluentlyModifyActivity.cs" />
-    <Compile Include="FluentMoveActivityToActivityList.cs" />
+    <Compile Include="FluentlyMoveActivityToActivityList.cs" />
     <Compile Include="InBoxActivityList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Recurrence\DateRecurrence.cs" />
