@@ -20,6 +20,8 @@ namespace PCLActivitySet
 
         public string Name { get; set; }
 
+        public Guid? ActivityListGuid { get; set; }
+
         public DateTime? ActiveDueDate
         {
             get { return this._activeDueDate; }
@@ -33,12 +35,14 @@ namespace PCLActivitySet
 
         public DateProjection LeadTime { get; set; }
 
+
         public DateTime? LeadTimeDate =>
             this.LeadTime == null || this.ActiveDueDate == null
                 ? (DateTime?) null
                 : this.LeadTime.GetPrevious(this.ActiveDueDate.Value);
 
         public DateRecurrence Recurrence  { get; set; }
+
 
         public List<ActivityHistoryItem> CompletionHistory
         {
@@ -47,7 +51,7 @@ namespace PCLActivitySet
         }
 
         public FluentlyModifyActivity Fluently => new FluentlyModifyActivity(this);
-
+        
         public static FluentlyModifyActivity FluentNew(string name, DateTime? activeDueDate = null)
         {
             return new FluentlyModifyActivity(new Activity() {Name = name, ActiveDueDate = activeDueDate});

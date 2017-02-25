@@ -9,6 +9,14 @@ namespace PCLActivitySet
     public class ActivityBoard : ICollection<Activity>
     {
         private readonly HashSet<Activity> _activitySet = new HashSet<Activity>();
+        private List<ActivityList> _listOfActivityLists;
+        private readonly ActivityList _inBox;
+        private List<ActivityList> ListOfActivityLists => this._listOfActivityLists ?? (this._listOfActivityLists = new List<ActivityList>());
+
+        public ActivityBoard()
+        {
+            this._inBox = new InBoxActivityList(this) {Name = "InBox"};
+        }
 
         public string Name { get; set; }
 
@@ -51,6 +59,20 @@ namespace PCLActivitySet
             return this._activitySet.GetEnumerator();
         }
 
-        //public IEnumerable<Activity> InBox => this;
+        public ActivityList InBox => this._inBox;
+
+        public IEnumerable<ActivityList> ActivityLists => this.ListOfActivityLists;
+
+        public ActivityList CreateList(string activityListName)
+        {
+            var list = new ActivityList(this) {Name = activityListName};
+            this.ListOfActivityLists.Add(list);
+            return list;
+        }
+
+        public FluentMoveActivity Move(Activity activityToMove)
+        {
+            return new FluentMoveActivity(this, activityToMove);
+        }
     }
 }

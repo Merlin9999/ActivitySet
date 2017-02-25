@@ -128,38 +128,71 @@ namespace PCLActivitySet.Test
             Assert.That(new ActivityBoard().IsReadOnly, Is.False);
         }
 
-        //[Test]
-        //public void ActivityAddedToInBoxListByDefault()
-        //{
-        //    var board = new ActivityBoard();
-        //    Activity activity = Activity.FluentNew("An Activity")
-        //        .ActiveDueDate(new DateTime(2017, 2, 28))
-        //        .DailyLeadTime(3)
-        //        .Recurrence(ERecurFromType.FromActiveDueDate, x => x.Daily(14))
-        //        .AddTo(board)
-        //        .ToActivity;
-        //    Assert.That(board.InBox, Has.Member(activity));
-        //}
+        [Test]
+        public void ActivityAddedToInBoxListByDefault()
+        {
+            var board = new ActivityBoard();
+            Activity activity = Activity.FluentNew("An Activity")
+                .ActiveDueDate(new DateTime(2017, 2, 28))
+                .DailyLeadTime(3)
+                .Recurrence(ERecurFromType.FromActiveDueDate, x => x.Daily(14))
+                .AddTo(board)
+                .ToActivity;
+            Assert.That(board.InBox.Activities, Has.Member(activity));
+        }
 
-        //[Test]
-        //public void CanCreateBoard()
-        //{
-        //    var board = new ActivityBoard();
-        //    List list = board.CreateList("Doing");
-        //}
+        [Test]
+        public void CanCreateActivityList()
+        {
+            var board = new ActivityBoard();
+            string activityListName = "Doing";
+            ActivityList list = board.CreateList(activityListName);
+            Assert.That(list.Name, Is.EqualTo(activityListName));
+            Assert.That(board.ActivityLists, Has.Member(list));
+        }
 
-        //[Test]
-        //public void ActivityAddedToSpecifiedList()
-        //{
-        //    var board = new ActivityBoard();
-        //    Activity activity = Activity.FluentNew("An Activity")
-        //        .ActiveDueDate(new DateTime(2017, 2, 28))
-        //        .DailyLeadTime(3)
-        //        .Recurrence(ERecurFromType.FromActiveDueDate, x => x.Daily(14))
-        //        .AddTo(board)
-        //        .ToActivity;
-        //    Assert.That(board.InBox, Does.Not.Contains(activity));
-        //}
+        [Test]
+        public void CanMoveActivityToActivityList()
+        {
+            var board = new ActivityBoard();
+            Activity activity = Activity.FluentNew("An Activity")
+                .ActiveDueDate(new DateTime(2017, 2, 28))
+                .DailyLeadTime(3)
+                .Recurrence(ERecurFromType.FromActiveDueDate, x => x.Daily(14))
+                .AddTo(board)
+                .ToActivity;
+            ActivityList list = board.CreateList("Doing");
+            board.Move(activity).To(list);
+            Assert.That(list.Activities, Has.Member(activity));
+            Assert.That(board.InBox.Activities, Has.No.Member(activity));
+        }
+
+        [Test]
+        public void CannotMoveActivityToActivityListNotBelongingToBoard()
+        {
+            var board = new ActivityBoard();
+            Activity activity = Activity.FluentNew("An Activity")
+                .ActiveDueDate(new DateTime(2017, 2, 28))
+                .DailyLeadTime(3)
+                .Recurrence(ERecurFromType.FromActiveDueDate, x => x.Daily(14))
+                .AddTo(board)
+                .ToActivity;
+            ActivityList list = new ActivityList(board) {Name = "Bad Activity List"};
+            Assert.That(() => board.Move(activity).To(list), Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public void CannotMoveActivityNotBelongingToBoardToActivityList()
+        {
+            var board = new ActivityBoard();
+            Activity activity = Activity.FluentNew("An Activity")
+                .ActiveDueDate(new DateTime(2017, 2, 28))
+                .DailyLeadTime(3)
+                .Recurrence(ERecurFromType.FromActiveDueDate, x => x.Daily(14))
+                .ToActivity;
+            ActivityList list = board.CreateList("Doing");
+            Assert.That(() => board.Move(activity).To(list), Throws.TypeOf<ArgumentException>());
+        }
 
     }
 }

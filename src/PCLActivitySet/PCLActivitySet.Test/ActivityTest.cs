@@ -26,6 +26,22 @@ namespace PCLActivitySet.Test
         }
 
         [Test]
+        public void ActivityListGuidPropertyDefaultsToNull()
+        {
+            var activity = new Activity();
+            Assert.That(activity.ActivityListGuid, Is.Null);
+        }
+
+        [Test]
+        public void ActivityListGuidPropertyIsReadWrite()
+        {
+            var activity = new Activity();
+            Guid testGuid = Guid.NewGuid();
+            activity.ActivityListGuid = testGuid;
+            Assert.That(activity.ActivityListGuid, Is.EqualTo(testGuid));
+        }
+
+        [Test]
         public void ActiveDueDateDefaultsToNull()
         {
             var activity = new Activity();
