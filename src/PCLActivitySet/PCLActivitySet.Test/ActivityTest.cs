@@ -421,7 +421,7 @@ namespace PCLActivitySet.Test
         [Test]
         public void FluentlyCreateAndAddToActivitySet()
         {
-            var activitySet = new Board();
+            var activitySet = new ActivityBoard();
             string activityName = "Activity Name";
             DateTime? activityActiveDueDate = new DateTime(2017,2,28);
             Activity.FluentNew(activityName, activityActiveDueDate)

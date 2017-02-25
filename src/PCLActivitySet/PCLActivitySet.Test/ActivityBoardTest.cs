@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using NUnit.Framework;
 using PCLActivitySet.Recurrence;
 
@@ -7,19 +8,19 @@ namespace PCLActivitySet.Test
 {
 
     [TestFixture]
-    public class BoardTest
+    public class ActivityBoardTest
     {
         [Test]
         public void NamePropertyDefaultsToNull()
         {
-            var activitySet = new Board();
+            var activitySet = new ActivityBoard();
             Assert.That(activitySet.Name, Is.Null);
         }
 
         [Test]
         public void NamePropertyIsReadWrite()
         {
-            var activitySet = new Board();
+            var activitySet = new ActivityBoard();
             string testName = "Test Name";
             activitySet.Name = testName;
             Assert.That(activitySet.Name, Is.EqualTo(testName));
@@ -28,7 +29,7 @@ namespace PCLActivitySet.Test
         [Test]
         public void CanAddActivity()
         {
-            var activitySet = new Board();
+            var activitySet = new ActivityBoard();
             activitySet.Add(new Activity() { Name = "New Activity" });
             Assert.That(activitySet.Any(), Is.True);
             Assert.That(activitySet.Count, Is.EqualTo(1));
@@ -37,7 +38,7 @@ namespace PCLActivitySet.Test
         [Test]
         public void CanAddTwoActivities()
         {
-            var activitySet = new Board();
+            var activitySet = new ActivityBoard();
             activitySet.Add(new Activity() { Name = "First New Activity" });
             activitySet.Add(new Activity() { Name = "Second New Activity" });
             Assert.That(activitySet.Any(), Is.True);
@@ -47,7 +48,7 @@ namespace PCLActivitySet.Test
         [Test]
         public void AddingSameActivityTwiceYieldsOneActivity()
         {
-            var activitySet = new Board();
+            var activitySet = new ActivityBoard();
             var activity = new Activity() { Name = "New Activity" };
             activitySet.Add(activity);
             activitySet.Add(activity);
@@ -58,7 +59,7 @@ namespace PCLActivitySet.Test
         [Test]
         public void ClearRemovesAllActivities()
         {
-            var activitySet = new Board();
+            var activitySet = new ActivityBoard();
             activitySet.Add(new Activity() { Name = "First New Activity" });
             activitySet.Add(new Activity() { Name = "Second New Activity" });
             activitySet.Clear();
@@ -69,7 +70,7 @@ namespace PCLActivitySet.Test
         [Test]
         public void RemoveRemovesOneActivityIfGuidMatches()
         {
-            var activitySet = new Board();
+            var activitySet = new ActivityBoard();
             var activity = new Activity() { Name = "First New Activity" };
             activitySet.Add(activity);
             activitySet.Add(new Activity() { Name = "Second New Activity" });
@@ -81,7 +82,7 @@ namespace PCLActivitySet.Test
         [Test]
         public void RemoveRemovesNoActivityIfGuidDoesntMatch()
         {
-            var activitySet = new Board();
+            var activitySet = new ActivityBoard();
             var activityToRemove = new Activity() { Name = "Activity to Remove" };
             activitySet.Add(new Activity() { Name = "First New Activity" });
             activitySet.Add(new Activity() { Name = "Second New Activity" });
@@ -93,7 +94,7 @@ namespace PCLActivitySet.Test
         [Test]
         public void ContainsReturnsTrueWhenActivityGuidMatches()
         {
-            var activitySet = new Board();
+            var activitySet = new ActivityBoard();
             var activity = new Activity() { Name = "First New Activity" };
             activitySet.Add(activity);
             activitySet.Add(new Activity() { Name = "Second New Activity" });
@@ -103,7 +104,7 @@ namespace PCLActivitySet.Test
         [Test]
         public void ContainsReturnsFalseWhenActivityGuidDoesntMatch()
         {
-            var activitySet = new Board();
+            var activitySet = new ActivityBoard();
             var activity = new Activity() { Name = "Activity to not find" };
             activitySet.Add(new Activity() { Name = "First New Activity" });
             activitySet.Add(new Activity() { Name = "Second New Activity" });
@@ -113,7 +114,7 @@ namespace PCLActivitySet.Test
         [Test]
         public void VerifyCopyTo()
         {
-            var activitySet = new Board();
+            var activitySet = new ActivityBoard();
             activitySet.Add(new Activity() { Name = "First New Activity" });
             activitySet.Add(new Activity() { Name = "Second New Activity" });
             var activityArray = new Activity[2];
@@ -124,7 +125,41 @@ namespace PCLActivitySet.Test
         [Test]
         public void ReadOnlyReturnsFalse()
         {
-            Assert.That(new Board().IsReadOnly, Is.False);
+            Assert.That(new ActivityBoard().IsReadOnly, Is.False);
         }
+
+        //[Test]
+        //public void ActivityAddedToInBoxListByDefault()
+        //{
+        //    var board = new ActivityBoard();
+        //    Activity activity = Activity.FluentNew("An Activity")
+        //        .ActiveDueDate(new DateTime(2017, 2, 28))
+        //        .DailyLeadTime(3)
+        //        .Recurrence(ERecurFromType.FromActiveDueDate, x => x.Daily(14))
+        //        .AddTo(board)
+        //        .ToActivity;
+        //    Assert.That(board.InBox, Has.Member(activity));
+        //}
+
+        //[Test]
+        //public void CanCreateBoard()
+        //{
+        //    var board = new ActivityBoard();
+        //    List list = board.CreateList("Doing");
+        //}
+
+        //[Test]
+        //public void ActivityAddedToSpecifiedList()
+        //{
+        //    var board = new ActivityBoard();
+        //    Activity activity = Activity.FluentNew("An Activity")
+        //        .ActiveDueDate(new DateTime(2017, 2, 28))
+        //        .DailyLeadTime(3)
+        //        .Recurrence(ERecurFromType.FromActiveDueDate, x => x.Daily(14))
+        //        .AddTo(board)
+        //        .ToActivity;
+        //    Assert.That(board.InBox, Does.Not.Contains(activity));
+        //}
+
     }
 }

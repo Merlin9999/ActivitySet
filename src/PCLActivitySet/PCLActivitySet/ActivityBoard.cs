@@ -6,7 +6,7 @@ using System.Diagnostics;
 namespace PCLActivitySet
 {
     [DebuggerDisplay("{Name} : {GetType().Name}")]
-    public class Board : ICollection<Activity>
+    public class ActivityBoard : ICollection<Activity>
     {
         private readonly HashSet<Activity> _activitySet = new HashSet<Activity>();
 
@@ -50,5 +50,7 @@ namespace PCLActivitySet
         {
             return this._activitySet.GetEnumerator();
         }
+
+        //public IEnumerable<Activity> InBox => this;
     }
 }
