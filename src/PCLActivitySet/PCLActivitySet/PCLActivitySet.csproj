@@ -47,7 +47,7 @@
     <Compile Include="ActivityHistoryItem.cs" />
     <Compile Include="ActivityInternalExtensions.cs" />
     <Compile Include="ActivityProjectionItem.cs" />
-    <Compile Include="ActivitySet.cs" />
+    <Compile Include="Board.cs" />
     <Compile Include="DateProjectionCreateHelper.cs" />
     <Compile Include="FluentlyModifyActivity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

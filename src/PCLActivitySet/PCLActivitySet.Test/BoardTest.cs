@@ -7,19 +7,19 @@ namespace PCLActivitySet.Test
 {
 
     [TestFixture]
-    public class ActivitySetTest
+    public class BoardTest
     {
         [Test]
         public void NamePropertyDefaultsToNull()
         {
-            var activitySet = new ActivitySet();
+            var activitySet = new Board();
             Assert.That(activitySet.Name, Is.Null);
         }
 
         [Test]
         public void NamePropertyIsReadWrite()
         {
-            var activitySet = new ActivitySet();
+            var activitySet = new Board();
             string testName = "Test Name";
             activitySet.Name = testName;
             Assert.That(activitySet.Name, Is.EqualTo(testName));
@@ -28,7 +28,7 @@ namespace PCLActivitySet.Test
         [Test]
         public void CanAddActivity()
         {
-            var activitySet = new ActivitySet();
+            var activitySet = new Board();
             activitySet.Add(new Activity() { Name = "New Activity" });
             Assert.That(activitySet.Any(), Is.True);
             Assert.That(activitySet.Count, Is.EqualTo(1));
@@ -37,7 +37,7 @@ namespace PCLActivitySet.Test
         [Test]
         public void CanAddTwoActivities()
         {
-            var activitySet = new ActivitySet();
+            var activitySet = new Board();
             activitySet.Add(new Activity() { Name = "First New Activity" });
             activitySet.Add(new Activity() { Name = "Second New Activity" });
             Assert.That(activitySet.Any(), Is.True);
@@ -47,7 +47,7 @@ namespace PCLActivitySet.Test
         [Test]
         public void AddingSameActivityTwiceYieldsOneActivity()
         {
-            var activitySet = new ActivitySet();
+            var activitySet = new Board();
             var activity = new Activity() { Name = "New Activity" };
             activitySet.Add(activity);
             activitySet.Add(activity);
@@ -58,7 +58,7 @@ namespace PCLActivitySet.Test
         [Test]
         public void ClearRemovesAllActivities()
         {
-            var activitySet = new ActivitySet();
+            var activitySet = new Board();
             activitySet.Add(new Activity() { Name = "First New Activity" });
             activitySet.Add(new Activity() { Name = "Second New Activity" });
             activitySet.Clear();
@@ -69,7 +69,7 @@ namespace PCLActivitySet.Test
         [Test]
         public void RemoveRemovesOneActivityIfGuidMatches()
         {
-            var activitySet = new ActivitySet();
+            var activitySet = new Board();
             var activity = new Activity() { Name = "First New Activity" };
             activitySet.Add(activity);
             activitySet.Add(new Activity() { Name = "Second New Activity" });
@@ -81,7 +81,7 @@ namespace PCLActivitySet.Test
         [Test]
         public void RemoveRemovesNoActivityIfGuidDoesntMatch()
         {
-            var activitySet = new ActivitySet();
+            var activitySet = new Board();
             var activityToRemove = new Activity() { Name = "Activity to Remove" };
             activitySet.Add(new Activity() { Name = "First New Activity" });
             activitySet.Add(new Activity() { Name = "Second New Activity" });
@@ -93,7 +93,7 @@ namespace PCLActivitySet.Test
         [Test]
         public void ContainsReturnsTrueWhenActivityGuidMatches()
         {
-            var activitySet = new ActivitySet();
+            var activitySet = new Board();
             var activity = new Activity() { Name = "First New Activity" };
             activitySet.Add(activity);
             activitySet.Add(new Activity() { Name = "Second New Activity" });
@@ -103,7 +103,7 @@ namespace PCLActivitySet.Test
         [Test]
         public void ContainsReturnsFalseWhenActivityGuidDoesntMatch()
         {
-            var activitySet = new ActivitySet();
+            var activitySet = new Board();
             var activity = new Activity() { Name = "Activity to not find" };
             activitySet.Add(new Activity() { Name = "First New Activity" });
             activitySet.Add(new Activity() { Name = "Second New Activity" });
@@ -113,7 +113,7 @@ namespace PCLActivitySet.Test
         [Test]
         public void VerifyCopyTo()
         {
-            var activitySet = new ActivitySet();
+            var activitySet = new Board();
             activitySet.Add(new Activity() { Name = "First New Activity" });
             activitySet.Add(new Activity() { Name = "Second New Activity" });
             var activityArray = new Activity[2];
@@ -124,7 +124,7 @@ namespace PCLActivitySet.Test
         [Test]
         public void ReadOnlyReturnsFalse()
         {
-            Assert.That(new ActivitySet().IsReadOnly, Is.False);
+            Assert.That(new Board().IsReadOnly, Is.False);
         }
     }
 }

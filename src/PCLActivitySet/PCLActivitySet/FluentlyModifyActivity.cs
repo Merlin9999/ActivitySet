@@ -36,9 +36,9 @@ namespace PCLActivitySet
             return this;
         }
 
-        public FluentlyModifyActivity AddTo(ActivitySet activitySet)
+        public FluentlyModifyActivity AddTo(Board board)
         {
-            activitySet.Add(this._activity);
+            board.Add(this._activity);
             return this;
         }
 

@@ -6,7 +6,7 @@ using System.Diagnostics;
 namespace PCLActivitySet
 {
     [DebuggerDisplay("{Name} : {GetType().Name}")]
-    public class ActivitySet : ICollection<Activity>
+    public class Board : ICollection<Activity>
     {
         private readonly HashSet<Activity> _activitySet = new HashSet<Activity>();
 
