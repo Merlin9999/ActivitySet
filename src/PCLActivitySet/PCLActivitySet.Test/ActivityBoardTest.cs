@@ -162,7 +162,7 @@ namespace PCLActivitySet.Test
                 .AddTo(board)
                 .ToActivity;
             ActivityList list = board.CreateList("Doing");
-            board.Move(activity).To(list);
+            board.MoveActivity(activity).ToList(list);
             Assert.That(list.Activities, Has.Member(activity));
             Assert.That(board.InBox.Activities, Has.No.Member(activity));
         }
@@ -178,8 +178,8 @@ namespace PCLActivitySet.Test
                 .AddTo(board)
                 .ToActivity;
             ActivityList list = board.CreateList("Doing");
-            board.Move(activity).To(list);
-            board.Move(activity).To(board.InBox);
+            board.MoveActivity(activity).ToList(list);
+            board.MoveActivity(activity).ToList(board.InBox);
             Assert.That(list.Activities, Has.No.Member(activity));
             Assert.That(board.InBox.Activities, Has.Member(activity));
         }
@@ -195,7 +195,7 @@ namespace PCLActivitySet.Test
                 .AddTo(board)
                 .ToActivity;
             ActivityList list = new ActivityList(board) {Name = "Bad Activity List"};
-            Assert.That(() => board.Move(activity).To(list), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => board.MoveActivity(activity).ToList(list), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
@@ -208,7 +208,7 @@ namespace PCLActivitySet.Test
                 .Recurrence(ERecurFromType.FromActiveDueDate, x => x.Daily(14))
                 .ToActivity;
             ActivityList list = board.CreateList("Doing");
-            Assert.That(() => board.Move(activity).To(list), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => board.MoveActivity(activity).ToList(list), Throws.TypeOf<ArgumentException>());
         }
 
     }

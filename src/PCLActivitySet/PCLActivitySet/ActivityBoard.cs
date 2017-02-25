@@ -70,7 +70,7 @@ namespace PCLActivitySet
             return list;
         }
 
-        public FluentMoveActivityToActivityList Move(Activity activityToMove)
+        public FluentMoveActivityToActivityList MoveActivity(Activity activityToMove)
         {
             return new FluentMoveActivityToActivityList(this, activityToMove);
         }

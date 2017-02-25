@@ -16,7 +16,7 @@ namespace PCLActivitySet
             this._activityToMove = activityToMove;
         }
 
-        public void To(ActivityList activityList)
+        public void ToList(ActivityList activityList)
         {
             if (activityList == this._board.InBox)
                 this._activityToMove.ActivityListGuid = null;
