@@ -31,32 +31,44 @@ namespace PCLActivitySet.Test
             activityList.Name = testName;
             Assert.That(activityList.Name, Is.EqualTo(testName));
         }
-        
-        [Test]
-        public void FilteringInactiveActivities()
-        {
-            var board = new ActivityBoard();
-            Activity activity1 = Activity.FluentNew("New Activity 1").AddToBoard(board);
-            Activity activity2 = Activity.FluentNew("New Activity 2").AddToBoard(board);
-            activity1.SignalCompleted(new DateTime(2017, 2, 28));
-            board.InBox.ActivityFilter.FilterOutNonActive();
 
-            Assert.That(board.InBox.Activities, Is.Not.Empty);
-            Assert.That(board.InBox.Activities.Count(), Is.EqualTo(1));
+        [Test]
+        public void FocusDateTimePropertyDefaultsToNowWhichAutoUpdates()
+        {
+            var activityList = new ActivityList(new ActivityBoard());
+            var focusDateTime = activityList.FocusDateTime;
+            System.Threading.Thread.Sleep(TimeSpan.FromMilliseconds(2));
+            Assert.That(focusDateTime, Is.LessThan(activityList.FocusDateTime));
         }
 
-        //[Test]
-        //public void FilteringInactiveActivitiesWithFilterDelay()
-        //{
-        //    var board = new ActivityBoard();
-        //    Activity activity1 = Activity.FluentNew("New Activity 1").AddToBoard(board);
-        //    Activity activity2 = Activity.FluentNew("New Activity 2").AddToBoard(board);
-        //    activity1.SignalCompleted(new DateTime(2017, 2, 28));
-        //    board.InBox.ActivityFilter.FilterOutNonActiveWithDelay(TimeSpan.FromHours(4));
+        [Test]
+        public void FocusDateTimePropertyIsReadWrite()
+        {
+            var activityList = new ActivityList(new ActivityBoard());
+            DateTime now = DateTime.Now;
+            activityList.FocusDateTime = now;
+            Assert.That(activityList.FocusDateTime, Is.EqualTo(now));
+        }
 
-        //    Assert.That(board.InBox.Activities, Is.Not.Empty);
-        //    Assert.That(board.InBox.Activities.Count(), Is.EqualTo(1));
-        //}
+        [Test]
+        public void FocusDateTimePropertyAutoUpdatesWhenReset()
+        {
+            var activityList = new ActivityList(new ActivityBoard());
+            activityList.FocusDateTime = DateTime.Now + TimeSpan.FromDays(1);
+            activityList.ResetFocusDateTimeToNow();
+            var focusDateTime = activityList.FocusDateTime;
+            System.Threading.Thread.Sleep(TimeSpan.FromMilliseconds(2));
+            Assert.That(focusDateTime, Is.LessThan(activityList.FocusDateTime));
+        }
+
+        [Test]
+        public void FocusDatePropertyIsDateOfFocusDateTime()
+        {
+            var activityList = new ActivityList(new ActivityBoard());
+            DateTime yesterday = DateTime.Now.AddDays(-1);
+            activityList.FocusDateTime = yesterday;
+            Assert.That(activityList.FocusDate, Is.EqualTo(yesterday.Date));
+        }
 
         [Test]
         public void ClearingActivityFiltersShowsAllActivities()
@@ -65,21 +77,76 @@ namespace PCLActivitySet.Test
             Activity activity1 = Activity.FluentNew("New Activity 1").AddToBoard(board);
             Activity activity2 = Activity.FluentNew("New Activity 2").AddToBoard(board);
             activity1.SignalCompleted(new DateTime(2017, 2, 28));
-            board.InBox.ActivityFilter.FilterOutNonActive();
-            board.InBox.ActivityFilter.Clear();
+            board.InBox.ActivityFilters.ExcludeNonActive();
+            board.InBox.ActivityFilters.Clear();
 
             Assert.That(board.InBox.Activities, Is.Not.Empty);
             Assert.That(board.InBox.Activities.Count(), Is.EqualTo(2));
         }
 
-        //[Test]
-        //public void UseIncludeInactiveActifityFilter()
-        //{
-        //    Assert.Fail("Finish Me!");
-        //}
+        [Test]
+        public void GetFilterThatWasApplied()
+        {
+            var board = new ActivityBoard();
+            ExcludeNonActiveWithDelayFilter filter =
+                board.InBox.ActivityFilters
+                    .ExcludeNonActiveWithDelay(TimeSpan.FromHours(4))
+                    .GetExcludeNonActiveWithDelay();
 
+            Assert.That(filter, Is.Not.Null);
+            Assert.That(filter.Delay, Is.EqualTo(TimeSpan.FromHours(4)));
+        }
 
+        [Test]
+        public void GetFilterThatWasNotApplied()
+        {
+            var board = new ActivityBoard();
+            ExcludeNonActiveWithDelayFilter filter =
+                board.InBox.ActivityFilters
+                    .ExcludeNonActive()
+                    .GetExcludeNonActiveWithDelay();
 
+            Assert.That(filter, Is.Null);
+        }
 
+        [Test]
+        public void FilteringInactiveActivities()
+        {
+            var board = new ActivityBoard();
+            Activity activity1 = Activity.FluentNew("New Activity 1").AddToBoard(board);
+            Activity activity2 = Activity.FluentNew("New Activity 2").AddToBoard(board);
+            activity1.SignalCompleted(new DateTime(2017, 2, 28));
+            board.InBox.ActivityFilters.ExcludeNonActive();
+
+            Assert.That(board.InBox.Activities, Is.Not.Empty);
+            Assert.That(board.InBox.Activities.Count(), Is.EqualTo(1));
+        }
+
+        [Test]
+        public void FilteringInactiveActivitiesWithFilterDelayNotExpired()
+        {
+            var board = new ActivityBoard();
+            Activity activity1 = Activity.FluentNew("New Activity 1").AddToBoard(board);
+            Activity activity2 = Activity.FluentNew("New Activity 2").AddToBoard(board);
+            activity1.SignalCompleted(new DateTime(2017, 2, 28));
+            board.InBox.ActivityFilters.ExcludeNonActiveWithDelay(TimeSpan.FromHours(4));
+
+            Assert.That(board.InBox.Activities, Is.Not.Empty);
+            Assert.That(board.InBox.Activities.Count(), Is.EqualTo(2));
+        }
+
+        [Test]
+        public void FilteringInactiveActivitiesWithFilterDelayExpired()
+        {
+            var board = new ActivityBoard();
+            Activity activity1 = Activity.FluentNew("New Activity 1").AddToBoard(board);
+            Activity activity2 = Activity.FluentNew("New Activity 2").AddToBoard(board);
+            activity1.SignalCompleted(new DateTime(2017, 2, 28));
+            board.InBox.ActivityFilters.ExcludeNonActiveWithDelay(TimeSpan.FromMilliseconds(1));
+            System.Threading.Thread.Sleep(TimeSpan.FromMilliseconds(2));
+
+            Assert.That(board.InBox.Activities, Is.Not.Empty);
+            Assert.That(board.InBox.Activities.Count(), Is.EqualTo(1));
+        }
     }
 }
