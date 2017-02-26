@@ -23,9 +23,10 @@ namespace PCLActivitySet
 
         public string Name { get; set; }
 
+        public bool IsActive => this.ActiveDueDate != null || !this.CompletionHistory.Any();
+
         public Guid? ActivityListGuid { get; set; }
-
-
+        
         public DateTime? ActiveDueDate
         {
             get { return this._activeDueDate; }
@@ -57,6 +58,7 @@ namespace PCLActivitySet
         public FluentlyModifyActivity Fluently => new FluentlyModifyActivity(this);
 
         public IEnumerable<Guid> ContextGuids => this._setOfContextGuids;
+
 
         public void AddContexts(params ActivityContext[] contexts)
         {

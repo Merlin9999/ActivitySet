@@ -112,11 +112,7 @@ namespace PCLActivitySet.Test
             Activity activity = Activity.FluentNew("New Activity")
                 .Recurrence(ERecurFromType.FromCompletedDate, x => x.Daily(1));
             activity.SignalCompleted(new DateTime(2017, 3, 1));
-            Assert.That(activity.ActiveDueDate, Is.Null);
-
-            var tempActiveDueDate = new DateTime(2017, 3, 28);
-            activity.ActiveDueDate = tempActiveDueDate;
-            Assert.That(activity.ActiveDueDate, Is.EqualTo(tempActiveDueDate));
+            Assert.That(activity.ActiveDueDate, Is.EqualTo(new DateTime(2017, 3, 2)));
 
             activity.Recurrence.RecurFromType = ERecurFromType.FromActiveDueDate;
             activity.ResetActiveDueDateFromLastHistoryItem();
@@ -129,7 +125,7 @@ namespace PCLActivitySet.Test
             Activity activity = Activity.FluentNew("New Activity")
                 .Recurrence(ERecurFromType.FromCompletedDate, x => x.Daily(1));
             activity.SignalCompleted(new DateTime(2017, 3, 1));
-            Assert.That(activity.ActiveDueDate, Is.Null);
+            Assert.That(activity.ActiveDueDate, Is.EqualTo(new DateTime(2017, 3, 2)));
 
             var tempActiveDueDate = new DateTime(2017, 3, 28);
             activity.ActiveDueDate = tempActiveDueDate;
@@ -571,5 +567,46 @@ namespace PCLActivitySet.Test
             Assert.That(activity.ActiveDueDate, Is.EqualTo(new DateTime(2017, 4, 10)));
         }
 
+
+        [Test]
+        public void NonCompletedActivityWithNoRecurrenceIsActive()
+        {
+            Activity activity = Activity.FluentNew("New Activity");
+            Assert.That(activity.IsActive, Is.True);
+        }
+
+        [Test]
+        public void NonCompletedActivityWithRecurrenceIsActive()
+        {
+            Activity activity = Activity.FluentNew("New Activity")
+                .Recurrence(ERecurFromType.FromCompletedDate, x => x.Daily(14));
+            Assert.That(activity.IsActive, Is.True);
+        }
+
+        [Test]
+        public void CompletedActivityWithNoRecurrenceIsInactive()
+        {
+            Activity activity = Activity.FluentNew("New Activity");
+            activity.SignalCompleted(new DateTime(2017, 2, 26));
+            Assert.That(activity.IsActive, Is.False);
+        }
+
+        [Test]
+        public void CompletedActivityWithRecurrenceIsActive()
+        {
+            Activity activity = Activity.FluentNew("New Activity")
+                .Recurrence(ERecurFromType.FromCompletedDate, x => x.Daily(14));
+            activity.SignalCompleted(new DateTime(2017, 2, 26));
+            Assert.That(activity.IsActive, Is.True);
+        }
+
+        [Test]
+        public void CompletedActivityWithNoFutureRecurrenceIsInactive()
+        {
+            Activity activity = Activity.FluentNew("New Activity")
+                .Recurrence(ERecurFromType.FromCompletedDate, 1, x => x.Daily(14));
+            activity.SignalCompleted(new DateTime(2017, 2, 26));
+            Assert.That(activity.IsActive, Is.False);
+        }
     }
 }

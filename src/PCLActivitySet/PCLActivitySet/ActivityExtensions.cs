@@ -14,8 +14,9 @@ namespace PCLActivitySet
             dateCompleted = dateCompleted.Date;
 
             activity.CompletionHistory.Add(new ActivityHistoryItem(activity.Name, activity.ActiveDueDate, dateCompleted));
-            activity.ActiveDueDate = activity.Recurrence != null && activity.ActiveDueDate != null
-                ? activity.Recurrence.GetNext(activity.ActiveDueDate.Value, dateCompleted, activity.CompletionHistory.Count)
+            activity.ActiveDueDate = activity.Recurrence != null && 
+                (activity.ActiveDueDate != null || activity.Recurrence.RecurFromType == ERecurFromType.FromCompletedDate)
+                ? activity.Recurrence.GetNext(activity.ActiveDueDate ?? DateTime.Today, dateCompleted, activity.CompletionHistory.Count)
                 : null;
         }
 
