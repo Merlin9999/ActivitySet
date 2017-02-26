@@ -41,7 +41,7 @@ namespace PCLActivitySet
 
         public FluentlyFilterActivities ExcludeNonActive()
         {
-            this.SetFilter(new ExcludeNonActiveFilter());
+            this.SetFilter(new ExcludeNonActiveWithDelayFilter(this._activityList, null));
             return this;
         }
 

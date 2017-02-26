@@ -9,22 +9,17 @@ namespace PCLActivitySet
         Func<IEnumerable<Activity>, IEnumerable<Activity>> FilterImpl { get; }
     }
 
-    public class ExcludeNonActiveFilter : IActivityFilter
-    {
-        public Func<IEnumerable<Activity>, IEnumerable<Activity>> FilterImpl => seq => seq.Where(activity => activity.IsActive);
-    }
-
     public class ExcludeNonActiveWithDelayFilter : IActivityFilter
     {
         private readonly ActivityList _activityList;
 
-        public ExcludeNonActiveWithDelayFilter(ActivityList activityList, TimeSpan delay)
+        public ExcludeNonActiveWithDelayFilter(ActivityList activityList, TimeSpan? delay)
         {
             this._activityList = activityList;
             this.Delay = delay;
         }
 
-        public TimeSpan Delay { get; }
+        public TimeSpan? Delay { get; }
         public Func<IEnumerable<Activity>, IEnumerable<Activity>> FilterImpl
         {
             get
@@ -32,11 +27,20 @@ namespace PCLActivitySet
                 return seq => seq.Where(activity =>
                 {
                     DateTime? lastCompletedTimeStamp = activity.CompletionHistory?.LastOrDefault()?.TimeStamp;
-                    return activity.IsActive ||
-                           (lastCompletedTimeStamp != null &&
-                            lastCompletedTimeStamp.Value + this.Delay > this._activityList.FocusDateTime);
+                    bool activityIsActive = activity.IsActive;
+
+                    if (this.Delay == null)
+                        return activityIsActive;
+                        
+                    return activityIsActive || this.DelayHasNotExpired(lastCompletedTimeStamp);
                 });
             }
+        }
+
+       private bool DelayHasNotExpired(DateTime? lastCompletedTimeStamp)
+        {
+            return (lastCompletedTimeStamp != null &&
+                    lastCompletedTimeStamp.Value + this.Delay.Value > this._activityList.FocusDateTime);
         }
     }
 

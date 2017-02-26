@@ -103,7 +103,6 @@ namespace PCLActivitySet.Test
             var board = new ActivityBoard();
             ExcludeNonActiveWithDelayFilter filter =
                 board.InBox.ActivityFilters
-                    .ExcludeNonActive()
                     .GetExcludeNonActiveWithDelay();
 
             Assert.That(filter, Is.Null);
@@ -134,6 +133,21 @@ namespace PCLActivitySet.Test
             Assert.That(board.InBox.Activities, Is.Not.Empty);
             Assert.That(board.InBox.Activities.Count(), Is.EqualTo(1));
         }
+
+        [Test]
+        public void FilteringInactiveActivitiesWithFocusDateInThePast()
+        {
+            var board = new ActivityBoard();
+            Activity activity1 = Activity.FluentNew("New Activity 1").AddToBoard(board);
+            Activity activity2 = Activity.FluentNew("New Activity 2").AddToBoard(board);
+            activity1.SignalCompleted(new DateTime(2017, 2, 28));
+            board.InBox.ActivityFilters.ExcludeNonActive();
+            board.InBox.FocusDateTime = DateTime.Now.AddDays(-2);
+
+            Assert.That(board.InBox.Activities, Is.Not.Empty);
+            Assert.That(board.InBox.Activities.Count(), Is.EqualTo(1));
+        }
+
 
         [Test]
         public void FilteringInactiveActivitiesWithFilterDelayNotExpired()
