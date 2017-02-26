@@ -42,7 +42,7 @@ namespace PCLActivitySet
 
     public class FocusDateRadarFilter : IActivityFilter
     {
-        private ActivityList _activityList;
+        private readonly ActivityList _activityList;
 
         public FocusDateRadarFilter(ActivityList activityList)
         {

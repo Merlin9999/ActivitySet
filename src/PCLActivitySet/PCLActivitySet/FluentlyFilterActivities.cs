@@ -6,7 +6,7 @@ namespace PCLActivitySet
 {
     public class FluentlyFilterActivities
     {
-        private ActivityList _activityList;
+        private readonly ActivityList _activityList;
 
         public FluentlyFilterActivities(ActivityList activityList)
         {
