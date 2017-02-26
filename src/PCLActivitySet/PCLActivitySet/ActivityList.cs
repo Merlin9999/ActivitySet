@@ -13,10 +13,25 @@ namespace PCLActivitySet
             if (owningBoard == null)
                 throw new ArgumentNullException(nameof(owningBoard), $"The argument {nameof(owningBoard)} cannot be null.");
             this.OwningBoard = owningBoard;
+            this.InternalActivityFilterList = new List<Func<IEnumerable<Activity>, IEnumerable<Activity>>>();
         }
 
         public string Name { get; set; }
 
-        public virtual IEnumerable<Activity> Activities => this.OwningBoard.Activities.Where(activity => activity.ActivityListGuid == this.Guid);
+        internal List<Func<IEnumerable<Activity>, IEnumerable<Activity>>> InternalActivityFilterList { get; }
+
+        public FluentlyActivityFilter ActivityFilter => new FluentlyActivityFilter(this);
+
+        public virtual IEnumerable<Activity> Activities => this.AppendActivityEnumerableWithFilter(this.OwningBoard.Activities.Where(activity => activity.ActivityListGuid == this.Guid));
+
+        protected virtual IEnumerable<Activity>  AppendActivityEnumerableWithFilter(IEnumerable<Activity> activities)
+        {
+            IEnumerable<Activity> retVal = activities;
+
+            foreach (var filterFunc in this.InternalActivityFilterList)
+                retVal = filterFunc(retVal);
+
+            return retVal;
+        }
     }
 }

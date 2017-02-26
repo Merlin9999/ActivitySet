@@ -31,5 +31,55 @@ namespace PCLActivitySet.Test
             activityList.Name = testName;
             Assert.That(activityList.Name, Is.EqualTo(testName));
         }
+        
+        [Test]
+        public void FilteringInactiveActivities()
+        {
+            var board = new ActivityBoard();
+            Activity activity1 = Activity.FluentNew("New Activity 1").AddToBoard(board);
+            Activity activity2 = Activity.FluentNew("New Activity 2").AddToBoard(board);
+            activity1.SignalCompleted(new DateTime(2017, 2, 28));
+            board.InBox.ActivityFilter.FilterOutNonActive();
+
+            Assert.That(board.InBox.Activities, Is.Not.Empty);
+            Assert.That(board.InBox.Activities.Count(), Is.EqualTo(1));
+        }
+
+        //[Test]
+        //public void FilteringInactiveActivitiesWithFilterDelay()
+        //{
+        //    var board = new ActivityBoard();
+        //    Activity activity1 = Activity.FluentNew("New Activity 1").AddToBoard(board);
+        //    Activity activity2 = Activity.FluentNew("New Activity 2").AddToBoard(board);
+        //    activity1.SignalCompleted(new DateTime(2017, 2, 28));
+        //    board.InBox.ActivityFilter.FilterOutNonActiveWithDelay(TimeSpan.FromHours(4));
+
+        //    Assert.That(board.InBox.Activities, Is.Not.Empty);
+        //    Assert.That(board.InBox.Activities.Count(), Is.EqualTo(1));
+        //}
+
+        [Test]
+        public void ClearingActivityFiltersShowsAllActivities()
+        {
+            var board = new ActivityBoard();
+            Activity activity1 = Activity.FluentNew("New Activity 1").AddToBoard(board);
+            Activity activity2 = Activity.FluentNew("New Activity 2").AddToBoard(board);
+            activity1.SignalCompleted(new DateTime(2017, 2, 28));
+            board.InBox.ActivityFilter.FilterOutNonActive();
+            board.InBox.ActivityFilter.Clear();
+
+            Assert.That(board.InBox.Activities, Is.Not.Empty);
+            Assert.That(board.InBox.Activities.Count(), Is.EqualTo(2));
+        }
+
+        //[Test]
+        //public void UseIncludeInactiveActifityFilter()
+        //{
+        //    Assert.Fail("Finish Me!");
+        //}
+
+
+
+
     }
 }

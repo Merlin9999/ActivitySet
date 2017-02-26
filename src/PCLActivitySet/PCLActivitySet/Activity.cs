@@ -22,11 +22,9 @@ namespace PCLActivitySet
         }
 
         public string Name { get; set; }
-
-        public bool IsActive => this.ActiveDueDate != null || !this.CompletionHistory.Any();
-
-        public Guid? ActivityListGuid { get; set; }
         
+        public Guid? ActivityListGuid { get; set; }
+
         public DateTime? ActiveDueDate
         {
             get { return this._activeDueDate; }
@@ -38,8 +36,9 @@ namespace PCLActivitySet
             }
         }
 
-        public DateProjection LeadTime { get; set; }
+        public bool IsActive => this.ActiveDueDate != null || !this.CompletionHistory.Any();
 
+        public DateProjection LeadTime { get; set; }
 
         public DateTime? LeadTimeDate =>
             this.LeadTime == null || this.ActiveDueDate == null
@@ -47,8 +46,7 @@ namespace PCLActivitySet
                 : this.LeadTime.GetPrevious(this.ActiveDueDate.Value);
 
         public DateRecurrence Recurrence  { get; set; }
-
-
+        
         public List<ActivityHistoryItem> CompletionHistory
         {
             get { return this._completionHistory; }
@@ -59,6 +57,7 @@ namespace PCLActivitySet
 
         public IEnumerable<Guid> ContextGuids => this._setOfContextGuids;
 
+        public DateTime? LastCompletedDate => this.CompletionHistory?.LastOrDefault()?.CompletedDate;
 
         public void AddContexts(params ActivityContext[] contexts)
         {

@@ -608,5 +608,22 @@ namespace PCLActivitySet.Test
             activity.SignalCompleted(new DateTime(2017, 2, 26));
             Assert.That(activity.IsActive, Is.False);
         }
+
+        [Test]
+        public void LastCompletedDateIsNullWhenNotEverCompleted()
+        {
+            Activity activity = Activity.FluentNew("New Activity")
+                .Recurrence(ERecurFromType.FromCompletedDate, 1, x => x.Daily(14));
+            Assert.That(activity.LastCompletedDate, Is.Null);
+        }
+
+        [Test]
+        public void LastCompletedDateIsSetWhenCompleted()
+        {
+            Activity activity = Activity.FluentNew("New Activity")
+                .Recurrence(ERecurFromType.FromCompletedDate, 1, x => x.Daily(14));
+            activity.SignalCompleted(new DateTime(2017, 2, 26));
+            Assert.That(activity.LastCompletedDate, Is.EqualTo(new DateTime(2017, 2, 26)));
+        }
     }
 }
