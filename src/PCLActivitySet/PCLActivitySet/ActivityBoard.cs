@@ -99,12 +99,12 @@ namespace PCLActivitySet
 
         public void RemoveContext(ActivityContext context)
         {
-            //IEnumerable<Activity> activitiesInContextToBeRemoved = this.UnfilteredActivities
-            //    .Where(a => a.ActivityListGuid == context.Guid);
-            //foreach (Activity affectedActivity in activitiesInContextToBeRemoved)
-            //    affectedActivity.ActivityContextGuid = null;
-
-            this.SetOfContexts.Remove(context);
+            if (this.SetOfContexts.Contains(context))
+            {
+                foreach (Activity activity in this.ActivitySet)
+                    activity.RemoveContexts(context);
+                this.SetOfContexts.Remove(context);
+            }
         }
 
         public void AddSelectedContexts(params ActivityContext[] contexts)
@@ -127,8 +127,6 @@ namespace PCLActivitySet
         public void RemoveSelectedContexts(IEnumerable<ActivityContext> contexts)
         {
             List<ActivityContext> requestedContextsInBoard = contexts.Where(ctx => this.SetOfContexts.Contains(ctx)).ToList();
-            foreach (Activity activity in this.ActivitySet)
-                activity.RemoveContexts(requestedContextsInBoard);
             foreach (ActivityContext activityContext in requestedContextsInBoard)
                 this.SetOfSelectedContextGuids.Remove(activityContext.Guid);
         }

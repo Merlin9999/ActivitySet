@@ -233,6 +233,21 @@ namespace PCLActivitySet.Test
         }
 
         [Test]
+        public void RemovingContextsRemovesThoseContextsFromActivities()
+        {
+            var board = new ActivityBoard();
+            ActivityContext context1 = board.AddNewContext("Context 1");
+            ActivityContext context2 = board.AddNewContext("Context 2");
+            board.AddSelectedContexts(context1, context2);
+            Activity activity = Activity.FluentNew("New Activity")
+                .AddToBoard(board);
+            activity.AddContexts(context2);
+            board.RemoveContext(context2);
+
+            Assert.That(activity.ContextGuids, Is.Empty);
+        }
+
+        [Test]
         public void CanSelectContexts()
         {
             var board = new ActivityBoard();
@@ -261,21 +276,6 @@ namespace PCLActivitySet.Test
 
             Assert.That(board.SelectedContextGuids, Is.Not.Empty);
             Assert.That(board.SelectedContextGuids.Count(), Is.EqualTo(3));
-        }
-
-        [Test]
-        public void DeselectContextsRemovesThoseContextsFromActivities()
-        {
-            var board = new ActivityBoard();
-            ActivityContext context1 = board.AddNewContext("Context 1");
-            ActivityContext context2 = board.AddNewContext("Context 2");
-            board.AddSelectedContexts(context1, context2);
-            Activity activity = Activity.FluentNew("New Activity")
-                .AddToBoard(board)
-                .Contexts(context2);
-            board.RemoveSelectedContexts(context2);
-
-            Assert.That(activity.ContextGuids, Is.Empty);
         }
 
         [Test]

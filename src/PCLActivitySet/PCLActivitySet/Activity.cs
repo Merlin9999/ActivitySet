@@ -58,10 +58,20 @@ namespace PCLActivitySet
 
         public IEnumerable<Guid> ContextGuids => this._setOfContextGuids;
 
+        public void AddContexts(params ActivityContext[] contexts)
+        {
+            this.AddContexts(contexts.AsEnumerable());
+        }
+
         public void AddContexts(IEnumerable<ActivityContext> contexts)
         {
             foreach (Guid contextGuid in contexts.Select(ctx => ctx.Guid))
                 this._setOfContextGuids.Add(contextGuid);
+        }
+
+        public void RemoveContexts(params ActivityContext[] contexts)
+        {
+            this.RemoveContexts(contexts.AsEnumerable());
         }
 
         public void RemoveContexts(IEnumerable<ActivityContext> contexts)
