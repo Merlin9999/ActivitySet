@@ -110,6 +110,19 @@ namespace PCLActivitySet.Test
         }
 
         [Test]
+        public void OverwriteFilterWithUpdatedFilterOfSameType()
+        {
+            var board = new ActivityBoard();
+            ExcludeNonActiveWithDelayFilter filter = board.InBox.ActivityFilters
+                .ExcludeNonActiveWithDelay(TimeSpan.FromMinutes(10))
+                .FocusDateRadar()
+                .ExcludeNonActiveWithDelay(TimeSpan.FromHours(4))
+                .GetExcludeNonActiveWithDelay();
+            Assert.That(filter.Delay, Is.Not.EqualTo(TimeSpan.FromMinutes(10)));
+            Assert.That(filter.Delay, Is.EqualTo(TimeSpan.FromHours(4)));
+        }
+
+        [Test]
         public void FilteringInactiveActivities()
         {
             var board = new ActivityBoard();
@@ -148,5 +161,96 @@ namespace PCLActivitySet.Test
             Assert.That(board.InBox.Activities, Is.Not.Empty);
             Assert.That(board.InBox.Activities.Count(), Is.EqualTo(1));
         }
+
+        [Test]
+        public void FilteringFocusDateRadarWhenFocusDateSameAsActiveDueDate()
+        {
+            var board = new ActivityBoard();
+            DateTime focusDateTime = new DateTime(2017, 2, 28);
+            board.InBox.FocusDateTime = focusDateTime;
+            Activity activity = Activity.FluentNew("New Activity")
+                .ActiveDueDate(focusDateTime).AddToBoard(board);
+            board.InBox.ActivityFilters.FocusDateRadar();
+
+            Assert.That(board.InBox.Activities, Is.Not.Empty);
+            Assert.That(board.InBox.Activities.Count(), Is.EqualTo(1));
+        }
+
+        [Test]
+        public void FilteringFocusDateRadarWhenFocusDateAfterActiveDueDate()
+        {
+            var board = new ActivityBoard();
+            DateTime focusDateTime = new DateTime(2017, 2, 28);
+            board.InBox.FocusDateTime = focusDateTime;
+            Activity activity = Activity.FluentNew("New Activity")
+                .ActiveDueDate(focusDateTime.AddDays(-1))
+                .AddToBoard(board);
+            board.InBox.ActivityFilters.FocusDateRadar();
+
+            Assert.That(board.InBox.Activities, Is.Not.Empty);
+            Assert.That(board.InBox.Activities.Count(), Is.EqualTo(1));
+        }
+
+        [Test]
+        public void FilteringFocusDateRadarWhenFocusDateBeforeActiveDueDate()
+        {
+            var board = new ActivityBoard();
+            DateTime focusDateTime = new DateTime(2017, 2, 28);
+            board.InBox.FocusDateTime = focusDateTime;
+            Activity activity = Activity.FluentNew("New Activity")
+                .ActiveDueDate(focusDateTime.AddDays(1))
+                .AddToBoard(board);
+            board.InBox.ActivityFilters.FocusDateRadar();
+
+            Assert.That(board.InBox.Activities, Is.Empty);
+        }
+
+        [Test]
+        public void FilteringFocusDateRadarWhenFocusDateSameAsLeadTimeDate()
+        {
+            var board = new ActivityBoard();
+            DateTime focusDateTime = new DateTime(2017, 2, 28);
+            board.InBox.FocusDateTime = focusDateTime;
+            Activity activity = Activity.FluentNew("New Activity")
+                .ActiveDueDate(focusDateTime.AddDays(1))
+                .DailyLeadTime(1)
+                .AddToBoard(board);
+            board.InBox.ActivityFilters.FocusDateRadar();
+
+            Assert.That(board.InBox.Activities, Is.Not.Empty);
+            Assert.That(board.InBox.Activities.Count(), Is.EqualTo(1));
+        }
+
+        [Test]
+        public void FilteringFocusDateRadarWhenFocusDateAfterLeadTimeDate()
+        {
+            var board = new ActivityBoard();
+            DateTime focusDateTime = new DateTime(2017, 2, 28);
+            board.InBox.FocusDateTime = focusDateTime;
+            Activity activity = Activity.FluentNew("New Activity")
+                .ActiveDueDate(focusDateTime.AddDays(1))
+                .DailyLeadTime(2)
+                .AddToBoard(board);
+            board.InBox.ActivityFilters.FocusDateRadar();
+
+            Assert.That(board.InBox.Activities, Is.Not.Empty);
+            Assert.That(board.InBox.Activities.Count(), Is.EqualTo(1));
+        }
+
+        [Test]
+        public void FilteringFocusDateRadarWhenFocusDateBeforeLeadTimeDate()
+        {
+            var board = new ActivityBoard();
+            DateTime focusDateTime = new DateTime(2017, 2, 28);
+            board.InBox.FocusDateTime = focusDateTime;
+            Activity activity = Activity.FluentNew("New Activity")
+                .ActiveDueDate(focusDateTime.AddDays(2))
+                .DailyLeadTime(1)
+                .AddToBoard(board);
+            board.InBox.ActivityFilters.FocusDateRadar();
+
+            Assert.That(board.InBox.Activities, Is.Empty);
+        }
+
     }
 }

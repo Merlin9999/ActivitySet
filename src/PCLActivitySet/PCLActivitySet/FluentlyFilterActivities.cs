@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace PCLActivitySet
@@ -13,8 +14,23 @@ namespace PCLActivitySet
         }
 
         public TFilter GetFilter<TFilter>()
+            where TFilter : IActivityFilter
         {
             return this._activityList.InternalActivityFilterList.OfType<TFilter>().FirstOrDefault();
+        }
+
+        public void SetFilter<TFilter>(TFilter filterToAdd)
+            where TFilter : IActivityFilter
+        {
+            this.RemoveFilter<TFilter>();
+            this._activityList.InternalActivityFilterList.Add(filterToAdd);
+        }
+
+        public void RemoveFilter<TFilter>() where TFilter : IActivityFilter
+        {
+            List<TFilter> oldFiltersToRemove = this._activityList.InternalActivityFilterList.OfType<TFilter>().ToList();
+            foreach (TFilter filterToRemove in oldFiltersToRemove)
+                this._activityList.InternalActivityFilterList.Remove(filterToRemove);
         }
 
         public FluentlyFilterActivities Clear()
@@ -25,19 +41,25 @@ namespace PCLActivitySet
 
         public FluentlyFilterActivities ExcludeNonActive()
         {
-            this._activityList.InternalActivityFilterList.Add(new ExcludeNonActiveFilter());
+            this.SetFilter(new ExcludeNonActiveFilter());
             return this;
         }
 
         public FluentlyFilterActivities ExcludeNonActiveWithDelay(TimeSpan filterDelay)
         {
-            this._activityList.InternalActivityFilterList.Add(new ExcludeNonActiveWithDelayFilter(this._activityList, filterDelay));
+            this.SetFilter(new ExcludeNonActiveWithDelayFilter(this._activityList, filterDelay));
             return this;
         }
 
         public ExcludeNonActiveWithDelayFilter GetExcludeNonActiveWithDelay()
         {
             return this.GetFilter<ExcludeNonActiveWithDelayFilter>();
+        }
+
+        public FluentlyFilterActivities FocusDateRadar()
+        {
+            this.SetFilter(new FocusDateRadarFilter(this._activityList));
+            return this;
         }
     }
 }

@@ -39,4 +39,33 @@ namespace PCLActivitySet
             }
         }
     }
+
+    public class FocusDateRadarFilter : IActivityFilter
+    {
+        private ActivityList _activityList;
+
+        public FocusDateRadarFilter(ActivityList activityList)
+        {
+            this._activityList = activityList;
+        }
+
+        public Func<IEnumerable<Activity>, IEnumerable<Activity>> FilterImpl
+        {
+            get
+            {
+                DateTime focusDatePlus1 = this._activityList.FocusDate.AddDays(1).Date;
+
+                return seq => seq.Where(activity =>
+                {
+                    if (activity.ActiveDueDate == null || activity.ActiveDueDate.Value < focusDatePlus1)
+                        return true;
+                    var leadTimeDate = activity.LeadTimeDate;
+                    if (leadTimeDate != null && leadTimeDate < focusDatePlus1)
+                        return true;
+
+                    return false;
+                });
+            }
+        }
+    }
 }
