@@ -26,7 +26,8 @@ namespace PCLActivitySet
             this._activityList.InternalActivityFilterList.Add(filterToAdd);
         }
 
-        public void RemoveFilter<TFilter>() where TFilter : IActivityFilter
+        public void RemoveFilter<TFilter>() 
+            where TFilter : IActivityFilter
         {
             List<TFilter> oldFiltersToRemove = this._activityList.InternalActivityFilterList.OfType<TFilter>().ToList();
             foreach (TFilter filterToRemove in oldFiltersToRemove)

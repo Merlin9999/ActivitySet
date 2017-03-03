@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using PCLActivitySet.Recurrence;
 
 namespace PCLActivitySet.Test
 {
@@ -265,6 +266,117 @@ namespace PCLActivitySet.Test
 
             Assert.That(board.InBox.Activities, Is.Empty);
         }
+
+        [Test]
+        public void ViewItemsEmptyWhenActivitiesEmpty()
+        {
+            var board = new ActivityBoard();
+            Assert.That(board.InBox.ViewItems, Is.Empty);
+        }
+
+        [Test]
+        public void ViewItemsContainsAddedActivities()
+        {
+            var board = new ActivityBoard();
+            Activity activity = Activity.FluentNew("New Activity")
+                .AddToBoard(board);
+            Assert.That(board.InBox.ViewItems, Is.Not.Empty);
+            Assert.That(board.InBox.ViewItems.Count(), Is.EqualTo(1));
+        }
+
+        [Test]
+        public void ViewItemFiltersActivityWithinDateRange()
+        {
+            var board = new ActivityBoard();
+            DateTime startDate = new DateTime(2017, 2, 28);
+            DateTime endDate = startDate.AddDays(5);
+            DateTime dueDate = startDate.AddDays(2);
+            Activity activity = Activity.FluentNew("New Activity")
+                .ActiveDueDate(dueDate)
+                .AddToBoard(board);
+            board.InBox.ViewItemFilters.DateRange(startDate, endDate);
+            Assert.That(board.InBox.ViewItems, Is.Not.Empty);
+            Assert.That(board.InBox.ViewItems.Count(), Is.EqualTo(1));
+        }
+
+        [Test]
+        public void ViewItemFiltersActivityOnStartOfDateRange()
+        {
+            var board = new ActivityBoard();
+            DateTime startDate = new DateTime(2017, 2, 28);
+            DateTime endDate = startDate.AddDays(5);
+            DateTime dueDate = startDate;
+            Activity activity = Activity.FluentNew("New Activity")
+                .ActiveDueDate(dueDate)
+                .AddToBoard(board);
+            board.InBox.ViewItemFilters.DateRange(startDate, endDate);
+            Assert.That(board.InBox.ViewItems, Is.Not.Empty);
+            Assert.That(board.InBox.ViewItems.Count(), Is.EqualTo(1));
+        }
+
+        [Test]
+        public void ViewItemFiltersActivityOnEndOfDateRange()
+        {
+            var board = new ActivityBoard();
+            DateTime startDate = new DateTime(2017, 2, 28);
+            DateTime endDate = startDate.AddDays(5);
+            DateTime dueDate = endDate;
+            Activity activity = Activity.FluentNew("New Activity")
+                .ActiveDueDate(dueDate)
+                .AddToBoard(board);
+            board.InBox.ViewItemFilters.DateRange(startDate, endDate);
+            Assert.That(board.InBox.ViewItems, Is.Not.Empty);
+            Assert.That(board.InBox.ViewItems.Count(), Is.EqualTo(1));
+        }
+
+        [Test]
+        public void ViewItemFiltersActivityBeforeStartOfDateRange()
+        {
+            var board = new ActivityBoard();
+            DateTime startDate = new DateTime(2017, 2, 28);
+            DateTime endDate = startDate.AddDays(5);
+            DateTime dueDate = startDate.AddDays(-1);
+            Activity activity = Activity.FluentNew("New Activity")
+                .ActiveDueDate(dueDate)
+                .AddToBoard(board);
+            board.InBox.ViewItemFilters.DateRange(startDate, endDate);
+            Assert.That(board.InBox.ViewItems, Is.Empty);
+        }
+
+        [Test]
+        public void ViewItemFiltersActivityAfterEndOfDateRange()
+        {
+            var board = new ActivityBoard();
+            DateTime startDate = new DateTime(2017, 2, 28);
+            DateTime endDate = startDate.AddDays(5);
+            DateTime dueDate = endDate.AddDays(1);
+            Activity activity = Activity.FluentNew("New Activity")
+                .ActiveDueDate(dueDate)
+                .AddToBoard(board);
+            board.InBox.ViewItemFilters.DateRange(startDate, endDate);
+            Assert.That(board.InBox.ViewItems, Is.Empty);
+        }
+
+        //[Test]
+        //public void ViewItemFiltersIncludesHistoryDateRange()
+        //{ 
+        //    var board = new ActivityBoard();
+        //    DateTime startDate = new DateTime(2017, 2, 28);
+        //    DateTime endDate = startDate.AddDays(5);
+        //    DateTime dueDate = startDate.AddDays(1);
+        //    Activity activity = Activity.FluentNew("New Activity")
+        //        .ActiveDueDate(dueDate)
+        //        .Recurrence(ERecurFromType.FromCompletedDate, x => x.Daily(1))
+        //        .AddToBoard(board);
+        //    board.InBox.ViewItemFilters.DateRange(startDate, endDate)
+        //        .IncludeHistory()
+        //        //.IncludeFuture()
+        //        ;
+        //    Assert.That(board.InBox.ViewItems, Is.Not.Empty);
+        //    Assert.That(board.InBox.ViewItems.Count(), Is.EqualTo(2));
+        //}
+
+
 
     }
 }
