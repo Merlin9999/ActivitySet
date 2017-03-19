@@ -43,9 +43,9 @@ namespace PCLActivitySet
 
         public virtual FluentlyFilterViewItems ViewItemFilters => new FluentlyFilterViewItems(this);
 
-        public virtual IEnumerable<IViewItem> ViewItems => this.AppendViewItemsEnumerableWithFilter(this.Activities.Select(a => new ActivityViewItem(a)));
+        public virtual IEnumerable<IViewItem> ViewItems => this.GenerateViewItems();
 
-        protected virtual IEnumerable<Activity>  AppendActivityEnumerableWithFilter(IEnumerable<Activity> activities)
+        protected virtual IEnumerable<Activity> AppendActivityEnumerableWithFilter(IEnumerable<Activity> activities)
         {
             IEnumerable<Activity> retVal = activities;
 
@@ -55,9 +55,12 @@ namespace PCLActivitySet
             return retVal;
         }
 
-        protected virtual IEnumerable<IViewItem> AppendViewItemsEnumerableWithFilter(IEnumerable<IViewItem> viewItems)
+        protected virtual IEnumerable<IViewItem> GenerateViewItems()
         {
-            IEnumerable<IViewItem> retVal = viewItems;
+
+            IEnumerable<IViewItem> retVal =  this.Activities.Select(a => new ActivityViewItem(a));
+
+            //IEnumerable<IViewItem> retVal = Enumerable.Empty<IViewItem>();
 
             foreach (IViewItemFilter filter in this.InternalViewItemFilterList)
                 retVal = filter.FilterImpl(retVal);
@@ -65,4 +68,50 @@ namespace PCLActivitySet
             return retVal;
         }
     }
+
+    //public class ViewItemsGenerator
+    //{
+    //    private readonly ActivityList _activityList;
+
+    //    public ViewItemsGenerator(ActivityList activityList)
+    //    {
+    //        this._activityList = activityList;
+    //    }
+
+    //    public bool IncludeHistory { get; set; }
+    //    public bool IncludeFuture { get; set; }
+
+    //    Func<IEnumerable<IViewItem>> Generator()
+    //    {
+    //        IEnumerable<ActionViewItem> actionHistoryItems =
+    //            from action in this.Actions
+    //            where this.IncludeActionHistory && (this.ProjectOrGoal == null || action.Parent == this.ProjectOrGoal) && this.Contexts.Contains(action.Context)
+    //            from historyItem in action.ActionHistory
+    //            where startDate <= historyItem.CompletedDate && historyItem.CompletedDate < endDate
+    //            select new ActionViewItem(historyItem, action);
+
+    //        foreach (ActionViewItem item in actionHistoryItems)
+    //            yield return item;
+
+    //        IEnumerable<ActionViewItem> activeActionItems = this.Actions
+    //            .Where(action => action.IsActive())
+    //            .Where(action => this.Contexts.Contains(action.Context))
+    //            .Where(action => this.ProjectOrGoal == null || action.Parent == this.ProjectOrGoal)
+    //            .Where(action => startDate <= action.ActiveDueDate && action.ActiveDueDate < endDate)
+    //            .Select(action => new ActionViewItem(action));
+
+    //        foreach (ActionViewItem item in activeActionItems)
+    //            yield return item;
+
+    //        IEnumerable<ActionViewItem> projectedActionItems =
+    //            from action in this.Actions
+    //            where this.IncludeActionProjection && action.IsActive() && (this.ProjectOrGoal == null || action.Parent == this.ProjectOrGoal) && this.Contexts.Contains(action.Context)
+    //            from actionProjectionItem in action.GetProjectedFutureDueDates(this.EndDate)
+    //            where startDate <= actionProjectionItem.DueDate && actionProjectionItem.DueDate < endDate
+    //            select new ActionViewItem(actionProjectionItem, action);
+
+    //        foreach (ActionViewItem item in projectedActionItems)
+    //            yield return item;
+    //    }
+    //}
 }
