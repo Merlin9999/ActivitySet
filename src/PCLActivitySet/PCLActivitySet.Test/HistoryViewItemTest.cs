@@ -1,0 +1,42 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using NUnit.Framework;
+
+namespace PCLActivitySet.Test
+{
+    [TestFixture]
+    public class HistoryViewItemTest
+    {
+        [Test]
+        public void NameSameAsItemName()
+        {
+            string name = "Test Activity";
+            var item = new ActivityHistoryItem() { Name = name };
+            var viewItem = new HistoryViewItem(item);
+
+            Assert.That(viewItem.Name, Is.EqualTo(name));
+        }
+
+        [Test]
+        public void DateSameAsActivityItemDueDate()
+        {
+            DateTime date = DateTime.Now;
+            var item = new ActivityHistoryItem() { CompletedDate = date };
+            var viewItem = new HistoryViewItem(item);
+
+            Assert.That(viewItem.Date, Is.EqualTo(date));
+        }
+
+        [Test]
+        public void IsActiveIsFalse()
+        {
+            var item = new ActivityHistoryItem();
+            var viewItem = new HistoryViewItem(item);
+
+            Assert.That(viewItem.IsActive, Is.False);
+        }
+    }
+}

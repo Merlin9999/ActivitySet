@@ -372,26 +372,252 @@ namespace PCLActivitySet.Test
             Assert.That(board.InBox.ViewItems, Is.Empty);
         }
 
-        //[Test]
-        //public void CalendarViewWithIncludedHistoryDateRange()
-        //{ 
-        //    var board = new ActivityBoard();
-        //    DateTime startDate = new DateTime(2017, 2, 28);
-        //    DateTime endDate = startDate.AddDays(5);
-        //    DateTime dueDate = startDate.AddDays(1);
-        //    Activity activity = Activity.FluentNew("New Activity")
-        //        .ActiveDueDate(dueDate)
-        //        .Recurrence(ERecurFromType.FromCompletedDate, x => x.Daily(1))
-        //        .AddToBoard(board);
-        //    board.InBox.AssignView.DateRange(startDate, endDate)
-        //        .IncludeHistory()
-        //        //.IncludeFuture()
-        //        ;
-        //    Assert.That(board.InBox.ViewItems, Is.Not.Empty);
-        //    Assert.That(board.InBox.ViewItems.Count(), Is.EqualTo(2));
-        //}
+        [Test]
+        public void CalendarViewWithIncludedHistoryWithinDateRange()
+        {
+            var board = new ActivityBoard();
+            DateTime startDate = new DateTime(2017, 2, 28);
+            DateTime endDate = startDate.AddDays(5);
+            DateTime dueDate = startDate.AddDays(2);
+            DateTime completedDate = startDate.AddDays(1);
+            Activity activity = Activity.FluentNew("New Activity")
+                .ActiveDueDate(dueDate)
+                .Recurrence(ERecurFromType.FromCompletedDate, x => x.Daily(2))
+                .AddToBoard(board);
+            activity.SignalCompleted(completedDate);
+            board.InBox.ViewModes.CalendarView
+                .DateRange(startDate, endDate)
+                .IncludeHistory()
+                .Enable();
 
+            DateTime expectedActiveDueDate = completedDate.AddDays(2);
+            Assert.That(board.InBox.ViewItems, Is.Not.Empty);
+            Assert.That(board.InBox.ViewItems.Count(), Is.EqualTo(2));
+            Assert.That(board.InBox.ViewItems.FirstOrDefault(x => x.Date == completedDate), Is.Not.Null);
+            Assert.That(board.InBox.ViewItems.FirstOrDefault(x => x.Date == completedDate), Is.TypeOf<HistoryViewItem>());
+            Assert.That(board.InBox.ViewItems.FirstOrDefault(x => x.Date == expectedActiveDueDate), Is.Not.Null);
+            Assert.That(board.InBox.ViewItems.FirstOrDefault(x => x.Date == expectedActiveDueDate), Is.TypeOf<ActivityViewItem>());
+        }
 
+        [Test]
+        public void CalendarViewWithIncludedHistoryItemOnStartDate()
+        {
+            var board = new ActivityBoard();
+            DateTime startDate = new DateTime(2017, 2, 28);
+            DateTime endDate = startDate.AddDays(5);
+            DateTime dueDate = startDate.AddDays(1);
+            DateTime completedDate = startDate;
+            Activity activity = Activity.FluentNew("New Activity")
+                .ActiveDueDate(dueDate)
+                .Recurrence(ERecurFromType.FromCompletedDate, x => x.Daily(2))
+                .AddToBoard(board);
+            activity.SignalCompleted(completedDate);
+            board.InBox.ViewModes.CalendarView
+                .DateRange(startDate, endDate)
+                .IncludeHistory()
+                .Enable();
+
+            DateTime expectedActiveDueDate = completedDate.AddDays(2);
+            Assert.That(board.InBox.ViewItems, Is.Not.Empty);
+            Assert.That(board.InBox.ViewItems.Count(), Is.EqualTo(2));
+            Assert.That(board.InBox.ViewItems.FirstOrDefault(x => x.Date == completedDate), Is.Not.Null);
+            Assert.That(board.InBox.ViewItems.FirstOrDefault(x => x.Date == completedDate), Is.TypeOf<HistoryViewItem>());
+            Assert.That(board.InBox.ViewItems.FirstOrDefault(x => x.Date == expectedActiveDueDate), Is.Not.Null);
+            Assert.That(board.InBox.ViewItems.FirstOrDefault(x => x.Date == expectedActiveDueDate), Is.TypeOf<ActivityViewItem>());
+        }
+
+        [Test]
+        public void CalendarViewWithIncludedHistoryItemOnEndDate()
+        {
+            var board = new ActivityBoard();
+            DateTime startDate = new DateTime(2017, 2, 28);
+            DateTime endDate = startDate.AddDays(5);
+            DateTime dueDate = startDate.AddDays(1);
+            DateTime completedDate = endDate;
+            Activity activity = Activity.FluentNew("New Activity")
+                .ActiveDueDate(dueDate)
+                .Recurrence(ERecurFromType.FromCompletedDate, x => x.Daily(2))
+                .AddToBoard(board);
+            activity.SignalCompleted(completedDate);
+            board.InBox.ViewModes.CalendarView
+                .DateRange(startDate, endDate)
+                .IncludeHistory()
+                .Enable();
+
+            Assert.That(board.InBox.ViewItems, Is.Not.Empty);
+            Assert.That(board.InBox.ViewItems.Count(), Is.EqualTo(1));
+            Assert.That(board.InBox.ViewItems.FirstOrDefault(x => x.Date == completedDate), Is.Not.Null);
+            Assert.That(board.InBox.ViewItems.FirstOrDefault(x => x.Date == completedDate), Is.TypeOf<HistoryViewItem>());
+        }
+
+        [Test]
+        public void CalendarViewWithIncludedHistoryItemBeforeStartDate()
+        {
+            var board = new ActivityBoard();
+            DateTime startDate = new DateTime(2017, 2, 28);
+            DateTime endDate = startDate.AddDays(5);
+            DateTime dueDate = startDate.AddDays(1);
+            DateTime completedDate = startDate.AddDays(-1);
+            Activity activity = Activity.FluentNew("New Activity")
+                .ActiveDueDate(dueDate)
+                .Recurrence(ERecurFromType.FromCompletedDate, x => x.Daily(2))
+                .AddToBoard(board);
+            activity.SignalCompleted(completedDate);
+            board.InBox.ViewModes.CalendarView
+                .DateRange(startDate, endDate)
+                .IncludeHistory()
+                .Enable();
+
+            DateTime expectedActiveDueDate = completedDate.AddDays(2);
+            Assert.That(board.InBox.ViewItems, Is.Not.Empty);
+            Assert.That(board.InBox.ViewItems.Count(), Is.EqualTo(1));
+            Assert.That(board.InBox.ViewItems.FirstOrDefault(x => x.Date == expectedActiveDueDate), Is.Not.Null);
+            Assert.That(board.InBox.ViewItems.FirstOrDefault(x => x.Date == expectedActiveDueDate), Is.TypeOf<ActivityViewItem>());
+        }
+
+        [Test]
+        public void CalendarViewWithIncludedHistoryItemAfterEndDate()
+        {
+            var board = new ActivityBoard();
+            DateTime startDate = new DateTime(2017, 2, 28);
+            DateTime endDate = startDate.AddDays(5);
+            DateTime dueDate = startDate.AddDays(1);
+            DateTime completedDate = endDate.AddDays(1);
+            Activity activity = Activity.FluentNew("New Activity")
+                .ActiveDueDate(dueDate)
+                .Recurrence(ERecurFromType.FromCompletedDate, x => x.Daily(2))
+                .AddToBoard(board);
+            activity.SignalCompleted(completedDate);
+            board.InBox.ViewModes.CalendarView
+                .DateRange(startDate, endDate)
+                .IncludeHistory()
+                .Enable();
+
+            Assert.That(board.InBox.ViewItems, Is.Empty);
+        }
+
+        [Test]
+        public void CalendarViewWithIncludedFutureWithinDateRange()
+        {
+            var board = new ActivityBoard();
+            DateTime startDate = new DateTime(2017, 2, 28);
+            DateTime endDate = startDate.AddDays(5);
+            DateTime dueDate = startDate.AddDays(1);
+            Activity activity = Activity.FluentNew("New Activity")
+                .ActiveDueDate(dueDate)
+                .Recurrence(ERecurFromType.FromCompletedDate, x => x.Daily(2))
+                .AddToBoard(board);
+            board.InBox.ViewModes.CalendarView
+                .DateRange(startDate, endDate)
+                .IncludeFuture()
+                .Enable();
+
+            DateTime recur1DueDate = dueDate.AddDays(2);
+            DateTime recur2DueDate = recur1DueDate.AddDays(2);
+            Assert.That(board.InBox.ViewItems, Is.Not.Empty);
+            Assert.That(board.InBox.ViewItems.Count(), Is.EqualTo(3));
+            Assert.That(board.InBox.ViewItems.FirstOrDefault(x => x.Date == dueDate), Is.Not.Null);
+            Assert.That(board.InBox.ViewItems.FirstOrDefault(x => x.Date == dueDate), Is.TypeOf<ActivityViewItem>());
+            Assert.That(board.InBox.ViewItems.FirstOrDefault(x => x.Date == recur1DueDate), Is.Not.Null);
+            Assert.That(board.InBox.ViewItems.FirstOrDefault(x => x.Date == recur1DueDate), Is.TypeOf<ProjectionViewItem>());
+            Assert.That(board.InBox.ViewItems.FirstOrDefault(x => x.Date == recur2DueDate), Is.Not.Null);
+            Assert.That(board.InBox.ViewItems.FirstOrDefault(x => x.Date == recur2DueDate), Is.TypeOf<ProjectionViewItem>());
+        }
+
+        [Test]
+        public void CalendarViewWithIncludedFutureOnStartDate()
+        {
+            var board = new ActivityBoard();
+            DateTime startDate = new DateTime(2017, 3, 1);
+            DateTime endDate = startDate.AddDays(3);
+            DateTime dueDate = startDate.AddDays(-2);
+            Activity activity = Activity.FluentNew("New Activity")
+                .ActiveDueDate(dueDate)
+                .Recurrence(ERecurFromType.FromCompletedDate, x => x.Daily(2))
+                .AddToBoard(board);
+            board.InBox.ViewModes.CalendarView
+                .DateRange(startDate, endDate)
+                .IncludeFuture()
+                .Enable();
+
+            DateTime recur1DueDate = dueDate.AddDays(2);
+            DateTime recur2DueDate = recur1DueDate.AddDays(2);
+            Assert.That(recur1DueDate, Is.EqualTo(startDate));
+            Assert.That(board.InBox.ViewItems, Is.Not.Empty);
+            Assert.That(board.InBox.ViewItems.Count(), Is.EqualTo(2));
+            Assert.That(board.InBox.ViewItems.FirstOrDefault(x => x.Date == recur1DueDate), Is.Not.Null);
+            Assert.That(board.InBox.ViewItems.FirstOrDefault(x => x.Date == recur1DueDate), Is.TypeOf<ProjectionViewItem>());
+            Assert.That(board.InBox.ViewItems.FirstOrDefault(x => x.Date == recur2DueDate), Is.Not.Null);
+            Assert.That(board.InBox.ViewItems.FirstOrDefault(x => x.Date == recur2DueDate), Is.TypeOf<ProjectionViewItem>());
+        }
+
+        [Test]
+        public void CalendarViewWithIncludedFutureOnEndDate()
+        {
+            var board = new ActivityBoard();
+            DateTime startDate = new DateTime(2017, 3, 1);
+            DateTime endDate = startDate.AddDays(3);
+            DateTime dueDate = startDate.AddDays(-1);
+            Activity activity = Activity.FluentNew("New Activity")
+                .ActiveDueDate(dueDate)
+                .Recurrence(ERecurFromType.FromCompletedDate, x => x.Daily(2))
+                .AddToBoard(board);
+            board.InBox.ViewModes.CalendarView
+                .DateRange(startDate, endDate)
+                .IncludeFuture()
+                .Enable();
+
+            DateTime recur1DueDate = dueDate.AddDays(2);
+            DateTime recur2DueDate = recur1DueDate.AddDays(2);
+            Assert.That(recur2DueDate, Is.EqualTo(endDate));
+            Assert.That(board.InBox.ViewItems, Is.Not.Empty);
+            Assert.That(board.InBox.ViewItems.Count(), Is.EqualTo(2));
+            Assert.That(board.InBox.ViewItems.FirstOrDefault(x => x.Date == recur1DueDate), Is.Not.Null);
+            Assert.That(board.InBox.ViewItems.FirstOrDefault(x => x.Date == recur1DueDate), Is.TypeOf<ProjectionViewItem>());
+            Assert.That(board.InBox.ViewItems.FirstOrDefault(x => x.Date == recur2DueDate), Is.Not.Null);
+            Assert.That(board.InBox.ViewItems.FirstOrDefault(x => x.Date == recur2DueDate), Is.TypeOf<ProjectionViewItem>());
+        }
+
+        [Test]
+        public void CalendarViewWithIncludedFutureBeforeStartDate()
+        {
+            var board = new ActivityBoard();
+            DateTime startDate = new DateTime(2017, 3, 1);
+            DateTime endDate = startDate.AddDays(3);
+            DateTime dueDate = startDate.AddDays(-3);
+            Activity activity = Activity.FluentNew("New Activity")
+                .ActiveDueDate(dueDate)
+                .Recurrence(ERecurFromType.FromCompletedDate, 1, x => x.Daily(2))
+                .AddToBoard(board);
+            board.InBox.ViewModes.CalendarView
+                .DateRange(startDate, endDate)
+                .IncludeFuture()
+                .Enable();
+
+            Assert.That(board.InBox.ViewItems, Is.Empty);
+        }
+
+        [Test]
+        public void CalendarViewWithIncludedFutureAfterEndDate()
+        {
+            var board = new ActivityBoard();
+            DateTime startDate = new DateTime(2017, 3, 1);
+            DateTime endDate = startDate.AddDays(3);
+            DateTime dueDate = startDate.AddDays(2);
+            Activity activity = Activity.FluentNew("New Activity")
+                .ActiveDueDate(dueDate)
+                .Recurrence(ERecurFromType.FromCompletedDate, x => x.Daily(2))
+                .AddToBoard(board);
+            board.InBox.ViewModes.CalendarView
+                .DateRange(startDate, endDate)
+                .IncludeFuture()
+                .Enable();
+
+            Assert.That(board.InBox.ViewItems, Is.Not.Empty);
+            Assert.That(board.InBox.ViewItems.Count(), Is.EqualTo(1));
+            Assert.That(board.InBox.ViewItems.FirstOrDefault(x => x.Date == dueDate), Is.Not.Null);
+            Assert.That(board.InBox.ViewItems.FirstOrDefault(x => x.Date == dueDate), Is.TypeOf<ActivityViewItem>());
+        }
 
     }
 }

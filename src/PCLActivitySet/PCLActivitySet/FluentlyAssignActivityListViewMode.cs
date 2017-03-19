@@ -36,8 +36,22 @@ namespace PCLActivitySet
         public FluentlySetupCalendarView DateRange(DateTime startDate, DateTime endDate)
         {
             CalendarView view = this._activityList.InternalCalendarView;
-            view.StartDate = startDate;
-            view.EndDate = endDate;
+            view.StartDate = startDate.Date;
+            view.EndDate = endDate.Date.AddDays(1);
+            return this;
+        }
+
+        public FluentlySetupCalendarView IncludeHistory(bool includeHistory = true)
+        {
+            CalendarView view = this._activityList.InternalCalendarView;
+            view.IncludeHistory = includeHistory;
+            return this;
+        }
+
+        public FluentlySetupCalendarView IncludeFuture(bool includeFuture = true)
+        {
+            CalendarView view = this._activityList.InternalCalendarView;
+            view.IncludeFuture = includeFuture;
             return this;
         }
 
@@ -54,6 +68,8 @@ namespace PCLActivitySet
     {
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
+        public bool IncludeHistory { get; set; }
+        public bool IncludeFuture { get; set; }
 
         public Func<IEnumerable<Activity>, IEnumerable<IViewItem>> ViewItemGenerator => this.Generator;
 
@@ -63,15 +79,44 @@ namespace PCLActivitySet
                 throw new InvalidOperationException(
                     $"The properties {nameof(this.StartDate)} and {nameof(this.EndDate)} must be assigned values.");
 
-            if (this.EndDate < this.StartDate)
+            if (this.EndDate <= this.StartDate)
                 throw new InvalidOperationException(
-                    $"{nameof(this.StartDate)} must be less than or equal to {nameof(this.EndDate)}.");
+                    $"{nameof(this.StartDate)} must be less than {nameof(this.EndDate)}.");
+           
+            List<Activity> activityList = activitySequence.ToList();
 
-            return activitySequence
+            if (this.IncludeHistory)
+            {
+                IEnumerable<HistoryViewItem> historyItems = activityList
+                    .SelectMany(activity => activity.CompletionHistory)
+                    .Where(historyItem =>
+                        this.StartDate <= historyItem.CompletedDate
+                        && historyItem.CompletedDate < this.EndDate)
+                    .Select(historyItem => new HistoryViewItem(historyItem));
+                foreach (HistoryViewItem item in historyItems)
+                    yield return item;
+            }
+
+            IEnumerable<ActivityViewItem> activityItems = activityList
                 .Select(activity => new ActivityViewItem(activity))
-                .Where(viewItem => viewItem.Date != null
-                                   && this.StartDate <= viewItem.Date
-                                   && viewItem.Date <= this.EndDate);
+                .Where(viewItem =>
+                    viewItem.Date != null
+                    && this.StartDate <= viewItem.Date
+                    && viewItem.Date < this.EndDate);
+            foreach (ActivityViewItem item in activityItems)
+                yield return item;
+
+            if (this.IncludeFuture)
+            {
+                IEnumerable<ProjectionViewItem> futureItems = activityList
+                    .SelectMany(activity => activity.GetProjectedFutureDueDates(this.EndDate.Value))
+                    .Where(futureItem =>
+                        this.StartDate <= futureItem.DueDate
+                        && futureItem.DueDate < this.EndDate)
+                        .Select(futureItem => new ProjectionViewItem(futureItem));
+                foreach (ProjectionViewItem item in futureItems)
+                    yield return item;
+            }
         }
     }
 
@@ -195,54 +240,4 @@ namespace PCLActivitySet
             }
         }
     }
-
-    //public class FluentlyAssignActivityListViewMode
-    //{
-    //    private readonly ActivityList _activityList;
-
-    //    public FluentlyAssignActivityListViewMode(ActivityList activityList)
-    //    {
-    //        this._activityList = activityList;
-    //    }
-
-        //public TFilter GetFilter<TFilter>()
-        //    where TFilter : IViewItemFilter
-        //{
-        //    return this._activityList.InternalViewItemFilterList.OfType<TFilter>().FirstOrDefault();
-        //}
-
-        //public void SetFilter<TFilter>(TFilter filterToAdd)
-        //    where TFilter : IViewItemFilter
-        //{
-        //    this.RemoveFilter<TFilter>();
-        //    this._activityList.InternalViewItemFilterList.Add(filterToAdd);
-        //}
-
-        //public void RemoveFilter<TFilter>() 
-        //    where TFilter : IViewItemFilter
-        //{
-        //    List<TFilter> oldFiltersToRemove = this._activityList.InternalActivityFilterList.OfType<TFilter>().ToList();
-        //    foreach (TFilter filterToRemove in oldFiltersToRemove)
-        //        this._activityList.InternalViewItemFilterList.Remove(filterToRemove);
-        //}
-
-        //public FluentlyAssignActivityListViewMode Clear()
-        //{
-        //    this._activityList.InternalViewItemFilterList.Clear();
-        //    return this;
-        //}
-
-        //public FluentlyAssignActivityListViewMode DateRangeZ(DateTime startDate, DateTime endDate)
-        //{
-        //    throw new NotImplementedException();
-
-        //    //this.SetFilter(new DateRangeFilter(startDate, endDate));
-        //    //return this;
-        //}
-
-        //public FluentlyAssignActivityListViewMode IncludeHistoryZ()
-        //{
-        //    throw new NotImplementedException();
-        //}
-    //}
 }

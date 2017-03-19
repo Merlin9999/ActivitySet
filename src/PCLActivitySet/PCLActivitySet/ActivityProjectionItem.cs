@@ -14,8 +14,8 @@ namespace PCLActivitySet
             this.DueDate = dueDate;
         }
 
-        public string Name { get; private set; }
-        public DateTime DueDate { get; private set; }
+        public string Name { get; set; }
+        public DateTime DueDate { get; set; }
     }
 
 }

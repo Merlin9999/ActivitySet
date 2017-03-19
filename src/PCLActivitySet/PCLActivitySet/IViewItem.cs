@@ -22,4 +22,32 @@ namespace PCLActivitySet
         public string Name => this._activity.Name;
         public bool IsActive => this._activity.IsActive;
     }
+
+    public class HistoryViewItem : IViewItem
+    {
+        private readonly ActivityHistoryItem _historyItem;
+
+        public HistoryViewItem(ActivityHistoryItem historyItem)
+        {
+            this._historyItem = historyItem;
+        }
+
+        public string Name => this._historyItem.Name;
+        public DateTime? Date => this._historyItem.CompletedDate;
+        public bool IsActive => false;
+    }
+
+    public class ProjectionViewItem : IViewItem
+    {
+        private readonly ActivityProjectionItem _projectionItem;
+
+        public ProjectionViewItem(ActivityProjectionItem projectionItem)
+        {
+            this._projectionItem = projectionItem;
+        }
+
+        public string Name => this._projectionItem.Name;
+        public DateTime? Date => this._projectionItem.DueDate;
+        public bool IsActive => false;
+    }
 }
