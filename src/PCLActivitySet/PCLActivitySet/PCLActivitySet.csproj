@@ -52,7 +52,7 @@
     <Compile Include="ActivityBoard.cs" />
     <Compile Include="DateProjectionCreateHelper.cs" />
     <Compile Include="FluentlyFilterActivities.cs" />
-    <Compile Include="FluentlyFilterViewItems.cs" />
+    <Compile Include="FluentlyAssignActivityListView.cs" />
     <Compile Include="FluentlyModifyActivity.cs" />
     <Compile Include="FluentlyMoveActivityToActivityList.cs" />
     <Compile Include="IActivityFilter.cs" />

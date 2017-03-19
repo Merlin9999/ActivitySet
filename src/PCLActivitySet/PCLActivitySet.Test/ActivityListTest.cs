@@ -71,201 +71,201 @@ namespace PCLActivitySet.Test
             Assert.That(activityList.FocusDate, Is.EqualTo(yesterday.Date));
         }
 
-        [Test]
-        public void ClearingActivityFiltersShowsAllActivities()
-        {
-            var board = new ActivityBoard();
-            Activity activity1 = Activity.FluentNew("New Activity 1").AddToBoard(board);
-            Activity activity2 = Activity.FluentNew("New Activity 2").AddToBoard(board);
-            activity1.SignalCompleted(new DateTime(2017, 2, 28));
-            board.InBox.ActivityFilters.ExcludeNonActive();
-            board.InBox.ActivityFilters.Clear();
+        //[Test]
+        //public void ClearingActivityFiltersShowsAllActivities()
+        //{
+        //    var board = new ActivityBoard();
+        //    Activity activity1 = Activity.FluentNew("New Activity 1").AddToBoard(board);
+        //    Activity activity2 = Activity.FluentNew("New Activity 2").AddToBoard(board);
+        //    activity1.SignalCompleted(new DateTime(2017, 2, 28));
+        //    board.InBox.AssignView.ExcludeNonActive();
+        //    board.InBox.AssignView.Clear();
 
-            Assert.That(board.InBox.Activities, Is.Not.Empty);
-            Assert.That(board.InBox.Activities.Count(), Is.EqualTo(2));
-        }
+        //    Assert.That(board.InBox.Activities, Is.Not.Empty);
+        //    Assert.That(board.InBox.Activities.Count(), Is.EqualTo(2));
+        //}
 
-        [Test]
-        public void GetFilterThatWasApplied()
-        {
-            var board = new ActivityBoard();
-            ExcludeNonActiveWithDelayFilter filter =
-                board.InBox.ActivityFilters
-                    .ExcludeNonActiveWithDelay(TimeSpan.FromHours(4))
-                    .GetExcludeNonActiveWithDelay();
+        //[Test]
+        //public void GetFilterThatWasApplied()
+        //{
+        //    var board = new ActivityBoard();
+        //    ExcludeNonActiveWithDelayFilter filter =
+        //        board.InBox.AssignView
+        //            .ExcludeNonActiveWithDelay(TimeSpan.FromHours(4))
+        //            .GetExcludeNonActiveWithDelay();
 
-            Assert.That(filter, Is.Not.Null);
-            Assert.That(filter.Delay, Is.EqualTo(TimeSpan.FromHours(4)));
-        }
+        //    Assert.That(filter, Is.Not.Null);
+        //    Assert.That(filter.Delay, Is.EqualTo(TimeSpan.FromHours(4)));
+        //}
 
-        [Test]
-        public void GetFilterThatWasNotApplied()
-        {
-            var board = new ActivityBoard();
-            ExcludeNonActiveWithDelayFilter filter =
-                board.InBox.ActivityFilters
-                    .GetExcludeNonActiveWithDelay();
+        //[Test]
+        //public void GetFilterThatWasNotApplied()
+        //{
+        //    var board = new ActivityBoard();
+        //    ExcludeNonActiveWithDelayFilter filter =
+        //        board.InBox.AssignView
+        //            .GetExcludeNonActiveWithDelay();
 
-            Assert.That(filter, Is.Null);
-        }
+        //    Assert.That(filter, Is.Null);
+        //}
 
-        [Test]
-        public void OverwriteFilterWithUpdatedFilterOfSameType()
-        {
-            var board = new ActivityBoard();
-            ExcludeNonActiveWithDelayFilter filter = board.InBox.ActivityFilters
-                .ExcludeNonActiveWithDelay(TimeSpan.FromMinutes(10))
-                .FocusDateRadar()
-                .ExcludeNonActiveWithDelay(TimeSpan.FromHours(4))
-                .GetExcludeNonActiveWithDelay();
-            Assert.That(filter.Delay, Is.Not.EqualTo(TimeSpan.FromMinutes(10)));
-            Assert.That(filter.Delay, Is.EqualTo(TimeSpan.FromHours(4)));
-        }
+        //[Test]
+        //public void OverwriteFilterWithUpdatedFilterOfSameType()
+        //{
+        //    var board = new ActivityBoard();
+        //    ExcludeNonActiveWithDelayFilter filter = board.InBox.AssignView
+        //        .ExcludeNonActiveWithDelay(TimeSpan.FromMinutes(10))
+        //        .FocusDateRadar()
+        //        .ExcludeNonActiveWithDelay(TimeSpan.FromHours(4))
+        //        .GetExcludeNonActiveWithDelay();
+        //    Assert.That(filter.Delay, Is.Not.EqualTo(TimeSpan.FromMinutes(10)));
+        //    Assert.That(filter.Delay, Is.EqualTo(TimeSpan.FromHours(4)));
+        //}
 
-        [Test]
-        public void FilteringInactiveActivities()
-        {
-            var board = new ActivityBoard();
-            Activity activity1 = Activity.FluentNew("New Activity 1").AddToBoard(board);
-            Activity activity2 = Activity.FluentNew("New Activity 2").AddToBoard(board);
-            activity1.SignalCompleted(new DateTime(2017, 2, 28));
-            board.InBox.ActivityFilters.ExcludeNonActive();
+        //[Test]
+        //public void FilteringInactiveActivities()
+        //{
+        //    var board = new ActivityBoard();
+        //    Activity activity1 = Activity.FluentNew("New Activity 1").AddToBoard(board);
+        //    Activity activity2 = Activity.FluentNew("New Activity 2").AddToBoard(board);
+        //    activity1.SignalCompleted(new DateTime(2017, 2, 28));
+        //    board.InBox.AssignView.ExcludeNonActive();
 
-            Assert.That(board.InBox.Activities, Is.Not.Empty);
-            Assert.That(board.InBox.Activities.Count(), Is.EqualTo(1));
-        }
+        //    Assert.That(board.InBox.Activities, Is.Not.Empty);
+        //    Assert.That(board.InBox.Activities.Count(), Is.EqualTo(1));
+        //}
 
-        [Test]
-        public void FilteringInactiveActivitiesWithFocusDateInThePast()
-        {
-            var board = new ActivityBoard();
-            Activity activity1 = Activity.FluentNew("New Activity 1").AddToBoard(board);
-            Activity activity2 = Activity.FluentNew("New Activity 2").AddToBoard(board);
-            activity1.SignalCompleted(new DateTime(2017, 2, 28));
-            board.InBox.ActivityFilters.ExcludeNonActive();
-            board.InBox.FocusDateTime = DateTime.Now.AddDays(-2);
+        //[Test]
+        //public void FilteringInactiveActivitiesWithFocusDateInThePast()
+        //{
+        //    var board = new ActivityBoard();
+        //    Activity activity1 = Activity.FluentNew("New Activity 1").AddToBoard(board);
+        //    Activity activity2 = Activity.FluentNew("New Activity 2").AddToBoard(board);
+        //    activity1.SignalCompleted(new DateTime(2017, 2, 28));
+        //    board.InBox.AssignView.ExcludeNonActive();
+        //    board.InBox.FocusDateTime = DateTime.Now.AddDays(-2);
 
-            Assert.That(board.InBox.Activities, Is.Not.Empty);
-            Assert.That(board.InBox.Activities.Count(), Is.EqualTo(1));
-        }
+        //    Assert.That(board.InBox.Activities, Is.Not.Empty);
+        //    Assert.That(board.InBox.Activities.Count(), Is.EqualTo(1));
+        //}
 
 
-        [Test]
-        public void FilteringInactiveActivitiesWithFilterDelayNotExpired()
-        {
-            var board = new ActivityBoard();
-            Activity activity1 = Activity.FluentNew("New Activity 1").AddToBoard(board);
-            Activity activity2 = Activity.FluentNew("New Activity 2").AddToBoard(board);
-            activity1.SignalCompleted(new DateTime(2017, 2, 28));
-            board.InBox.ActivityFilters.ExcludeNonActiveWithDelay(TimeSpan.FromHours(4));
+        //[Test]
+        //public void FilteringInactiveActivitiesWithFilterDelayNotExpired()
+        //{
+        //    var board = new ActivityBoard();
+        //    Activity activity1 = Activity.FluentNew("New Activity 1").AddToBoard(board);
+        //    Activity activity2 = Activity.FluentNew("New Activity 2").AddToBoard(board);
+        //    activity1.SignalCompleted(new DateTime(2017, 2, 28));
+        //    board.InBox.AssignView.ExcludeNonActiveWithDelay(TimeSpan.FromHours(4));
 
-            Assert.That(board.InBox.Activities, Is.Not.Empty);
-            Assert.That(board.InBox.Activities.Count(), Is.EqualTo(2));
-        }
+        //    Assert.That(board.InBox.Activities, Is.Not.Empty);
+        //    Assert.That(board.InBox.Activities.Count(), Is.EqualTo(2));
+        //}
 
-        [Test]
-        public void FilteringInactiveActivitiesWithFilterDelayExpired()
-        {
-            var board = new ActivityBoard();
-            Activity activity1 = Activity.FluentNew("New Activity 1").AddToBoard(board);
-            Activity activity2 = Activity.FluentNew("New Activity 2").AddToBoard(board);
-            activity1.SignalCompleted(new DateTime(2017, 2, 28));
-            board.InBox.ActivityFilters.ExcludeNonActiveWithDelay(TimeSpan.FromMilliseconds(1));
-            System.Threading.Thread.Sleep(TimeSpan.FromMilliseconds(2));
+        //[Test]
+        //public void FilteringInactiveActivitiesWithFilterDelayExpired()
+        //{
+        //    var board = new ActivityBoard();
+        //    Activity activity1 = Activity.FluentNew("New Activity 1").AddToBoard(board);
+        //    Activity activity2 = Activity.FluentNew("New Activity 2").AddToBoard(board);
+        //    activity1.SignalCompleted(new DateTime(2017, 2, 28));
+        //    board.InBox.AssignView.ExcludeNonActiveWithDelay(TimeSpan.FromMilliseconds(1));
+        //    System.Threading.Thread.Sleep(TimeSpan.FromMilliseconds(2));
 
-            Assert.That(board.InBox.Activities, Is.Not.Empty);
-            Assert.That(board.InBox.Activities.Count(), Is.EqualTo(1));
-        }
+        //    Assert.That(board.InBox.Activities, Is.Not.Empty);
+        //    Assert.That(board.InBox.Activities.Count(), Is.EqualTo(1));
+        //}
 
-        [Test]
-        public void FilteringFocusDateRadarWhenFocusDateSameAsActiveDueDate()
-        {
-            var board = new ActivityBoard();
-            DateTime focusDateTime = new DateTime(2017, 2, 28);
-            board.InBox.FocusDateTime = focusDateTime;
-            Activity activity = Activity.FluentNew("New Activity")
-                .ActiveDueDate(focusDateTime).AddToBoard(board);
-            board.InBox.ActivityFilters.FocusDateRadar();
+        //[Test]
+        //public void FilteringFocusDateRadarWhenFocusDateSameAsActiveDueDate()
+        //{
+        //    var board = new ActivityBoard();
+        //    DateTime focusDateTime = new DateTime(2017, 2, 28);
+        //    board.InBox.FocusDateTime = focusDateTime;
+        //    Activity activity = Activity.FluentNew("New Activity")
+        //        .ActiveDueDate(focusDateTime).AddToBoard(board);
+        //    board.InBox.AssignView.FocusDateRadar();
 
-            Assert.That(board.InBox.Activities, Is.Not.Empty);
-            Assert.That(board.InBox.Activities.Count(), Is.EqualTo(1));
-        }
+        //    Assert.That(board.InBox.Activities, Is.Not.Empty);
+        //    Assert.That(board.InBox.Activities.Count(), Is.EqualTo(1));
+        //}
 
-        [Test]
-        public void FilteringFocusDateRadarWhenFocusDateAfterActiveDueDate()
-        {
-            var board = new ActivityBoard();
-            DateTime focusDateTime = new DateTime(2017, 2, 28);
-            board.InBox.FocusDateTime = focusDateTime;
-            Activity activity = Activity.FluentNew("New Activity")
-                .ActiveDueDate(focusDateTime.AddDays(-1))
-                .AddToBoard(board);
-            board.InBox.ActivityFilters.FocusDateRadar();
+        //[Test]
+        //public void FilteringFocusDateRadarWhenFocusDateAfterActiveDueDate()
+        //{
+        //    var board = new ActivityBoard();
+        //    DateTime focusDateTime = new DateTime(2017, 2, 28);
+        //    board.InBox.FocusDateTime = focusDateTime;
+        //    Activity activity = Activity.FluentNew("New Activity")
+        //        .ActiveDueDate(focusDateTime.AddDays(-1))
+        //        .AddToBoard(board);
+        //    board.InBox.AssignView.FocusDateRadar();
 
-            Assert.That(board.InBox.Activities, Is.Not.Empty);
-            Assert.That(board.InBox.Activities.Count(), Is.EqualTo(1));
-        }
+        //    Assert.That(board.InBox.Activities, Is.Not.Empty);
+        //    Assert.That(board.InBox.Activities.Count(), Is.EqualTo(1));
+        //}
 
-        [Test]
-        public void FilteringFocusDateRadarWhenFocusDateBeforeActiveDueDate()
-        {
-            var board = new ActivityBoard();
-            DateTime focusDateTime = new DateTime(2017, 2, 28);
-            board.InBox.FocusDateTime = focusDateTime;
-            Activity activity = Activity.FluentNew("New Activity")
-                .ActiveDueDate(focusDateTime.AddDays(1))
-                .AddToBoard(board);
-            board.InBox.ActivityFilters.FocusDateRadar();
+        //[Test]
+        //public void FilteringFocusDateRadarWhenFocusDateBeforeActiveDueDate()
+        //{
+        //    var board = new ActivityBoard();
+        //    DateTime focusDateTime = new DateTime(2017, 2, 28);
+        //    board.InBox.FocusDateTime = focusDateTime;
+        //    Activity activity = Activity.FluentNew("New Activity")
+        //        .ActiveDueDate(focusDateTime.AddDays(1))
+        //        .AddToBoard(board);
+        //    board.InBox.AssignView.FocusDateRadar();
 
-            Assert.That(board.InBox.Activities, Is.Empty);
-        }
+        //    Assert.That(board.InBox.Activities, Is.Empty);
+        //}
 
-        [Test]
-        public void FilteringFocusDateRadarWhenFocusDateSameAsLeadTimeDate()
-        {
-            var board = new ActivityBoard();
-            DateTime focusDateTime = new DateTime(2017, 2, 28);
-            board.InBox.FocusDateTime = focusDateTime;
-            Activity activity = Activity.FluentNew("New Activity")
-                .ActiveDueDate(focusDateTime.AddDays(1))
-                .DailyLeadTime(1)
-                .AddToBoard(board);
-            board.InBox.ActivityFilters.FocusDateRadar();
+        //[Test]
+        //public void FilteringFocusDateRadarWhenFocusDateSameAsLeadTimeDate()
+        //{
+        //    var board = new ActivityBoard();
+        //    DateTime focusDateTime = new DateTime(2017, 2, 28);
+        //    board.InBox.FocusDateTime = focusDateTime;
+        //    Activity activity = Activity.FluentNew("New Activity")
+        //        .ActiveDueDate(focusDateTime.AddDays(1))
+        //        .DailyLeadTime(1)
+        //        .AddToBoard(board);
+        //    board.InBox.AssignView.FocusDateRadar();
 
-            Assert.That(board.InBox.Activities, Is.Not.Empty);
-            Assert.That(board.InBox.Activities.Count(), Is.EqualTo(1));
-        }
+        //    Assert.That(board.InBox.Activities, Is.Not.Empty);
+        //    Assert.That(board.InBox.Activities.Count(), Is.EqualTo(1));
+        //}
 
-        [Test]
-        public void FilteringFocusDateRadarWhenFocusDateAfterLeadTimeDate()
-        {
-            var board = new ActivityBoard();
-            DateTime focusDateTime = new DateTime(2017, 2, 28);
-            board.InBox.FocusDateTime = focusDateTime;
-            Activity activity = Activity.FluentNew("New Activity")
-                .ActiveDueDate(focusDateTime.AddDays(1))
-                .DailyLeadTime(2)
-                .AddToBoard(board);
-            board.InBox.ActivityFilters.FocusDateRadar();
+        //[Test]
+        //public void FilteringFocusDateRadarWhenFocusDateAfterLeadTimeDate()
+        //{
+        //    var board = new ActivityBoard();
+        //    DateTime focusDateTime = new DateTime(2017, 2, 28);
+        //    board.InBox.FocusDateTime = focusDateTime;
+        //    Activity activity = Activity.FluentNew("New Activity")
+        //        .ActiveDueDate(focusDateTime.AddDays(1))
+        //        .DailyLeadTime(2)
+        //        .AddToBoard(board);
+        //    board.InBox.AssignView.FocusDateRadar();
 
-            Assert.That(board.InBox.Activities, Is.Not.Empty);
-            Assert.That(board.InBox.Activities.Count(), Is.EqualTo(1));
-        }
+        //    Assert.That(board.InBox.Activities, Is.Not.Empty);
+        //    Assert.That(board.InBox.Activities.Count(), Is.EqualTo(1));
+        //}
 
-        [Test]
-        public void FilteringFocusDateRadarWhenFocusDateBeforeLeadTimeDate()
-        {
-            var board = new ActivityBoard();
-            DateTime focusDateTime = new DateTime(2017, 2, 28);
-            board.InBox.FocusDateTime = focusDateTime;
-            Activity activity = Activity.FluentNew("New Activity")
-                .ActiveDueDate(focusDateTime.AddDays(2))
-                .DailyLeadTime(1)
-                .AddToBoard(board);
-            board.InBox.ActivityFilters.FocusDateRadar();
+        //[Test]
+        //public void FilteringFocusDateRadarWhenFocusDateBeforeLeadTimeDate()
+        //{
+        //    var board = new ActivityBoard();
+        //    DateTime focusDateTime = new DateTime(2017, 2, 28);
+        //    board.InBox.FocusDateTime = focusDateTime;
+        //    Activity activity = Activity.FluentNew("New Activity")
+        //        .ActiveDueDate(focusDateTime.AddDays(2))
+        //        .DailyLeadTime(1)
+        //        .AddToBoard(board);
+        //    board.InBox.AssignView.FocusDateRadar();
 
-            Assert.That(board.InBox.Activities, Is.Empty);
-        }
+        //    Assert.That(board.InBox.Activities, Is.Empty);
+        //}
 
         [Test]
         public void ViewItemsEmptyWhenActivitiesEmpty()
@@ -284,78 +284,78 @@ namespace PCLActivitySet.Test
             Assert.That(board.InBox.ViewItems.Count(), Is.EqualTo(1));
         }
 
-        [Test]
-        public void ViewItemFiltersActivityWithinDateRange()
-        {
-            var board = new ActivityBoard();
-            DateTime startDate = new DateTime(2017, 2, 28);
-            DateTime endDate = startDate.AddDays(5);
-            DateTime dueDate = startDate.AddDays(2);
-            Activity activity = Activity.FluentNew("New Activity")
-                .ActiveDueDate(dueDate)
-                .AddToBoard(board);
-            board.InBox.ViewItemFilters.DateRange(startDate, endDate);
-            Assert.That(board.InBox.ViewItems, Is.Not.Empty);
-            Assert.That(board.InBox.ViewItems.Count(), Is.EqualTo(1));
-        }
+        //[Test]
+        //public void ViewItemFiltersActivityWithinDateRange()
+        //{
+        //    var board = new ActivityBoard();
+        //    DateTime startDate = new DateTime(2017, 2, 28);
+        //    DateTime endDate = startDate.AddDays(5);
+        //    DateTime dueDate = startDate.AddDays(2);
+        //    Activity activity = Activity.FluentNew("New Activity")
+        //        .ActiveDueDate(dueDate)
+        //        .AddToBoard(board);
+        //    board.InBox.AssignView.DateRange(startDate, endDate);
+        //    Assert.That(board.InBox.ViewItems, Is.Not.Empty);
+        //    Assert.That(board.InBox.ViewItems.Count(), Is.EqualTo(1));
+        //}
 
-        [Test]
-        public void ViewItemFiltersActivityOnStartOfDateRange()
-        {
-            var board = new ActivityBoard();
-            DateTime startDate = new DateTime(2017, 2, 28);
-            DateTime endDate = startDate.AddDays(5);
-            DateTime dueDate = startDate;
-            Activity activity = Activity.FluentNew("New Activity")
-                .ActiveDueDate(dueDate)
-                .AddToBoard(board);
-            board.InBox.ViewItemFilters.DateRange(startDate, endDate);
-            Assert.That(board.InBox.ViewItems, Is.Not.Empty);
-            Assert.That(board.InBox.ViewItems.Count(), Is.EqualTo(1));
-        }
+        //[Test]
+        //public void ViewItemFiltersActivityOnStartOfDateRange()
+        //{
+        //    var board = new ActivityBoard();
+        //    DateTime startDate = new DateTime(2017, 2, 28);
+        //    DateTime endDate = startDate.AddDays(5);
+        //    DateTime dueDate = startDate;
+        //    Activity activity = Activity.FluentNew("New Activity")
+        //        .ActiveDueDate(dueDate)
+        //        .AddToBoard(board);
+        //    board.InBox.AssignView.DateRange(startDate, endDate);
+        //    Assert.That(board.InBox.ViewItems, Is.Not.Empty);
+        //    Assert.That(board.InBox.ViewItems.Count(), Is.EqualTo(1));
+        //}
 
-        [Test]
-        public void ViewItemFiltersActivityOnEndOfDateRange()
-        {
-            var board = new ActivityBoard();
-            DateTime startDate = new DateTime(2017, 2, 28);
-            DateTime endDate = startDate.AddDays(5);
-            DateTime dueDate = endDate;
-            Activity activity = Activity.FluentNew("New Activity")
-                .ActiveDueDate(dueDate)
-                .AddToBoard(board);
-            board.InBox.ViewItemFilters.DateRange(startDate, endDate);
-            Assert.That(board.InBox.ViewItems, Is.Not.Empty);
-            Assert.That(board.InBox.ViewItems.Count(), Is.EqualTo(1));
-        }
+        //[Test]
+        //public void ViewItemFiltersActivityOnEndOfDateRange()
+        //{
+        //    var board = new ActivityBoard();
+        //    DateTime startDate = new DateTime(2017, 2, 28);
+        //    DateTime endDate = startDate.AddDays(5);
+        //    DateTime dueDate = endDate;
+        //    Activity activity = Activity.FluentNew("New Activity")
+        //        .ActiveDueDate(dueDate)
+        //        .AddToBoard(board);
+        //    board.InBox.AssignView.DateRange(startDate, endDate);
+        //    Assert.That(board.InBox.ViewItems, Is.Not.Empty);
+        //    Assert.That(board.InBox.ViewItems.Count(), Is.EqualTo(1));
+        //}
 
-        [Test]
-        public void ViewItemFiltersActivityBeforeStartOfDateRange()
-        {
-            var board = new ActivityBoard();
-            DateTime startDate = new DateTime(2017, 2, 28);
-            DateTime endDate = startDate.AddDays(5);
-            DateTime dueDate = startDate.AddDays(-1);
-            Activity activity = Activity.FluentNew("New Activity")
-                .ActiveDueDate(dueDate)
-                .AddToBoard(board);
-            board.InBox.ViewItemFilters.DateRange(startDate, endDate);
-            Assert.That(board.InBox.ViewItems, Is.Empty);
-        }
+        //[Test]
+        //public void ViewItemFiltersActivityBeforeStartOfDateRange()
+        //{
+        //    var board = new ActivityBoard();
+        //    DateTime startDate = new DateTime(2017, 2, 28);
+        //    DateTime endDate = startDate.AddDays(5);
+        //    DateTime dueDate = startDate.AddDays(-1);
+        //    Activity activity = Activity.FluentNew("New Activity")
+        //        .ActiveDueDate(dueDate)
+        //        .AddToBoard(board);
+        //    board.InBox.AssignView.DateRange(startDate, endDate);
+        //    Assert.That(board.InBox.ViewItems, Is.Empty);
+        //}
 
-        [Test]
-        public void ViewItemFiltersActivityAfterEndOfDateRange()
-        {
-            var board = new ActivityBoard();
-            DateTime startDate = new DateTime(2017, 2, 28);
-            DateTime endDate = startDate.AddDays(5);
-            DateTime dueDate = endDate.AddDays(1);
-            Activity activity = Activity.FluentNew("New Activity")
-                .ActiveDueDate(dueDate)
-                .AddToBoard(board);
-            board.InBox.ViewItemFilters.DateRange(startDate, endDate);
-            Assert.That(board.InBox.ViewItems, Is.Empty);
-        }
+        //[Test]
+        //public void ViewItemFiltersActivityAfterEndOfDateRange()
+        //{
+        //    var board = new ActivityBoard();
+        //    DateTime startDate = new DateTime(2017, 2, 28);
+        //    DateTime endDate = startDate.AddDays(5);
+        //    DateTime dueDate = endDate.AddDays(1);
+        //    Activity activity = Activity.FluentNew("New Activity")
+        //        .ActiveDueDate(dueDate)
+        //        .AddToBoard(board);
+        //    board.InBox.AssignView.DateRange(startDate, endDate);
+        //    Assert.That(board.InBox.ViewItems, Is.Empty);
+        //}
 
         //[Test]
         //public void ViewItemFiltersIncludesHistoryDateRange()
@@ -368,7 +368,7 @@ namespace PCLActivitySet.Test
         //        .ActiveDueDate(dueDate)
         //        .Recurrence(ERecurFromType.FromCompletedDate, x => x.Daily(1))
         //        .AddToBoard(board);
-        //    board.InBox.ViewItemFilters.DateRange(startDate, endDate)
+        //    board.InBox.AssignView.DateRange(startDate, endDate)
         //        .IncludeHistory()
         //        //.IncludeFuture()
         //        ;
