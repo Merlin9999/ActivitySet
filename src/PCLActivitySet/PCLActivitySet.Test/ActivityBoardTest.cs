@@ -1,7 +1,6 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using NUnit.Framework;
 using PCLActivitySet.Recurrence;
 
 namespace PCLActivitySet.Test

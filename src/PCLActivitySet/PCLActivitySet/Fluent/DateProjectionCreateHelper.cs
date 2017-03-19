@@ -1,6 +1,6 @@
 using PCLActivitySet.Recurrence;
 
-namespace PCLActivitySet
+namespace PCLActivitySet.Fluent
 {
     public class DateProjectionCreateHelper
     {

@@ -50,10 +50,19 @@
     <Compile Include="ActivityList.cs" />
     <Compile Include="ActivityProjectionItem.cs" />
     <Compile Include="ActivityBoard.cs" />
-    <Compile Include="DateProjectionCreateHelper.cs" />
-    <Compile Include="FluentlyAssignActivityListViewMode.cs" />
-    <Compile Include="FluentlyModifyActivity.cs" />
-    <Compile Include="FluentlyMoveActivityToActivityList.cs" />
+    <Compile Include="Views\CalendarView.cs" />
+    <Compile Include="Fluent\FluentlySelectViewMode.cs" />
+    <Compile Include="Fluent\FluentlySetupCalendarView.cs" />
+    <Compile Include="Fluent\FluentlySetupExcludeNonActiveView.cs" />
+    <Compile Include="Fluent\FluentlySetupFocusDateView.cs" />
+    <Compile Include="Views\FocusDateView.cs" />
+    <Compile Include="Views\ProjectionViewItem.cs" />
+    <Compile Include="Views\HistoryViewItem.cs" />
+    <Compile Include="Views\ActivityViewItem.cs" />
+    <Compile Include="Fluent\DateProjectionCreateHelper.cs" />
+    <Compile Include="Views\ExcludeNonActiveView.cs" />
+    <Compile Include="Fluent\FluentlyModifyActivity.cs" />
+    <Compile Include="Fluent\FluentlyMoveActivityToActivityList.cs" />
     <Compile Include="InBoxActivityList.cs" />
     <Compile Include="IViewItem.cs" />
     <Compile Include="IView.cs" />
@@ -78,6 +87,7 @@
     <Compile Include="Recurrence\YearlyProjection.cs" />
     <Compile Include="Recurrence\YearlyRelativeProjection.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

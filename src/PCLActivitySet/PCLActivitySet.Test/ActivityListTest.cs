@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using NUnit.Framework;
+using PCLActivitySet.Views;
+using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NUnit.Framework;
 using PCLActivitySet.Recurrence;
 
 namespace PCLActivitySet.Test

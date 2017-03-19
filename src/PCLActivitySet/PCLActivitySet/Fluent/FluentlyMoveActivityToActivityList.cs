@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace PCLActivitySet
+namespace PCLActivitySet.Fluent
 {
     public class FluentlyMoveActivityToActivityList
     {

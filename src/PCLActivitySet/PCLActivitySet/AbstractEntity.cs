@@ -61,11 +61,6 @@ namespace PCLActivitySet
             return (this.Guid == default(Guid) ? 561689825 : this.Guid.GetHashCode());
         }
 
-        //public override string ToString()
-        //{
-        //    return string.Format("{0} : {1}", Name ?? "<null>", base.ToString());
-        //}
-
         #endregion
     }
 }

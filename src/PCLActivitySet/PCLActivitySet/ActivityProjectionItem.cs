@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace PCLActivitySet
 {
+    [DebuggerDisplay("{Name} : {GetType().Name}")]
     public class ActivityProjectionItem
     {
         public ActivityProjectionItem()

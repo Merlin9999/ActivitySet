@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace PCLActivitySet
 {
+    [DebuggerDisplay("{Name} : {GetType().Name}")]
     public class InBoxActivityList : ActivityList
     {
         public InBoxActivityList(ActivityBoard owningBoard)

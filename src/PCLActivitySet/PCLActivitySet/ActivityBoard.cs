@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using PCLActivitySet.Fluent;
 
 namespace PCLActivitySet
 {

@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using PCLActivitySet.Fluent;
+using PCLActivitySet.Views;
 
 namespace PCLActivitySet
 {
+    [DebuggerDisplay("{Name} : {GetType().Name}")]
     public class ActivityList : AbstractEntity<ActivityList>
     {
         protected readonly ActivityBoard OwningBoard;
