@@ -21,7 +21,7 @@ namespace PCLActivitySet.Test
         }
 
         [Test]
-        public void DateSameAsActivityItemDueDate()
+        public void DateSameAsItemCompletedDate()
         {
             DateTime date = DateTime.Now;
             var item = new ActivityHistoryItem() { CompletedDate = date };
