@@ -12,7 +12,7 @@ namespace PCLActivitySet.Test
         {
             string name = "Test Activity";
             var item = new ActivityHistoryItem() { Name = name };
-            var viewItem = new HistoryViewItem(item);
+            var viewItem = new HistoryViewItem(item, null);
 
             Assert.That(viewItem.Name, Is.EqualTo(name));
         }
@@ -22,7 +22,7 @@ namespace PCLActivitySet.Test
         {
             DateTime date = DateTime.Now;
             var item = new ActivityHistoryItem() { CompletedDate = date };
-            var viewItem = new HistoryViewItem(item);
+            var viewItem = new HistoryViewItem(item, null);
 
             Assert.That(viewItem.Date, Is.EqualTo(date));
         }
@@ -31,7 +31,7 @@ namespace PCLActivitySet.Test
         public void IsActiveIsFalse()
         {
             var item = new ActivityHistoryItem();
-            var viewItem = new HistoryViewItem(item);
+            var viewItem = new HistoryViewItem(item, null);
 
             Assert.That(viewItem.IsActive, Is.False);
         }

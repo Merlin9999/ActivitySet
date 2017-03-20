@@ -450,5 +450,44 @@ namespace PCLActivitySet.Test
             activity.GoalGuid = Guid.NewGuid();
             Assert.That(() => board.GetGoalFromActivity(activity), Throws.TypeOf<InvalidOperationException>());
         }
+
+        [Test]
+        public void GetGoalsFromActivities()
+        {
+            var board = new ActivityBoard();
+            Activity activity1 = Activity.FluentNew("Activity 1")
+                .AddToBoard(board);
+            Activity activity2 = Activity.FluentNew("Activity 2")
+               .AddToBoard(board);
+            ActivityGoal goal1 = board.AddNewGoal("Goal 1");
+            board.MoveActivity(activity1).ToGoal(goal1);
+            board.MoveActivity(activity2).ToGoal(goal1);
+            ILookup<ActivityGoal, Activity> goalLookup = board.GetGoalLookupFromActivities(activity1, activity2);
+
+            Assert.That(goalLookup, Is.Not.Empty);
+            Assert.That(goalLookup.Count, Is.EqualTo(1));
+            Assert.That(goalLookup.First().Key, Is.EqualTo(goal1));
+            Assert.That(goalLookup.First().Count(), Is.EqualTo(2));
+            Assert.That(goalLookup.First().FirstOrDefault(activity => activity == activity1), Is.Not.Null);
+            Assert.That(goalLookup.First().FirstOrDefault(activity => activity == activity2), Is.Not.Null);
+        }
+
+        [Test]
+        public void GetGoalsFromActivitiesConsolidatesActivities()
+        {
+            var board = new ActivityBoard();
+            Activity activity1 = Activity.FluentNew("Activity 1")
+                .AddToBoard(board);
+            ActivityGoal goal1 = board.AddNewGoal("Goal 1");
+            board.MoveActivity(activity1).ToGoal(goal1);
+            ILookup<ActivityGoal, Activity> goalLookup = board.GetGoalLookupFromActivities(activity1, activity1);
+
+            Assert.That(goalLookup, Is.Not.Empty);
+            Assert.That(goalLookup.Count, Is.EqualTo(1));
+            Assert.That(goalLookup.First().Key, Is.EqualTo(goal1));
+            Assert.That(goalLookup.First().Count(), Is.EqualTo(1));
+            Assert.That(goalLookup.First().FirstOrDefault(activity => activity == activity1), Is.Not.Null);
+        }
+
     }
 }

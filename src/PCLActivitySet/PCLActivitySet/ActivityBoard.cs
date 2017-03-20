@@ -172,7 +172,7 @@ namespace PCLActivitySet
         {
             ILookup<Guid, ActivityGoal> goalLookup = this.SetOfGoals.ToLookup(goal => goal.Guid);
 
-            var activityGoalList = activities
+            var activityGoalList = activities.Distinct()
                 .Where(activity => activity.GoalGuid != null)
                 .Select(
                     activity => new {Activity = activity, Goal = goalLookup[activity.GoalGuid.Value].FirstOrDefault()})

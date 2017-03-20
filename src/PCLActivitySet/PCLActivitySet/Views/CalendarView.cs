@@ -28,11 +28,13 @@ namespace PCLActivitySet.Views
             if (this.IncludeHistory)
             {
                 IEnumerable<HistoryViewItem> historyItems = activityList
-                    .SelectMany(activity => activity.CompletionHistory)
-                    .Where(historyItem =>
-                        this.StartDate <= historyItem.CompletedDate
-                        && historyItem.CompletedDate < this.EndDate)
-                    .Select(historyItem => new HistoryViewItem(historyItem));
+                    .SelectMany(
+                        activity => activity.CompletionHistory,
+                        (activity, historyItem) => new {Activity = activity, HistoryItem = historyItem})
+                    .Where(x =>
+                        this.StartDate <= x.HistoryItem.CompletedDate
+                        && x.HistoryItem.CompletedDate < this.EndDate)
+                    .Select(x => new HistoryViewItem(x.HistoryItem, x.Activity));
                 foreach (HistoryViewItem item in historyItems)
                     yield return item;
             }
@@ -49,11 +51,13 @@ namespace PCLActivitySet.Views
             if (this.IncludeFuture)
             {
                 IEnumerable<ProjectionViewItem> futureItems = activityList
-                    .SelectMany(activity => activity.GetProjectedFutureDueDates(this.EndDate.Value))
-                    .Where(futureItem =>
-                        this.StartDate <= futureItem.DueDate
-                        && futureItem.DueDate < this.EndDate)
-                    .Select(futureItem => new ProjectionViewItem(futureItem));
+                    .SelectMany(
+                        activity => activity.GetProjectedFutureDueDates(this.EndDate.Value),
+                        (activity, projectionItem) => new {Activity = activity, ProjectionItem = projectionItem})
+                    .Where(x =>
+                        this.StartDate <= x.ProjectionItem.DueDate
+                        && x.ProjectionItem.DueDate < this.EndDate)
+                    .Select(x => new ProjectionViewItem(x.ProjectionItem, x.Activity));
                 foreach (ProjectionViewItem item in futureItems)
                     yield return item;
             }

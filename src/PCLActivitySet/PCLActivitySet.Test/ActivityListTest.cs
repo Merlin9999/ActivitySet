@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using PCLActivitySet.Views;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using PCLActivitySet.Recurrence;
 
@@ -617,5 +618,51 @@ namespace PCLActivitySet.Test
             Assert.That(board.InBox.ViewItems.FirstOrDefault(x => x.Date == dueDate), Is.TypeOf<ActivityViewItem>());
         }
 
+        [Test]
+        public void GetGoalsForItemsFromAView()
+        {
+            var board = new ActivityBoard();
+            DateTime startDate = new DateTime(2017, 2, 28);
+            DateTime endDate = startDate.AddDays(5);
+            Activity activity1 = Activity.FluentNew("Activity 1")
+                .ActiveDueDate(startDate.AddDays(1))
+                .Recurrence(ERecurFromType.FromCompletedDate, x => x.Daily(2))
+                .AddToBoard(board);
+            activity1.SignalCompleted(startDate.AddDays(1));
+            Activity activity2 = Activity.FluentNew("Activity 2")
+                .ActiveDueDate(startDate.AddDays(2))
+                .Recurrence(ERecurFromType.FromCompletedDate, x => x.Daily(1))
+                .AddToBoard(board);
+            activity2.SignalCompleted(startDate.AddDays(3));
+            Activity activity3 = Activity.FluentNew("Activity 3")
+                .ActiveDueDate(startDate.AddDays(2))
+                .Recurrence(ERecurFromType.FromCompletedDate, x => x.Daily(1))
+                .AddToBoard(board);
+            activity3.SignalCompleted(startDate);
+            activity3.SignalCompleted(startDate.AddDays(1));
+            activity3.SignalCompleted(startDate.AddDays(2));
+            ActivityGoal goal1 = board.AddNewGoal("Goal 1");
+            ActivityGoal goal2 = board.AddNewGoal("Goal 2");
+            board.MoveActivity(activity1).ToGoal(goal1);
+            board.MoveActivity(activity2).ToGoal(goal2);
+            board.MoveActivity(activity3).ToGoal(goal1);
+            board.InBox.ViewModes.CalendarView
+                .DateRange(startDate, endDate)
+                .IncludeHistory()
+                .IncludeFuture()
+                .Enable();
+            IEnumerable<Activity> activities = board.InBox.ViewItems.Select(vi => vi.Activity);
+            ILookup<ActivityGoal, Activity> goalLookup = board.GetGoalLookupFromActivities(activities);
+
+            Assert.That(goalLookup, Is.Not.Empty);
+            Assert.That(goalLookup.Count, Is.EqualTo(2));
+            Assert.That(goalLookup[goal1], Is.Not.Empty);
+            Assert.That(goalLookup[goal1].Count(), Is.EqualTo(2));
+            Assert.That(goalLookup[goal1], Has.Member(activity1));
+            Assert.That(goalLookup[goal1], Has.Member(activity3));
+            Assert.That(goalLookup[goal2], Is.Not.Empty);
+            Assert.That(goalLookup[goal2].Count(), Is.EqualTo(1));
+            Assert.That(goalLookup[goal2], Has.Member(activity2));
+        }
     }
 }

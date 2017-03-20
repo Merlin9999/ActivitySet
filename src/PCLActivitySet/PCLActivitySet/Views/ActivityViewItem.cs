@@ -6,15 +6,14 @@ namespace PCLActivitySet.Views
     [DebuggerDisplay("{Name} : {GetType().Name}")]
     public class ActivityViewItem : IViewItem
     {
-        private readonly Activity _activity;
-
         public ActivityViewItem(Activity activity)
         {
-            this._activity = activity;
+            this.Activity = activity;
         }
 
-        public DateTime? Date => this._activity.ActiveDueDate;
-        public string Name => this._activity.Name;
-        public bool IsActive => this._activity.IsActive;
+        public DateTime? Date => this.Activity.ActiveDueDate;
+        public string Name => this.Activity.Name;
+        public bool IsActive => this.Activity.IsActive;
+        public Activity Activity { get; }
     }
 }
