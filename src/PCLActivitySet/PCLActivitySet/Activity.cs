@@ -22,7 +22,9 @@ namespace PCLActivitySet
 
         public string Name { get; set; }
         
-        public Guid? ActivityListGuid { get; set; }
+        internal Guid? ActivityListGuid { get; set; }
+
+        internal Guid? GoalGuid { get; set; }
 
         public DateTime? ActiveDueDate
         {

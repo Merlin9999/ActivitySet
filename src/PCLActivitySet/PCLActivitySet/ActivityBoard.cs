@@ -13,10 +13,12 @@ namespace PCLActivitySet
         private HashSet<Activity> ActivitySet { get; } = new HashSet<Activity>();
         private HashSet<ActivityList> _setOfActivityLists;
         private HashSet<ActivityContext> _setOfContexts;
+        private HashSet<ActivityGoal> _setOfGoals;
         private HashSet<Guid> _setOfSelectedContextGuids;
         private HashSet<ActivityList> SetOfActivityLists => this._setOfActivityLists ?? (this._setOfActivityLists = new HashSet<ActivityList>());
         private HashSet<ActivityContext> SetOfContexts => this._setOfContexts ?? (this._setOfContexts = new HashSet<ActivityContext>());
         private HashSet<Guid> SetOfSelectedContextGuids => this._setOfSelectedContextGuids ?? (this._setOfSelectedContextGuids = new HashSet<Guid>());
+        private HashSet<ActivityGoal> SetOfGoals => this._setOfGoals ?? (this._setOfGoals = new HashSet<ActivityGoal>());
 
 
         public ActivityBoard()
@@ -26,6 +28,30 @@ namespace PCLActivitySet
 
         public string Name { get; set; }
 
+        public IEnumerable<Activity> UnfilteredActivities => this.ActivitySet;
+
+        public IEnumerable<Activity> Activities
+        {
+            get
+            {
+                if (!this.SetOfSelectedContextGuids.Any())
+                    return this.UnfilteredActivities;
+                return this.UnfilteredActivities
+                    .Where(activity =>
+                        !activity.ContextGuids.Any()
+                        || this.SetOfSelectedContextGuids.Overlaps(activity.ContextGuids));
+            }
+}
+
+        public ActivityList InBox { get; }
+
+        public IEnumerable<ActivityList> ActivityLists => this.SetOfActivityLists;
+
+        public IEnumerable<ActivityContext> Contexts => this.SetOfContexts;
+
+        public IEnumerable<Guid> SelectedContextGuids => this.SetOfSelectedContextGuids;
+
+        public IEnumerable<ActivityGoal> Goals => this.SetOfGoals;
 
         public void AddActivity(Activity activity)
         {
@@ -47,22 +73,6 @@ namespace PCLActivitySet
             return this.ActivitySet.Contains(activity);
         }
 
-        public IEnumerable<Activity> UnfilteredActivities
-        {
-            get
-            {
-                if (!this.SetOfSelectedContextGuids.Any())
-                    return this.ActivitySet;
-                return this.ActivitySet
-                    .Where(activity => !activity.ContextGuids.Any() || this.SetOfSelectedContextGuids.Overlaps(activity.ContextGuids));
-            }
-        }
-
-        public IEnumerable<Activity> Activities => this.UnfilteredActivities;
-
-        public ActivityList InBox { get; }
-
-
         public ActivityList AddNewList(string activityListName)
         {
             var list = new ActivityList(this) {Name = activityListName};
@@ -79,12 +89,9 @@ namespace PCLActivitySet
             this.SetOfActivityLists.Remove(list);
         }
 
-        public IEnumerable<ActivityList> ActivityLists => this.SetOfActivityLists;
-
-
-        public FluentlyMoveActivityToActivityList MoveActivity(Activity activityToMove)
+        public FluentlyMoveActivity MoveActivity(Activity activityToMove)
         {
-            return new FluentlyMoveActivityToActivityList(this, activityToMove);
+            return new FluentlyMoveActivity(this, activityToMove);
         }
 
         public ActivityContext AddNewContext(string contextName)
@@ -94,15 +101,11 @@ namespace PCLActivitySet
             return context;
         }
 
-        public IEnumerable<ActivityContext> Contexts => this.SetOfContexts;
-
-        public IEnumerable<Guid> SelectedContextGuids => this.SetOfSelectedContextGuids;
-
         public void RemoveContext(ActivityContext context)
         {
             if (this.SetOfContexts.Contains(context))
             {
-                foreach (Activity activity in this.ActivitySet)
+                foreach (Activity activity in this.UnfilteredActivities)
                     activity.RemoveContexts(context);
                 this.SetOfContexts.Remove(context);
             }
@@ -130,6 +133,58 @@ namespace PCLActivitySet
             List<ActivityContext> requestedContextsInBoard = contexts.Where(ctx => this.SetOfContexts.Contains(ctx)).ToList();
             foreach (ActivityContext activityContext in requestedContextsInBoard)
                 this.SetOfSelectedContextGuids.Remove(activityContext.Guid);
+        }
+
+        public ActivityGoal AddNewGoal(string goalName)
+        {
+            var goal = new ActivityGoal(goalName);
+            this.SetOfGoals.Add(goal);
+            return goal;
+        }
+
+        public void RemoveGoal(ActivityGoal goal)
+        {
+            if (this.SetOfGoals.Contains(goal))
+            {
+                IEnumerable<Activity> affectedActivities = this.UnfilteredActivities
+                    .Where(activity => activity.GoalGuid == goal.Guid);
+                foreach (Activity activity in affectedActivities)
+                    activity.GoalGuid = null;
+
+                this.SetOfGoals.Remove(goal);
+            }
+        }
+
+        public ActivityGoal GetGoalFromActivity(Activity activity)
+        {
+            if (activity.GoalGuid == null)
+                return null;
+
+            return this.GetGoalLookupFromActivities(activity).FirstOrDefault()?.Key;
+        }
+
+        public ILookup<ActivityGoal, Activity> GetGoalLookupFromActivities(params Activity[] activities)
+        {
+            return this.GetGoalLookupFromActivities(activities.AsEnumerable());
+        }
+
+        public ILookup<ActivityGoal, Activity> GetGoalLookupFromActivities(IEnumerable<Activity> activities)
+        {
+            ILookup<Guid, ActivityGoal> goalLookup = this.SetOfGoals.ToLookup(goal => goal.Guid);
+
+            var activityGoalList = activities
+                .Where(activity => activity.GoalGuid != null)
+                .Select(
+                    activity => new {Activity = activity, Goal = goalLookup[activity.GoalGuid.Value].FirstOrDefault()})
+                .ToList();
+
+            if (activityGoalList.Any(x => x.Goal == null))
+                throw new InvalidOperationException($"Found an {nameof(Activity.GoalGuid)} that does not belong to an {nameof(ActivityGoal)} owned by the {nameof(ActivityBoard)}.");
+
+            var goalToActivitiesLookup = activityGoalList
+                .ToLookup(x => x.Goal, x => x.Activity);
+
+            return goalToActivitiesLookup;
         }
     }
 }

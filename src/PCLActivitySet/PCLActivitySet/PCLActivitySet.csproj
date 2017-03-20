@@ -45,6 +45,7 @@
     <Compile Include="Activity.cs" />
     <Compile Include="ActivityContext.cs" />
     <Compile Include="ActivityExtensions.cs" />
+    <Compile Include="ActivityGoal.cs" />
     <Compile Include="ActivityHistoryItem.cs" />
     <Compile Include="ActivityInternalExtensions.cs" />
     <Compile Include="ActivityList.cs" />
@@ -62,7 +63,7 @@
     <Compile Include="Fluent\DateProjectionCreateHelper.cs" />
     <Compile Include="Views\ExcludeNonActiveView.cs" />
     <Compile Include="Fluent\FluentlyModifyActivity.cs" />
-    <Compile Include="Fluent\FluentlyMoveActivityToActivityList.cs" />
+    <Compile Include="Fluent\FluentlyMoveActivity.cs" />
     <Compile Include="InBoxActivityList.cs" />
     <Compile Include="IViewItem.cs" />
     <Compile Include="IView.cs" />

@@ -202,7 +202,7 @@ namespace PCLActivitySet.Test
         }
 
         [Test]
-        public void CannotMoveActivityNotBelongingToBoardToActivityList()
+        public void CannotMoveActivityNotBelongingToBoard()
         {
             var board = new ActivityBoard();
             Activity activity = Activity.FluentNew("An Activity")
@@ -342,7 +342,113 @@ namespace PCLActivitySet.Test
             Assert.That(board.Activities, Is.Empty);
         }
 
+        [Test]
+        public void CanCreateGoal()
+        {
+            var board = new ActivityBoard();
+            string goalName = "New Goal";
+            ActivityGoal goal = board.AddNewGoal(goalName);
 
+            Assert.That(goal, Is.Not.Null);
+            Assert.That(goal.Name, Is.EqualTo(goalName));
+            Assert.That(board.Goals, Is.Not.Null);
+            Assert.That(board.Goals.Count(), Is.EqualTo(1));
+            Assert.That(board.Goals, Has.Member(goal));
+        }
 
+        [Test]
+        public void CanRemoveGoal()
+        {
+            var board = new ActivityBoard();
+            ActivityGoal goal = board.AddNewGoal("New Goal");
+            board.RemoveGoal(goal);
+            Assert.That(board.Goals, Is.Empty);
+        }
+
+        [Test]
+        public void CanAssignActivityToGoal()
+        {
+            var board = new ActivityBoard();
+            ActivityGoal goal = board.AddNewGoal("New Goal");
+            Activity activity = Activity.FluentNew("New Activity")
+                .AddToBoard(board);
+            board.MoveActivity(activity)
+                .ToGoal(goal);
+
+            Assert.That(activity.GoalGuid, Is.Not.Null);
+            Assert.That(activity.GoalGuid, Is.EqualTo(goal.Guid));
+        }
+
+        [Test]
+        public void CanRemoveGoalFromActivity()
+        {
+            var board = new ActivityBoard();
+            ActivityGoal goal = board.AddNewGoal("New Goal");
+            Activity activity = Activity.FluentNew("New Activity")
+                .AddToBoard(board);
+            board.MoveActivity(activity)
+                .ToGoal(goal)
+                .ToGoal(null);
+
+            Assert.That(activity.GoalGuid, Is.Null);
+        }
+
+        [Test]
+        public void RemovingGoalClearsGoalFromActivities()
+        {
+            var board = new ActivityBoard();
+            ActivityGoal goal = board.AddNewGoal("New Goal");
+            Activity activity = Activity.FluentNew("New Activity")
+                .AddToBoard(board);
+            board.MoveActivity(activity)
+                .ToGoal(goal);
+            board.RemoveGoal(goal);
+
+            Assert.That(activity.GoalGuid, Is.Null);
+        }
+
+        [Test]
+        public void CannotMoveActivityToGoalNotBelongingToBoard()
+        {
+            var board = new ActivityBoard();
+            Activity activity = Activity.FluentNew("An Activity")
+                .AddToBoard(board);
+            ActivityGoal goal = new ActivityGoal("Bad Goal");
+            Assert.That(() => board.MoveActivity(activity).ToGoal(goal), Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public void GetGoalFromActivity()
+        {
+            var board = new ActivityBoard();
+            Activity activity = Activity.FluentNew("An Activity")
+                .AddToBoard(board);
+            ActivityGoal newGoal = board.AddNewGoal("New Goal");
+            board.MoveActivity(activity).ToGoal(newGoal);
+            ActivityGoal foundGoal = board.GetGoalFromActivity(activity);
+            
+            Assert.That(foundGoal, Is.EqualTo(newGoal));
+        }
+
+        [Test]
+        public void GetGoalFromActivityWhenNoGoalIsAssigned()
+        {
+            var board = new ActivityBoard();
+            Activity activity = Activity.FluentNew("An Activity")
+                .AddToBoard(board);
+            ActivityGoal foundGoal = board.GetGoalFromActivity(activity);
+
+            Assert.That(foundGoal, Is.Null);
+        }
+
+        [Test]
+        public void GetGoalFromActivityWhenGoalGuidIsInvalid()
+        {
+            var board = new ActivityBoard();
+            Activity activity = Activity.FluentNew("An Activity")
+                .AddToBoard(board);
+            activity.GoalGuid = Guid.NewGuid();
+            Assert.That(() => board.GetGoalFromActivity(activity), Throws.TypeOf<InvalidOperationException>());
+        }
     }
 }
