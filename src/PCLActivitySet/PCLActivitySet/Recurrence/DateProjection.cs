@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Runtime.Serialization;
-using System.Xml.Serialization;
+//using System.Runtime.Serialization;
+//using System.Xml.Serialization;
 
 namespace PCLActivitySet.Recurrence
 {
@@ -31,8 +31,8 @@ namespace PCLActivitySet.Recurrence
             return this.DateProjectionImpl.GetPrevious(fromDate);
         }
         
-        [XmlIgnore]
-        [IgnoreDataMember]
+        //[XmlIgnore]
+        //[IgnoreDataMember]
         //[ScriptIgnore]
         //[JsonIgnore]
         public IDateProjection DateProjectionImpl { get; set; }
