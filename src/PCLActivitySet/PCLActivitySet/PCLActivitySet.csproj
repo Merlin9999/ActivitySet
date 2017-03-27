@@ -36,58 +36,58 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="project.json" />
-    <None Include="Recurrence\_RecurrenceDiagram.cd">
+    <None Include="Domain\Recurrence\_RecurrenceDiagram.cd">
       <SubType>Designer</SubType>
     </None>
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbstractEntity.cs" />
-    <Compile Include="Activity.cs" />
-    <Compile Include="ActivityContext.cs" />
-    <Compile Include="ActivityExtensions.cs" />
-    <Compile Include="ActivityGoal.cs" />
-    <Compile Include="ActivityHistoryItem.cs" />
-    <Compile Include="ActivityInternalExtensions.cs" />
-    <Compile Include="ActivityList.cs" />
-    <Compile Include="ActivityProjectionItem.cs" />
-    <Compile Include="ActivityBoard.cs" />
-    <Compile Include="Views\CalendarView.cs" />
-    <Compile Include="Fluent\FluentlySelectViewMode.cs" />
-    <Compile Include="Fluent\FluentlySetupCalendarView.cs" />
-    <Compile Include="Fluent\FluentlySetupExcludeNonActiveView.cs" />
-    <Compile Include="Fluent\FluentlySetupFocusDateView.cs" />
-    <Compile Include="Views\FocusDateView.cs" />
-    <Compile Include="Views\ProjectionViewItem.cs" />
-    <Compile Include="Views\HistoryViewItem.cs" />
-    <Compile Include="Views\ActivityViewItem.cs" />
-    <Compile Include="Fluent\DateProjectionCreateHelper.cs" />
-    <Compile Include="Views\ExcludeNonActiveView.cs" />
-    <Compile Include="Fluent\FluentlyModifyActivity.cs" />
-    <Compile Include="Fluent\FluentlyMoveActivity.cs" />
-    <Compile Include="InBoxActivityList.cs" />
-    <Compile Include="IViewItem.cs" />
-    <Compile Include="IView.cs" />
+    <Compile Include="Domain\AbstractEntity.cs" />
+    <Compile Include="Domain\Activity.cs" />
+    <Compile Include="Domain\ActivityContext.cs" />
+    <Compile Include="Domain\ActivityExtensions.cs" />
+    <Compile Include="Domain\ActivityGoal.cs" />
+    <Compile Include="Domain\ActivityHistoryItem.cs" />
+    <Compile Include="Domain\ActivityInternalExtensions.cs" />
+    <Compile Include="Domain\ActivityList.cs" />
+    <Compile Include="Domain\ActivityProjectionItem.cs" />
+    <Compile Include="Domain\ActivityBoard.cs" />
+    <Compile Include="Domain\Views\CalendarView.cs" />
+    <Compile Include="Domain\Fluent\FluentlySelectViewMode.cs" />
+    <Compile Include="Domain\Fluent\FluentlySetupCalendarView.cs" />
+    <Compile Include="Domain\Fluent\FluentlySetupExcludeNonActiveView.cs" />
+    <Compile Include="Domain\Fluent\FluentlySetupFocusDateView.cs" />
+    <Compile Include="Domain\Views\FocusDateView.cs" />
+    <Compile Include="Domain\Views\ProjectionViewItem.cs" />
+    <Compile Include="Domain\Views\HistoryViewItem.cs" />
+    <Compile Include="Domain\Views\ActivityViewItem.cs" />
+    <Compile Include="Domain\Fluent\DateProjectionCreateHelper.cs" />
+    <Compile Include="Domain\Views\ExcludeNonActiveView.cs" />
+    <Compile Include="Domain\Fluent\FluentlyModifyActivity.cs" />
+    <Compile Include="Domain\Fluent\FluentlyMoveActivity.cs" />
+    <Compile Include="Domain\InBoxActivityList.cs" />
+    <Compile Include="Domain\IViewItem.cs" />
+    <Compile Include="Domain\IView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Recurrence\DateRecurrence.cs" />
-    <Compile Include="Recurrence\DailyProjection.cs" />
-    <Compile Include="Recurrence\DateProjection.cs" />
-    <Compile Include="Recurrence\EDateProjectionType.cs" />
-    <Compile Include="Recurrence\EDaysOfWeek.cs" />
-    <Compile Include="Recurrence\EDaysOfWeekExt.cs" />
-    <Compile Include="Recurrence\EDaysOfWeekFlags.cs" />
-    <Compile Include="Recurrence\EMonth.cs" />
-    <Compile Include="Recurrence\ERecurrenceType.cs" />
-    <Compile Include="Recurrence\EWeeksInMonth.cs" />
-    <Compile Include="Recurrence\IDateProjection.cs" />
-    <Compile Include="Recurrence\IDateProjectionTranslator.cs" />
-    <Compile Include="Recurrence\Month.cs" />
-    <Compile Include="Recurrence\MonthlyProjection.cs" />
-    <Compile Include="Recurrence\MonthlyRelativeProjection.cs" />
-    <Compile Include="Recurrence\RelativeDate.cs" />
-    <Compile Include="Recurrence\WeeklyProjection.cs" />
-    <Compile Include="Recurrence\YearlyProjection.cs" />
-    <Compile Include="Recurrence\YearlyRelativeProjection.cs" />
+    <Compile Include="Domain\Recurrence\DateRecurrence.cs" />
+    <Compile Include="Domain\Recurrence\DailyProjection.cs" />
+    <Compile Include="Domain\Recurrence\DateProjection.cs" />
+    <Compile Include="Domain\Recurrence\EDateProjectionType.cs" />
+    <Compile Include="Domain\Recurrence\EDaysOfWeek.cs" />
+    <Compile Include="Domain\Recurrence\EDaysOfWeekExt.cs" />
+    <Compile Include="Domain\Recurrence\EDaysOfWeekFlags.cs" />
+    <Compile Include="Domain\Recurrence\EMonth.cs" />
+    <Compile Include="Domain\Recurrence\ERecurrenceType.cs" />
+    <Compile Include="Domain\Recurrence\EWeeksInMonth.cs" />
+    <Compile Include="Domain\Recurrence\IDateProjection.cs" />
+    <Compile Include="Domain\Recurrence\IDateProjectionTranslator.cs" />
+    <Compile Include="Domain\Recurrence\Month.cs" />
+    <Compile Include="Domain\Recurrence\MonthlyProjection.cs" />
+    <Compile Include="Domain\Recurrence\MonthlyRelativeProjection.cs" />
+    <Compile Include="Domain\Recurrence\RelativeDate.cs" />
+    <Compile Include="Domain\Recurrence\WeeklyProjection.cs" />
+    <Compile Include="Domain\Recurrence\YearlyProjection.cs" />
+    <Compile Include="Domain\Recurrence\YearlyRelativeProjection.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
