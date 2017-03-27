@@ -1,7 +1,5 @@
 ﻿using System;
-
-//using System.Runtime.Serialization;
-//using System.Xml.Serialization;
+using PCLActivitySet.Data.Recurrence;
 
 namespace PCLActivitySet.Domain.Recurrence
 {
@@ -31,11 +29,7 @@ namespace PCLActivitySet.Domain.Recurrence
         {
             return this.DateProjectionImpl.GetPrevious(fromDate);
         }
-        
-        //[XmlIgnore]
-        //[IgnoreDataMember]
-        //[ScriptIgnore]
-        //[JsonIgnore]
+
         public IDateProjection DateProjectionImpl { get; set; }
 
         public static string ToShortDescription(DateProjection proj)
@@ -177,6 +171,36 @@ namespace PCLActivitySet.Domain.Recurrence
             return newProjectionObj;
         }
 
-    }
+        public DateProjectionDto ToDto()
+        {
+            return new DateProjectionDto()
+            {
+                ProjectionType = this.ProjectionType,
+                PeriodCount = this.PeriodCount,
+                DayOfMonth = this.DayOfMonth,
+                WeeksInMonth = this.WeeksInMonth,
+                Month = this.Month,
+                DaysOfWeekExt = this.DaysOfWeekExt,
+                DaysOfWeekFlags = this.DaysOfWeekFlags,
+            };
+        }
 
+        public void UpdateFromDto(DateProjectionDto dto)
+        {
+            this.ProjectionType = dto.ProjectionType;
+            this.PeriodCount = dto.PeriodCount;
+            this.DayOfMonth = dto.DayOfMonth;
+            this.WeeksInMonth = dto.WeeksInMonth;
+            this.Month = dto.Month;
+            this.DaysOfWeekExt = dto.DaysOfWeekExt;
+            this.DaysOfWeekFlags = dto.DaysOfWeekFlags;
+        }
+
+        public static DateProjection FromDto(DateProjectionDto dto)
+        {
+            DateProjection retVal = new DateProjection();
+            retVal.UpdateFromDto(dto);
+            return retVal;
+        }
+    }
 }

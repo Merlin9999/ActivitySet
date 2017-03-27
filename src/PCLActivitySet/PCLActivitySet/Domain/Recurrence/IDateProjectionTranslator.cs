@@ -1,4 +1,6 @@
-﻿namespace PCLActivitySet.Domain.Recurrence
+﻿using PCLActivitySet.Data.Recurrence;
+
+namespace PCLActivitySet.Domain.Recurrence
 {
     public interface IDateProjectionTranslator
     {
@@ -51,7 +53,5 @@
         // YearlyRecurrence          => Month
         // YearlyRelativeRecurrence  => Month
         EMonth Month { get; set; }
-
     }
-
 }

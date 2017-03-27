@@ -42,6 +42,10 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\Recurrence\DateProjectionDto.cs" />
+    <Compile Include="Domain\Recurrence\DaysOfWeekFlags.cs" />
+    <Compile Include="Domain\Recurrence\DaysOfWeekExt.cs" />
+    <Compile Include="Domain\Recurrence\DaysOfWeek.cs" />
     <Compile Include="Domain\AbstractEntity.cs" />
     <Compile Include="Domain\Activity.cs" />
     <Compile Include="Domain\ActivityContext.cs" />
@@ -72,13 +76,13 @@
     <Compile Include="Domain\Recurrence\DateRecurrence.cs" />
     <Compile Include="Domain\Recurrence\DailyProjection.cs" />
     <Compile Include="Domain\Recurrence\DateProjection.cs" />
-    <Compile Include="Domain\Recurrence\EDateProjectionType.cs" />
-    <Compile Include="Domain\Recurrence\EDaysOfWeek.cs" />
-    <Compile Include="Domain\Recurrence\EDaysOfWeekExt.cs" />
-    <Compile Include="Domain\Recurrence\EDaysOfWeekFlags.cs" />
-    <Compile Include="Domain\Recurrence\EMonth.cs" />
+    <Compile Include="Data\Recurrence\EDateProjectionType.cs" />
+    <Compile Include="Data\Recurrence\EDaysOfWeek.cs" />
+    <Compile Include="Data\Recurrence\EDaysOfWeekExt.cs" />
+    <Compile Include="Data\Recurrence\EDaysOfWeekFlags.cs" />
+    <Compile Include="Data\Recurrence\EMonth.cs" />
     <Compile Include="Domain\Recurrence\ERecurrenceType.cs" />
-    <Compile Include="Domain\Recurrence\EWeeksInMonth.cs" />
+    <Compile Include="Data\Recurrence\EWeeksInMonth.cs" />
     <Compile Include="Domain\Recurrence\IDateProjection.cs" />
     <Compile Include="Domain\Recurrence\IDateProjectionTranslator.cs" />
     <Compile Include="Domain\Recurrence\Month.cs" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using PCLActivitySet.Data.Recurrence;
 
 namespace PCLActivitySet.Domain.Recurrence
 {

@@ -1,3 +1,4 @@
+using PCLActivitySet.Data.Recurrence;
 using PCLActivitySet.Domain.Recurrence;
 
 namespace PCLActivitySet.Domain.Fluent

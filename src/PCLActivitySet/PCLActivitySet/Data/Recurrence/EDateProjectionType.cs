@@ -1,4 +1,4 @@
-namespace PCLActivitySet.Domain.Recurrence
+namespace PCLActivitySet.Data.Recurrence
 {
     public enum EDateProjectionType
     {

@@ -1,5 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
+using PCLActivitySet.Data.Recurrence;
 using PCLActivitySet.Domain.Recurrence;
 
 namespace PCLActivitySet.Test.Domain.Recurrence

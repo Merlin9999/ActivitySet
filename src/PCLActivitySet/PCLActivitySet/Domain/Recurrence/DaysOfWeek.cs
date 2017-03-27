@@ -1,20 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using PCLActivitySet.Data.Recurrence;
 
 namespace PCLActivitySet.Domain.Recurrence
 {
-    public enum EDaysOfWeek
-    {
-        Sunday,
-        Monday,
-        Tuesday,
-        Wednesday,
-        Thursday,
-        Friday,
-        Saturday,
-    }
-
     public static class DaysOfWeek
     {
         public static bool DateMatches(this DateTime date, EDaysOfWeek dow)
@@ -131,5 +121,4 @@ namespace PCLActivitySet.Domain.Recurrence
         public static readonly EDaysOfWeek[] WeekDays = { EDaysOfWeek.Monday, EDaysOfWeek.Tuesday, EDaysOfWeek.Wednesday, EDaysOfWeek.Thursday, EDaysOfWeek.Friday };
         public static readonly EDaysOfWeek[] WeekendDays = { EDaysOfWeek.Saturday, EDaysOfWeek.Sunday };
     }
-
 }
