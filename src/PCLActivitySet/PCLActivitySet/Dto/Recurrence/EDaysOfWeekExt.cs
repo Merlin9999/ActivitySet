@@ -1,6 +1,4 @@
-using PCLActivitySet.Domain.Recurrence;
-
-namespace PCLActivitySet.Data.Recurrence
+namespace PCLActivitySet.Dto.Recurrence
 {
     public enum EDaysOfWeekExt
     {

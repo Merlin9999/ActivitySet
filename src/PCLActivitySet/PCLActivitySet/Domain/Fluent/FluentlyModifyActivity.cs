@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using PCLActivitySet.Data.Recurrence;
 using PCLActivitySet.Domain.Recurrence;
+using PCLActivitySet.Dto.Recurrence;
 
 namespace PCLActivitySet.Domain.Fluent
 {

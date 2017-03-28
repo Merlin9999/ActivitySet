@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using LiteDB;
 using NUnit.Framework;
-using PCLActivitySet.Data.Recurrence;
 using PCLActivitySet.Domain.Recurrence;
+using PCLActivitySet.Dto.Recurrence;
 using PCLActivitySet.Test.AutoFixtureCustomizations;
 using Ploeh.AutoFixture;
 using Ploeh.SemanticComparison.Fluent;
 
-namespace PCLActivitySet.Test.Data
+namespace PCLActivitySet.Test.Dto
 {
     [TestFixture]
     public class DateProjectionTest

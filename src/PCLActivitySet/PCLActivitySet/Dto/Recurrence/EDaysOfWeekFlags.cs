@@ -1,7 +1,6 @@
 using System;
-using PCLActivitySet.Domain.Recurrence;
 
-namespace PCLActivitySet.Data.Recurrence
+namespace PCLActivitySet.Dto.Recurrence
 {
     [Flags]
     public enum EDaysOfWeekFlags

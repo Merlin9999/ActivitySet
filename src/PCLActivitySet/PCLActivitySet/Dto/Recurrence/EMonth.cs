@@ -1,4 +1,4 @@
-﻿namespace PCLActivitySet.Data.Recurrence
+﻿namespace PCLActivitySet.Dto.Recurrence
 {
     public enum EMonth
     {

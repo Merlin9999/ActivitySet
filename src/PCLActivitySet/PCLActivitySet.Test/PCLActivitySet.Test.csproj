@@ -57,7 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoFixtureCustomizations\NonZeroEnumGenerator.cs" />
-    <Compile Include="Data\DateProjectionTest.cs" />
+    <Compile Include="Dto\DateProjectionTest.cs" />
     <Compile Include="Domain\AbstractEntityTest.cs" />
     <Compile Include="Domain\ActivityContextTest.cs" />
     <Compile Include="Domain\ActivityHistoryItemTest.cs" />
