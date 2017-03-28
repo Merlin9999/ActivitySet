@@ -42,6 +42,7 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Db\AbstractLiteDb.cs" />
     <Compile Include="Dto\Recurrence\DateProjectionDto.cs" />
     <Compile Include="Domain\Recurrence\DaysOfWeekFlags.cs" />
     <Compile Include="Domain\Recurrence\DaysOfWeekExt.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="Domain\InBoxActivityList.cs" />
     <Compile Include="Domain\IViewItem.cs" />
     <Compile Include="Domain\IView.cs" />
+    <Compile Include="Dto\Recurrence\DateRecurrenceDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Domain\Recurrence\DateRecurrence.cs" />
     <Compile Include="Domain\Recurrence\DailyProjection.cs" />
@@ -81,7 +83,7 @@
     <Compile Include="Dto\Recurrence\EDaysOfWeekExt.cs" />
     <Compile Include="Dto\Recurrence\EDaysOfWeekFlags.cs" />
     <Compile Include="Dto\Recurrence\EMonth.cs" />
-    <Compile Include="Domain\Recurrence\ERecurrenceType.cs" />
+    <Compile Include="Dto\Recurrence\ERecurrenceType.cs" />
     <Compile Include="Dto\Recurrence\EWeeksInMonth.cs" />
     <Compile Include="Domain\Recurrence\IDateProjection.cs" />
     <Compile Include="Domain\Recurrence\IDateProjectionTranslator.cs" />
@@ -93,7 +95,6 @@
     <Compile Include="Domain\Recurrence\YearlyProjection.cs" />
     <Compile Include="Domain\Recurrence\YearlyRelativeProjection.cs" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

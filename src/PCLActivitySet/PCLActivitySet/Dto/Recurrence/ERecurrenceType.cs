@@ -1,4 +1,4 @@
-﻿namespace PCLActivitySet.Domain.Recurrence
+﻿namespace PCLActivitySet.Dto.Recurrence
 {
     public enum ERecurFromType
     {

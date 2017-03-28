@@ -68,6 +68,7 @@
     <Compile Include="Domain\ActivityViewItemTest.cs" />
     <Compile Include="Domain\HistoryViewItemTest.cs" />
     <Compile Include="Domain\ProjectionViewItemTest.cs" />
+    <Compile Include="Dto\DateRecurrenceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Domain\Recurrence\DailyProjectionTest.cs" />
     <Compile Include="Domain\Recurrence\DateProjectionTest.cs" />

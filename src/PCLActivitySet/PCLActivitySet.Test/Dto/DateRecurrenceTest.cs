@@ -10,7 +10,7 @@ using System.IO;
 namespace PCLActivitySet.Test.Dto
 {
     [TestFixture]
-    public class DateProjectionTest
+    public class DateRecurrenceTest
     {
         [Test]
         public void DtoToDomainToDtoRoundTrip()
@@ -18,11 +18,11 @@ namespace PCLActivitySet.Test.Dto
             Fixture fixture = new Fixture();
             fixture.Customizations.Insert(0, new NonZeroEnumGenerator());
 
-            DateProjectionDto sourceDto = fixture.Create<DateProjectionDto>();
-            DateProjection domain = DateProjection.FromDto(sourceDto);
-            DateProjectionDto targetDto = DateProjection.ToDto(domain);
+            DateRecurrenceDto sourceDto = fixture.Create<DateRecurrenceDto>();
+            DateRecurrence domain = DateRecurrence.FromDto(sourceDto);
+            DateRecurrenceDto targetDto = DateRecurrence.ToDto(domain);
 
-            var sourceDtoLikeness = sourceDto.AsSource().OfLikeness<DateProjectionDto>();
+            var sourceDtoLikeness = sourceDto.AsSource().OfLikeness<DateRecurrenceDto>();
             sourceDtoLikeness.ShouldEqual(targetDto);
         }
 
@@ -32,16 +32,16 @@ namespace PCLActivitySet.Test.Dto
             Fixture fixture = new Fixture();
             fixture.Customizations.Insert(0, new NonZeroEnumGenerator());
 
-            DateProjectionDto sourceDto = fixture.Create<DateProjectionDto>();
-            DateProjectionDto targetDto;
+            DateRecurrenceDto sourceDto = fixture.Create<DateRecurrenceDto>();
+            DateRecurrenceDto targetDto;
             using (var db = new LiteDatabase(new MemoryStream()))
             {
-                var col = db.GetCollection<DateProjectionDto>();
+                var col = db.GetCollection<DateRecurrenceDto>();
                 var id = col.Insert(sourceDto);
                 targetDto = col.FindById(id);
             }
 
-            var sourceDtoLikeness = sourceDto.AsSource().OfLikeness<DateProjectionDto>();
+            var sourceDtoLikeness = sourceDto.AsSource().OfLikeness<DateRecurrenceDto>();
             sourceDtoLikeness.ShouldEqual(targetDto);
         }
     }

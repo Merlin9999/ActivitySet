@@ -132,6 +132,37 @@ namespace PCLActivitySet.Domain.Recurrence
             set { this._endDate = value.Date; }
         }
 
+        public void UpdateDto(DateRecurrenceDto dto)
+        {
+            base.UpdateDto(dto);
+            dto.RecurFromType = this.RecurFromType;
+            dto.MaxRecurrenceCount = this.MaxRecurrenceCount;
+            dto.StartDate = this.StartDate;
+            dto.EndDate = this.EndDate;
+        }
+
+        public void UpdateFromDto(DateRecurrenceDto dto)
+        {
+            base.UpdateFromDto(dto);
+            this.RecurFromType = dto.RecurFromType;
+            this.MaxRecurrenceCount = dto.MaxRecurrenceCount;
+            this.StartDate = dto.StartDate;
+            this.EndDate = dto.EndDate;
+        }
+
+        public static DateRecurrenceDto ToDto(DateRecurrence model)
+        {
+            var retVal = new DateRecurrenceDto();
+            model.UpdateDto(retVal);
+            return retVal;
+        }
+
+        public static DateRecurrence FromDto(DateRecurrenceDto dto)
+        {
+            var retVal = new DateRecurrence();
+            retVal.UpdateFromDto(dto);
+            return retVal;
+        }
     }
 
 }

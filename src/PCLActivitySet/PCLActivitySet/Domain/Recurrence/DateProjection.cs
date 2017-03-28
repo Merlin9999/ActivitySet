@@ -171,18 +171,15 @@ namespace PCLActivitySet.Domain.Recurrence
             return newProjectionObj;
         }
 
-        public DateProjectionDto ToDto()
+        public void UpdateDto(DateProjectionDto dto)
         {
-            return new DateProjectionDto()
-            {
-                ProjectionType = this.ProjectionType,
-                PeriodCount = this.PeriodCount,
-                DayOfMonth = this.DayOfMonth,
-                WeeksInMonth = this.WeeksInMonth,
-                Month = this.Month,
-                DaysOfWeekExt = this.DaysOfWeekExt,
-                DaysOfWeekFlags = this.DaysOfWeekFlags,
-            };
+            dto.ProjectionType = this.ProjectionType;
+            dto.PeriodCount = this.PeriodCount;
+            dto.DayOfMonth = this.DayOfMonth;
+            dto.WeeksInMonth = this.WeeksInMonth;
+            dto.Month = this.Month;
+            dto.DaysOfWeekExt = this.DaysOfWeekExt;
+            dto.DaysOfWeekFlags = this.DaysOfWeekFlags;
         }
 
         public void UpdateFromDto(DateProjectionDto dto)
@@ -196,9 +193,16 @@ namespace PCLActivitySet.Domain.Recurrence
             this.DaysOfWeekFlags = dto.DaysOfWeekFlags;
         }
 
+        public static DateProjectionDto ToDto(DateProjection model)
+        {
+            var retVal = new DateProjectionDto();
+            model.UpdateDto(retVal);
+            return retVal;
+        }
+
         public static DateProjection FromDto(DateProjectionDto dto)
         {
-            DateProjection retVal = new DateProjection();
+            var retVal = new DateProjection();
             retVal.UpdateFromDto(dto);
             return retVal;
         }

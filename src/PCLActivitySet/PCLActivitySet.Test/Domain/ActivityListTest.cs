@@ -5,6 +5,7 @@ using NUnit.Framework;
 using PCLActivitySet.Domain;
 using PCLActivitySet.Domain.Recurrence;
 using PCLActivitySet.Domain.Views;
+using PCLActivitySet.Dto.Recurrence;
 
 namespace PCLActivitySet.Test.Domain
 {

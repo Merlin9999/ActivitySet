@@ -3,6 +3,7 @@ using System.Linq;
 using NUnit.Framework;
 using PCLActivitySet.Domain;
 using PCLActivitySet.Domain.Recurrence;
+using PCLActivitySet.Dto.Recurrence;
 
 namespace PCLActivitySet.Test.Domain
 {
