@@ -3,7 +3,7 @@
 namespace PCLActivitySet.Domain
 {
     [DebuggerDisplay("{Name} : {GetType().Name}")]
-    public class ActivityGoal : AbstractEntity<ActivityGoal>
+    public class ActivityGoal : AbstractDomainEntity<ActivityGoal>
     {
         public ActivityGoal(string name)
         {

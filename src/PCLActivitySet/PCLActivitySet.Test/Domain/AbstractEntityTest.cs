@@ -54,7 +54,7 @@ namespace PCLActivitySet.Test.Domain
         }
     }
 
-    public class TestEntity : AbstractEntity<TestEntity>
+    public class TestEntity : AbstractDomainEntity<TestEntity>
     {
     }
 }

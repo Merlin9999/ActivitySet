@@ -9,7 +9,7 @@ using Ploeh.AutoFixture.Kernel;
 // Originally taken from EnumGenerator.cs from the AutoFixture project on github.
 // Augmented to never return default values for enums.
 
-namespace PCLActivitySet.Test.AutoFixtureCustomizations
+namespace PCLActivitySet.Test.Helpers.AutoFixture
 {
     /// <summary>
     /// Generates enum values in a round-robin fashion.

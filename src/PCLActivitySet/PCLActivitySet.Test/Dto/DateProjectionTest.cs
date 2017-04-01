@@ -2,10 +2,10 @@
 using NUnit.Framework;
 using PCLActivitySet.Domain.Recurrence;
 using PCLActivitySet.Dto.Recurrence;
-using PCLActivitySet.Test.AutoFixtureCustomizations;
 using Ploeh.AutoFixture;
 using Ploeh.SemanticComparison.Fluent;
 using System.IO;
+using PCLActivitySet.Test.Helpers;
 
 namespace PCLActivitySet.Test.Dto
 {
@@ -13,10 +13,9 @@ namespace PCLActivitySet.Test.Dto
     public class DateProjectionTest
     {
         [Test]
-        public void DtoToDomainToDtoRoundTrip()
+        public void DtoAndDomainRoundTrip()
         {
-            Fixture fixture = new Fixture();
-            fixture.Customizations.Insert(0, new NonZeroEnumGenerator());
+            Fixture fixture = TestHelper.CreateSerializationAutoFixture();
 
             DateProjectionDto sourceDto = fixture.Create<DateProjectionDto>();
             DateProjection domain = DateProjection.FromDto(sourceDto);
@@ -27,10 +26,9 @@ namespace PCLActivitySet.Test.Dto
         }
 
         [Test]
-        public void DtoToLiteDbToDtoRoundTrip()
+        public void DtoAndLiteDbRoundTrip()
         {
-            Fixture fixture = new Fixture();
-            fixture.Customizations.Insert(0, new NonZeroEnumGenerator());
+            Fixture fixture = TestHelper.CreateSerializationAutoFixture(useLiteDBCompatibleDateTime: true);
 
             DateProjectionDto sourceDto = fixture.Create<DateProjectionDto>();
             DateProjectionDto targetDto;

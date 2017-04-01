@@ -4,11 +4,13 @@ using System.Diagnostics;
 using System.Linq;
 using PCLActivitySet.Domain.Fluent;
 using PCLActivitySet.Domain.Recurrence;
+using PCLActivitySet.Dto;
+using PCLActivitySet.Dto.Recurrence;
 
 namespace PCLActivitySet.Domain
 {
     [DebuggerDisplay("{Name} : {GetType().Name}")]
-    public class Activity : AbstractEntity<Activity>
+    public class Activity : AbstractDomainEntity<Activity>
     {
         private DateTime? _activeDueDate;
         private List<ActivityHistoryItem> _completionHistory;
@@ -50,8 +52,8 @@ namespace PCLActivitySet.Domain
         
         public List<ActivityHistoryItem> CompletionHistory
         {
-            get { return this._completionHistory; }
-            set { this._completionHistory = value ?? new List<ActivityHistoryItem>(); }
+            get { return this._completionHistory ?? (this._completionHistory = new List<ActivityHistoryItem>()); }
+            set { this._completionHistory = value; }
         }
 
         public FluentlyModifyActivity Fluently => new FluentlyModifyActivity(this);
@@ -85,6 +87,78 @@ namespace PCLActivitySet.Domain
         public static FluentlyModifyActivity FluentNew(string name)
         {
             return new FluentlyModifyActivity(new Activity() {Name = name});
+        }
+
+        public void UpdateDto(ActivityDto dto)
+        {
+            dto.Guid = this.Guid;
+            dto.Name = this.Name;
+            dto.ActivityListGuid = this.ActivityListGuid;
+            dto.GoalGuid = this.GoalGuid;
+            dto.ActiveDueDate = this.ActiveDueDate;
+
+            if (this.LeadTime == null)
+                dto.LeadTime = null;
+            else
+            {
+                dto.LeadTime = new DateProjectionDto();
+                this.LeadTime.UpdateDto(dto.LeadTime);
+            }
+
+            if (this.Recurrence == null)
+                dto.Recurrence = null;
+            else
+            {
+                dto.Recurrence = new DateRecurrenceDto();
+                this.Recurrence.UpdateDto(dto.Recurrence);
+            }
+
+            dto.CompletionHistory = new List<ActivityHistoryItemDto>();
+            foreach (ActivityHistoryItem historyItem in this.CompletionHistory)
+                dto.CompletionHistory.Add(ActivityHistoryItem.ToDto(historyItem));
+        }
+
+        public void UpdateFromDto(ActivityDto dto)
+        {
+            this.Guid = dto.Guid;
+            this.Name = dto.Name;
+            this.ActivityListGuid = dto.ActivityListGuid;
+            this.GoalGuid = dto.GoalGuid;
+            this.ActiveDueDate = dto.ActiveDueDate;
+
+            if (dto.LeadTime == null)
+                this.LeadTime = null;
+            else
+            {
+                this.LeadTime = new DateProjection();
+                this.LeadTime.UpdateFromDto(dto.LeadTime);
+            }
+
+            if (dto.Recurrence == null)
+                this.Recurrence = null;
+            else
+            {
+                this.Recurrence = new DateRecurrence();
+                this.Recurrence.UpdateFromDto(dto.Recurrence);
+            }
+
+            this.CompletionHistory = new List<ActivityHistoryItem>();
+            foreach (ActivityHistoryItemDto historyItemDto in dto.CompletionHistory)
+                this.CompletionHistory.Add(ActivityHistoryItem.FromDto(historyItemDto));
+        }
+
+        public static ActivityDto ToDto(Activity model)
+        {
+            var retVal = new ActivityDto();
+            model.UpdateDto(retVal);
+            return retVal;
+        }
+
+        public static Activity FromDto(ActivityDto dto)
+        {
+            var retVal = new Activity();
+            retVal.UpdateFromDto(dto);
+            return retVal;
         }
     }
 }

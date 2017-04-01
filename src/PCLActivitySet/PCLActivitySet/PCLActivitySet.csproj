@@ -43,11 +43,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Db\AbstractLiteDb.cs" />
+    <Compile Include="Dto\ActivityDto.cs" />
+    <Compile Include="Dto\ActivityHistoryItemDto.cs" />
     <Compile Include="Dto\Recurrence\DateProjectionDto.cs" />
     <Compile Include="Domain\Recurrence\DaysOfWeekFlags.cs" />
     <Compile Include="Domain\Recurrence\DaysOfWeekExt.cs" />
     <Compile Include="Domain\Recurrence\DaysOfWeek.cs" />
-    <Compile Include="Domain\AbstractEntity.cs" />
+    <Compile Include="Domain\AbstractDomainEntity.cs" />
     <Compile Include="Domain\Activity.cs" />
     <Compile Include="Domain\ActivityContext.cs" />
     <Compile Include="Domain\ActivityExtensions.cs" />

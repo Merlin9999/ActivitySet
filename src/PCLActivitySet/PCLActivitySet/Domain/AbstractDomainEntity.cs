@@ -2,7 +2,7 @@
 
 namespace PCLActivitySet.Domain
 {
-    public abstract class AbstractEntity<TEntity> : AbstractEntity, IEquatable<TEntity>
+    public abstract class AbstractDomainEntity<TEntity> : AbstractEntity, IEquatable<TEntity>
     {
         public bool Equals(TEntity other)
         {

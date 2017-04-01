@@ -8,7 +8,7 @@ using PCLActivitySet.Domain.Views;
 namespace PCLActivitySet.Domain
 {
     [DebuggerDisplay("{Name} : {GetType().Name}")]
-    public class ActivityList : AbstractEntity<ActivityList>
+    public class ActivityList : AbstractDomainEntity<ActivityList>
     {
         protected readonly ActivityBoard OwningBoard;
         private ExcludeNonActiveView _excludeNonActiveView;

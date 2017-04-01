@@ -56,7 +56,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutoFixtureCustomizations\NonZeroEnumGenerator.cs" />
+    <Compile Include="Helpers\AutoFixture\ObjectIdGenerator.cs" />
+    <Compile Include="Helpers\CollectionComparer.cs" />
+    <Compile Include="Helpers\AutoFixture\RandomDateTimeSequenceGenerator.cs" />
+    <Compile Include="Helpers\AutoFixture\NonZeroEnumGenerator.cs" />
+    <Compile Include="Dto\ActivityTest.cs" />
+    <Compile Include="Dto\ActivityHistoryItemTest.cs" />
     <Compile Include="Dto\DateProjectionTest.cs" />
     <Compile Include="Domain\AbstractEntityTest.cs" />
     <Compile Include="Domain\ActivityContextTest.cs" />
@@ -69,6 +74,7 @@
     <Compile Include="Domain\HistoryViewItemTest.cs" />
     <Compile Include="Domain\ProjectionViewItemTest.cs" />
     <Compile Include="Dto\DateRecurrenceTest.cs" />
+    <Compile Include="Helpers\Test\CollectionComparerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Domain\Recurrence\DailyProjectionTest.cs" />
     <Compile Include="Domain\Recurrence\DateProjectionTest.cs" />
@@ -83,6 +89,7 @@
     <Compile Include="Domain\Recurrence\WeeklyProjectionTest.cs" />
     <Compile Include="Domain\Recurrence\YearlyProjectionTest.cs" />
     <Compile Include="Domain\Recurrence\YearlyRelativeProjectionTest.cs" />
+    <Compile Include="Helpers\TestHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PCLActivitySet\PCLActivitySet.csproj">
