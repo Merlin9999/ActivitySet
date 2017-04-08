@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using PCLActivitySet.Dto.Views;
 
 namespace PCLActivitySet.Domain.Views
 {
@@ -61,6 +62,32 @@ namespace PCLActivitySet.Domain.Views
         {
             return (lastCompletedTimeStamp != null &&
                     lastCompletedTimeStamp.Value + this.CompletedFilterDelay.Value > this.FocusDateTime);
+        }
+
+        public void UpdateDto(FocusDateViewDto dto)
+        {
+            dto.CompletedFilterDelay = this.CompletedFilterDelay;
+            dto.FocusDateTime = this.FocusDateTime;
+        }
+
+        public void UpdateFromDto(FocusDateViewDto dto)
+        {
+            this.CompletedFilterDelay = dto.CompletedFilterDelay;
+            this.FocusDateTime = dto.FocusDateTime;
+        }
+
+        public static FocusDateViewDto ToDto(FocusDateView model)
+        {
+            var retVal = new FocusDateViewDto();
+            model.UpdateDto(retVal);
+            return retVal;
+        }
+
+        public static FocusDateView FromDto(FocusDateViewDto dto)
+        {
+            var retVal = new FocusDateView();
+            retVal.UpdateFromDto(dto);
+            return retVal;
         }
     }
 }

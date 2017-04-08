@@ -10,7 +10,8 @@ namespace PCLActivitySet.Test.Helpers
         {
             Fixture fixture = new Fixture();
             fixture.Customizations.Insert(0, new NonZeroEnumGenerator());
-            fixture.Customizations.Insert(0, new ObjectIdGenerator());
+            fixture.Customizations.Insert(0, new NullObjectIdGenerator());
+            fixture.Customizations.Insert(0, new NonFalseBooleanGenerator());
             if (useLiteDBCompatibleDateTime)
                 fixture.Customizations.Insert(0, new CustomRandomDateTimeSequenceGenerator());
             return fixture;

@@ -8,7 +8,7 @@ using Ploeh.AutoFixture.Kernel;
 
 namespace PCLActivitySet.Test.Helpers.AutoFixture
 {
-    public class ObjectIdGenerator : ISpecimenBuilder
+    public class NullObjectIdGenerator : ISpecimenBuilder
     {
         public object Create(object request, ISpecimenContext context)
         {

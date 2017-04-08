@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using PCLActivitySet.Dto.Views;
 
 namespace PCLActivitySet.Domain.Views
 {
@@ -61,6 +62,36 @@ namespace PCLActivitySet.Domain.Views
                 foreach (ProjectionViewItem item in futureItems)
                     yield return item;
             }
+        }
+
+        public void UpdateDto(CalendarViewDto dto)
+        {
+            dto.StartDate = this.StartDate;
+            dto.EndDate = this.EndDate;
+            dto.IncludeHistory = this.IncludeHistory;
+            dto.IncludeFuture = this.IncludeFuture;
+        }
+
+        public void UpdateFromDto(CalendarViewDto dto)
+        {
+            this.StartDate = dto.StartDate;
+            this.EndDate = dto.EndDate;
+            this.IncludeHistory = dto.IncludeHistory;
+            this.IncludeFuture = dto.IncludeFuture;
+        }
+
+        public static CalendarViewDto ToDto(CalendarView model)
+        {
+            var retVal = new CalendarViewDto();
+            model.UpdateDto(retVal);
+            return retVal;
+        }
+
+        public static CalendarView FromDto(CalendarViewDto dto)
+        {
+            var retVal = new CalendarView();
+            retVal.UpdateFromDto(dto);
+            return retVal;
         }
     }
 }

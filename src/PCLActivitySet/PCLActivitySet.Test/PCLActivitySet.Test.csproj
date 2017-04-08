@@ -56,7 +56,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\AutoFixture\ObjectIdGenerator.cs" />
+    <Compile Include="Dto\Views\CalendarViewTest.cs" />
+    <Compile Include="Dto\Views\ExcludeNonActiveViewTest.cs" />
+    <Compile Include="Dto\Views\FocusDateViewTest.cs" />
+    <Compile Include="Helpers\AutoFixture\NonFalseBooleanGenerator.cs" />
+    <Compile Include="Helpers\AutoFixture\NullObjectIdGenerator.cs" />
     <Compile Include="Helpers\CollectionComparer.cs" />
     <Compile Include="Helpers\AutoFixture\RandomDateTimeSequenceGenerator.cs" />
     <Compile Include="Helpers\AutoFixture\NonZeroEnumGenerator.cs" />
