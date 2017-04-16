@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentAssertions;
 using NUnit.Framework;
 using PCLActivitySet.Domain.Recurrence;
 
@@ -12,7 +13,7 @@ namespace PCLActivitySet.Test.Domain.Recurrence
         {
             int dayCount = 2;
             DateProjection dateProjection = DateProjection(dayCount);
-            Assert.That(dateProjection.GetNext(new DateTime(2017, 2, 28)), Is.EqualTo(new DateTime(2017, 3, 2)));
+            dateProjection.GetNext(new DateTime(2017, 2, 28)).Should().Be(new DateTime(2017, 3, 2));
         }
 
         [Test]
@@ -20,7 +21,8 @@ namespace PCLActivitySet.Test.Domain.Recurrence
         {
             int dayCount = 0;
             DateProjection dateProjection = DateProjection(dayCount);
-            Assert.That(() => dateProjection.GetNext(new DateTime(2017, 2, 28)), Throws.TypeOf<InvalidOperationException>());
+            Action action = () => dateProjection.GetNext(new DateTime(2017, 2, 28));
+            action.ShouldThrow<InvalidOperationException>();
         }
 
         [Test]
@@ -28,7 +30,7 @@ namespace PCLActivitySet.Test.Domain.Recurrence
         {
             int dayCount = 2;
             DateProjection dateProjection = DateProjection(dayCount);
-            Assert.That(dateProjection.GetPrevious(new DateTime(2017, 2, 28)), Is.EqualTo(new DateTime(2017, 2, 26)));
+            dateProjection.GetPrevious(new DateTime(2017, 2, 28)).Should().Be(new DateTime(2017, 2, 26));
         }
 
         [Test]
@@ -36,7 +38,8 @@ namespace PCLActivitySet.Test.Domain.Recurrence
         {
             int dayCount = 0;
             DateProjection dateProjection = DateProjection(dayCount);
-            Assert.That(() => dateProjection.GetPrevious(new DateTime(2017, 2, 28)), Throws.TypeOf<InvalidOperationException>());
+            Action action = () => dateProjection.GetPrevious(new DateTime(2017, 2, 28));
+            action.ShouldThrow<InvalidOperationException>();
         }
 
         private static DateProjection DateProjection(int dayCount)

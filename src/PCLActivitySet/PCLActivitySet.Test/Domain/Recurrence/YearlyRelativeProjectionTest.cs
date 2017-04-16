@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentAssertions;
 using NUnit.Framework;
 using PCLActivitySet.Domain.Recurrence;
 using PCLActivitySet.Dto.Recurrence;
@@ -15,7 +16,7 @@ namespace PCLActivitySet.Test.Domain.Recurrence
             EWeeksInMonth weeksInMonth = EWeeksInMonth.Second;
             EDaysOfWeekExt daysOfWeek = EDaysOfWeekExt.Monday;
             DateProjection dateProjection = DateProjection(month, weeksInMonth, daysOfWeek);
-            Assert.That(dateProjection.GetNext(new DateTime(2017, 2, 28)), Is.EqualTo(new DateTime(2017, 3, 13)));
+            dateProjection.GetNext(new DateTime(2017, 2, 28)).Should().Be(new DateTime(2017, 3, 13));
         }
 
         [Test]
@@ -25,7 +26,7 @@ namespace PCLActivitySet.Test.Domain.Recurrence
             EWeeksInMonth weeksInMonth = EWeeksInMonth.Second;
             EDaysOfWeekExt daysOfWeek = EDaysOfWeekExt.Monday;
             DateProjection dateProjection = DateProjection(month, weeksInMonth, daysOfWeek);
-            Assert.That(dateProjection.GetPrevious(new DateTime(2017, 2, 28)), Is.EqualTo(new DateTime(2016, 3, 14)));
+            dateProjection.GetPrevious(new DateTime(2017, 2, 28)).Should().Be(new DateTime(2016, 3, 14));
         }
 
         private static DateProjection DateProjection(EMonth month, EWeeksInMonth weeksInMonth, EDaysOfWeekExt daysOfWeek)
