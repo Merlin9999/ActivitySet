@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentAssertions;
 using NUnit.Framework;
 using PCLActivitySet.Domain;
 using PCLActivitySet.Domain.Views;
@@ -13,9 +14,9 @@ namespace PCLActivitySet.Test.Domain
         {
             string name = "Test Activity";
             var item = new ActivityProjectionItem() { Name = name };
-            var viewItem = new ProjectionViewItem(item, null);
+            var viewItem = new ProjectionViewItem(item, null);                    
 
-            Assert.That(viewItem.Name, Is.EqualTo(name));
+            viewItem.Name.Should().Be(name);
         }
 
         [Test]
@@ -25,7 +26,7 @@ namespace PCLActivitySet.Test.Domain
             var item = new ActivityProjectionItem() { DueDate = date };
             var viewItem = new ProjectionViewItem(item, null);
 
-            Assert.That(viewItem.Date, Is.EqualTo(date));
+            viewItem.Date.Should().Be(date);
         }
 
         [Test]
@@ -34,7 +35,7 @@ namespace PCLActivitySet.Test.Domain
             var item = new ActivityProjectionItem();
             var viewItem = new ProjectionViewItem(item, null);
 
-            Assert.That(viewItem.IsActive, Is.False);
+            viewItem.IsActive.Should().BeFalse();
         }
     }
 }

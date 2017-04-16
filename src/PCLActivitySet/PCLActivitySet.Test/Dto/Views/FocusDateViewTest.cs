@@ -5,8 +5,8 @@ using PCLActivitySet.Domain.Views;
 using PCLActivitySet.Dto.Views;
 using PCLActivitySet.Test.Helpers;
 using Ploeh.AutoFixture;
-using Ploeh.SemanticComparison.Fluent;
 using System.IO;
+using FluentAssertions;
 
 namespace PCLActivitySet.Test.Dto.Views
 {
@@ -22,8 +22,7 @@ namespace PCLActivitySet.Test.Dto.Views
             FocusDateView domain = FocusDateView.FromDto(sourceDto);
             FocusDateViewDto targetDto = FocusDateView.ToDto(domain);
 
-            var sourceDtoLikeness = sourceDto.AsSource().OfLikeness<FocusDateViewDto>();
-            sourceDtoLikeness.ShouldEqual(targetDto);
+            sourceDto.ShouldBeEquivalentTo(targetDto);
         }
 
         [Test]
@@ -40,8 +39,7 @@ namespace PCLActivitySet.Test.Dto.Views
                 targetDto = col.FindById(id);
             }
 
-            var sourceDtoLikeness = sourceDto.AsSource().OfLikeness<FocusDateViewDto>();
-            sourceDtoLikeness.ShouldEqual(targetDto);
+            sourceDto.ShouldBeEquivalentTo(targetDto);
         }
 
     }

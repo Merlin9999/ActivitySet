@@ -5,8 +5,8 @@ using NUnit.Framework;
 using PCLActivitySet.Domain.Recurrence;
 using PCLActivitySet.Dto.Recurrence;
 using Ploeh.AutoFixture;
-using Ploeh.SemanticComparison.Fluent;
 using System.IO;
+using FluentAssertions;
 using PCLActivitySet.Domain;
 using PCLActivitySet.Dto;
 using PCLActivitySet.Test.Helpers;
@@ -25,8 +25,7 @@ namespace PCLActivitySet.Test.Dto
             ActivityHistoryItem domain = ActivityHistoryItem.FromDto(sourceDto);
             ActivityHistoryItemDto targetDto = ActivityHistoryItem.ToDto(domain);
 
-            var sourceDtoLikeness = sourceDto.AsSource().OfLikeness<ActivityHistoryItemDto>();
-            sourceDtoLikeness.ShouldEqual(targetDto);
+            sourceDto.ShouldBeEquivalentTo(targetDto);
         }
 
         [Test]
@@ -43,8 +42,7 @@ namespace PCLActivitySet.Test.Dto
                 targetDto = col.FindById(id);
             }
 
-            var sourceDtoLikeness = sourceDto.AsSource().OfLikeness<ActivityHistoryItemDto>();
-            sourceDtoLikeness.ShouldEqual(targetDto);
+            sourceDto.ShouldBeEquivalentTo(targetDto);
         }
     }
 }

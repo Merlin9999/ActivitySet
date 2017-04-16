@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentAssertions;
 using NUnit.Framework;
 using PCLActivitySet.Domain.Recurrence;
 using PCLActivitySet.Dto.Recurrence;
@@ -15,7 +16,7 @@ namespace PCLActivitySet.Test.Domain.Recurrence
             EWeeksInMonth weeksInMonth = EWeeksInMonth.Second;
             EDaysOfWeekExt daysOfWeek = EDaysOfWeekExt.Monday;
             DateProjection dateProjection = DateProjection(monthCount, weeksInMonth, daysOfWeek);
-            Assert.That(dateProjection.GetNext(new DateTime(2017, 2, 28)), Is.EqualTo(new DateTime(2017, 4, 10)));
+            dateProjection.GetNext(new DateTime(2017, 2, 28)).Should().Be(new DateTime(2017, 4, 10));
         }
 
         [Test]
@@ -25,7 +26,8 @@ namespace PCLActivitySet.Test.Domain.Recurrence
             EWeeksInMonth weeksInMonth = EWeeksInMonth.Second;
             EDaysOfWeekExt daysOfWeek = EDaysOfWeekExt.Monday;
             DateProjection dateProjection = DateProjection(monthCount, weeksInMonth, daysOfWeek);
-            Assert.That(() => dateProjection.GetNext(new DateTime(2017, 2, 28)), Throws.TypeOf<InvalidOperationException>());
+            Action action = () => dateProjection.GetNext(new DateTime(2017, 2, 28));
+            action.ShouldThrow<InvalidOperationException>();
         }
 
         [Test]
@@ -35,7 +37,7 @@ namespace PCLActivitySet.Test.Domain.Recurrence
             EWeeksInMonth weeksInMonth = EWeeksInMonth.Second;
             EDaysOfWeekExt daysOfWeek = EDaysOfWeekExt.Monday;
             DateProjection dateProjection = DateProjection(monthCount, weeksInMonth, daysOfWeek);
-            Assert.That(dateProjection.GetPrevious(new DateTime(2017, 2, 28)), Is.EqualTo(new DateTime(2016, 12, 12)));
+            dateProjection.GetPrevious(new DateTime(2017, 2, 28)).Should().Be(new DateTime(2016, 12, 12));
         }
 
         [Test]
@@ -45,7 +47,8 @@ namespace PCLActivitySet.Test.Domain.Recurrence
             EWeeksInMonth weeksInMonth = EWeeksInMonth.Second;
             EDaysOfWeekExt daysOfWeek = EDaysOfWeekExt.Monday;
             DateProjection dateProjection = DateProjection(monthCount, weeksInMonth, daysOfWeek);
-            Assert.That(() => dateProjection.GetPrevious(new DateTime(2017, 2, 28)), Throws.TypeOf<InvalidOperationException>());
+            Action action = () => dateProjection.GetPrevious(new DateTime(2017, 2, 28));
+            action.ShouldThrow<InvalidOperationException>();
         }
 
         private static DateProjection DateProjection(int monthCount, EWeeksInMonth weeksInMonth, EDaysOfWeekExt daysOfWeek)

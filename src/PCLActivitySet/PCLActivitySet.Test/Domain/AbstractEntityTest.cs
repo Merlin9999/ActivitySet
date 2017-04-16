@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentAssertions;
 using NUnit.Framework;
 using PCLActivitySet.Domain;
 
@@ -11,7 +12,7 @@ namespace PCLActivitySet.Test.Domain
         public void EqualsReturnsTrueWhenSameInstance()
         {
             var entity = new TestEntity();
-            Assert.That(entity.Equals(entity), Is.True);
+            entity.Equals(entity).Should().BeTrue();
         }
 
         [Test]
@@ -20,7 +21,7 @@ namespace PCLActivitySet.Test.Domain
             var guid = Guid.NewGuid();
             var entity1 = new TestEntity() {Guid = guid};
             var entity2 = new TestEntity() { Guid = guid };
-            Assert.That(entity1.Equals(entity2), Is.True);
+            entity1.Equals(entity2).Should().BeTrue();
         }
 
         [Test]
@@ -28,20 +29,20 @@ namespace PCLActivitySet.Test.Domain
         {
             var entity1 = new TestEntity();
             var entity2 = new TestEntity();
-            Assert.That(entity1.Equals(entity2), Is.False);
+            entity1.Equals(entity2).Should().BeFalse();
         }
 
         [Test]
         public void EqualsReturnsFalseWhenComparingWithNull()
         {
-            Assert.That(new TestEntity().Equals(null), Is.False);
+            new TestEntity().Equals(null).Should().BeFalse();
         }
 
         [Test]
         public void EqualsTakingObjectParam()
         {
             var entity = new TestEntity();
-            Assert.That(entity.Equals((object)entity), Is.True);
+            entity.Equals((object)entity).Should().BeTrue();
         }
 
         [Test]
@@ -50,7 +51,7 @@ namespace PCLActivitySet.Test.Domain
             var guid = Guid.NewGuid();
             var entity1 = new TestEntity() { Guid = guid };
             var entity2 = new TestEntity() { Guid = guid };
-            Assert.That(entity1.GetHashCode(), Is.EqualTo(entity2.GetHashCode()));
+            entity1.GetHashCode().Should().Be(entity2.GetHashCode());
         }
     }
 

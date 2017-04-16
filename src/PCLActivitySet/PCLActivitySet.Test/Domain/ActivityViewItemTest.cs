@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentAssertions;
 using NUnit.Framework;
 using PCLActivitySet.Domain;
 using PCLActivitySet.Domain.Views;
@@ -15,7 +16,7 @@ namespace PCLActivitySet.Test.Domain
             Activity activity = Activity.FluentNew(activityName);
             var viewItem = new ActivityViewItem(activity);
 
-            Assert.That(viewItem.Name, Is.EqualTo(activityName));
+            viewItem.Name.Should().Be(activityName);
         }
 
         [Test]
@@ -25,7 +26,7 @@ namespace PCLActivitySet.Test.Domain
             Activity activity = Activity.FluentNew("Activity Name").ActiveDueDate(activityActiveDueDate);
             var viewItem = new ActivityViewItem(activity);
 
-            Assert.That(viewItem.Date, Is.EqualTo(activityActiveDueDate));
+            viewItem.Date.Should().Be(activityActiveDueDate);
         }
 
         [Test]
@@ -35,7 +36,7 @@ namespace PCLActivitySet.Test.Domain
             Activity activity = Activity.FluentNew("Activity Name").ActiveDueDate(activityActiveDueDate);
             var viewItem = new ActivityViewItem(activity);
 
-            Assert.That(viewItem.IsActive, Is.EqualTo(activity.IsActive));
+            viewItem.IsActive.Should().Be(activity.IsActive);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using FluentAssertions;
 using NUnit.Framework;
 using PCLActivitySet.Domain;
 using PCLActivitySet.Domain.Recurrence;
@@ -15,7 +16,7 @@ namespace PCLActivitySet.Test.Domain
         public void NamePropertyDefaultsToNull()
         {
             var activityBoard = new ActivityBoard();
-            Assert.That(activityBoard.Name, Is.Null);
+            activityBoard.Name.Should().BeNull();
         }
 
         [Test]
@@ -24,7 +25,7 @@ namespace PCLActivitySet.Test.Domain
             var activityBoard = new ActivityBoard();
             string testName = "Test Name";
             activityBoard.Name = testName;
-            Assert.That(activityBoard.Name, Is.EqualTo(testName));
+            activityBoard.Name.Should().Be(testName);
         }
 
         [Test]
@@ -32,8 +33,8 @@ namespace PCLActivitySet.Test.Domain
         {
             var activityBoard = new ActivityBoard();
             Activity.FluentNew("New Activity").AddToBoard(activityBoard);
-            Assert.That(activityBoard.UnfilteredActivities.Any(), Is.True);
-            Assert.That(activityBoard.UnfilteredActivities.Count(), Is.EqualTo(1));
+            activityBoard.UnfilteredActivities.Any().Should().BeTrue();
+            activityBoard.UnfilteredActivities.Count().Should().Be(1);
         }
 
         [Test]
@@ -42,8 +43,8 @@ namespace PCLActivitySet.Test.Domain
             var activityBoard = new ActivityBoard();
             Activity.FluentNew("First New Activity").AddToBoard(activityBoard);
             Activity.FluentNew("Second New Activity").AddToBoard(activityBoard);
-            Assert.That(activityBoard.UnfilteredActivities.Any(), Is.True);
-            Assert.That(activityBoard.UnfilteredActivities.Count(), Is.EqualTo(2));
+            activityBoard.UnfilteredActivities.Any().Should().BeTrue();
+            activityBoard.UnfilteredActivities.Count().Should().Be(2);
         }
 
         [Test]
@@ -54,8 +55,8 @@ namespace PCLActivitySet.Test.Domain
             Activity.FluentNew("New Activity")
                 .AddToBoard(activityBoard)
                 .AddToBoard(activityBoard);
-            Assert.That(activityBoard.UnfilteredActivities.Any(), Is.True);
-            Assert.That(activityBoard.UnfilteredActivities.Count(), Is.EqualTo(1));
+            activityBoard.UnfilteredActivities.Any().Should().BeTrue();
+            activityBoard.UnfilteredActivities.Count().Should().Be(1);
         }
 
         [Test]
@@ -65,8 +66,8 @@ namespace PCLActivitySet.Test.Domain
             Activity.FluentNew("First New Activity").AddToBoard(activityBoard);
             Activity.FluentNew("Second New Activity").AddToBoard(activityBoard);
             activityBoard.RemoveAllActivities();
-            Assert.That(activityBoard.UnfilteredActivities.Any(), Is.False);
-            Assert.That(activityBoard.UnfilteredActivities.Count(), Is.EqualTo(0));
+            activityBoard.UnfilteredActivities.Any().Should().BeFalse();
+            activityBoard.UnfilteredActivities.Count().Should().Be(0);
         }
 
         [Test]
@@ -76,8 +77,8 @@ namespace PCLActivitySet.Test.Domain
             Activity activity = Activity.FluentNew("First New Activity").AddToBoard(activityBoard);
             Activity.FluentNew("Second New Activity").AddToBoard(activityBoard);
             activityBoard.RemoveActivity(activity);
-            Assert.That(activityBoard.UnfilteredActivities.Any(), Is.True);
-            Assert.That(activityBoard.UnfilteredActivities.Count(), Is.EqualTo(1));
+            activityBoard.UnfilteredActivities.Any().Should().BeTrue();
+            activityBoard.UnfilteredActivities.Count().Should().Be(1);
         }
 
         [Test]
@@ -88,8 +89,8 @@ namespace PCLActivitySet.Test.Domain
             Activity.FluentNew("First New Activity").AddToBoard(activityBoard);
             Activity.FluentNew("Second New Activity").AddToBoard(activityBoard);
             activityBoard.RemoveActivity(activityToRemove);
-            Assert.That(activityBoard.UnfilteredActivities.Any(), Is.True);
-            Assert.That(activityBoard.UnfilteredActivities.Count(), Is.EqualTo(2));
+            activityBoard.UnfilteredActivities.Any().Should().BeTrue();
+            activityBoard.UnfilteredActivities.Count().Should().Be(2);
         }
 
         [Test]
@@ -98,7 +99,7 @@ namespace PCLActivitySet.Test.Domain
             var activityBoard = new ActivityBoard();
             Activity activity = Activity.FluentNew("First New Activity").AddToBoard(activityBoard);
             Activity.FluentNew("Second New Activity").AddToBoard(activityBoard);
-            Assert.That(activityBoard.ContainsActivity(activity), Is.True);
+            activityBoard.ContainsActivity(activity).Should().BeTrue();
         }
 
         [Test]
@@ -108,7 +109,7 @@ namespace PCLActivitySet.Test.Domain
             var activity = new Activity() { Name = "Activity to not find" };
             Activity.FluentNew("First New Activity").AddToBoard(activityBoard);
             Activity.FluentNew("Second New Activity").AddToBoard(activityBoard);
-            Assert.That(activityBoard.ContainsActivity(activity), Is.False);
+            activityBoard.ContainsActivity(activity).Should().BeFalse();
         }
 
         [Test]
@@ -121,7 +122,7 @@ namespace PCLActivitySet.Test.Domain
                 .Recurrence(ERecurFromType.FromActiveDueDate, x => x.Daily(14))
                 .AddToBoard(board)
                 .ToActivity;
-            Assert.That(board.InBox.Activities, Has.Member(activity));
+            board.InBox.Activities.Should().Contain(activity);
         }
 
         [Test]
@@ -130,8 +131,8 @@ namespace PCLActivitySet.Test.Domain
             var board = new ActivityBoard();
             string activityListName = "Doing";
             ActivityList list = board.AddNewList(activityListName);
-            Assert.That(list.Name, Is.EqualTo(activityListName));
-            Assert.That(board.ActivityLists, Has.Member(list));
+            list.Name.Should().Be(activityListName);
+            board.ActivityLists.Should().Contain(list);
         }
 
         [Test]
@@ -141,7 +142,7 @@ namespace PCLActivitySet.Test.Domain
             string activityListName = "Doing";
             ActivityList list = board.AddNewList(activityListName);
             board.RemoveList(list);
-            Assert.That(board.ActivityLists, Is.Empty);
+            board.ActivityLists.Should().BeEmpty();
         }
 
         [Test]
@@ -153,7 +154,7 @@ namespace PCLActivitySet.Test.Domain
             Activity activity = Activity.FluentNew("New Activity").AddToBoard(board);
             board.MoveActivity(activity).ToList(list);
             board.RemoveList(list);
-            Assert.That(board.InBox.Activities, Is.Not.Empty);
+            board.InBox.Activities.Should().NotBeEmpty();
         }
 
         [Test]
@@ -168,8 +169,8 @@ namespace PCLActivitySet.Test.Domain
                 .ToActivity;
             ActivityList list = board.AddNewList("Doing");
             board.MoveActivity(activity).ToList(list);
-            Assert.That(list.Activities, Has.Member(activity));
-            Assert.That(board.InBox.Activities, Has.No.Member(activity));
+            list.Activities.Should().Contain(activity);
+            board.InBox.Activities.Should().NotContain(activity);
         }
 
         [Test]
@@ -185,8 +186,8 @@ namespace PCLActivitySet.Test.Domain
             ActivityList list = board.AddNewList("Doing");
             board.MoveActivity(activity).ToList(list);
             board.MoveActivity(activity).ToList(board.InBox);
-            Assert.That(list.Activities, Has.No.Member(activity));
-            Assert.That(board.InBox.Activities, Has.Member(activity));
+            list.Activities.Should().NotContain(activity);
+            board.InBox.Activities.Should().Contain(activity);
         }
 
         [Test]
@@ -200,7 +201,8 @@ namespace PCLActivitySet.Test.Domain
                 .AddToBoard(board)
                 .ToActivity;
             ActivityList list = new ActivityList(board) {Name = "Bad Activity List"};
-            Assert.That(() => board.MoveActivity(activity).ToList(list), Throws.TypeOf<ArgumentException>());
+            Action action = () => board.MoveActivity(activity).ToList(list);
+            action.ShouldThrow<ArgumentException>();
         }
 
         [Test]
@@ -213,7 +215,8 @@ namespace PCLActivitySet.Test.Domain
                 .Recurrence(ERecurFromType.FromActiveDueDate, x => x.Daily(14))
                 .ToActivity;
             ActivityList list = board.AddNewList("Doing");
-            Assert.That(() => board.MoveActivity(activity).ToList(list), Throws.TypeOf<ArgumentException>());
+            Action action = () => board.MoveActivity(activity).ToList(list);
+            action.ShouldThrow<ArgumentException>();
         }
 
         [Test]
@@ -221,7 +224,7 @@ namespace PCLActivitySet.Test.Domain
         {
             var board = new ActivityBoard();
             board.AddNewContext("Context Name");
-            Assert.That(board.Contexts, Is.Not.Empty);
+            board.Contexts.Should().NotBeEmpty();
         }
 
         [Test]
@@ -230,7 +233,7 @@ namespace PCLActivitySet.Test.Domain
             var board = new ActivityBoard();
             ActivityContext context = board.AddNewContext("Context Name");
             board.RemoveContext(context);
-            Assert.That(board.Contexts, Is.Empty);
+            board.Contexts.Should().BeEmpty();
         }
 
         [Test]
@@ -245,7 +248,7 @@ namespace PCLActivitySet.Test.Domain
             activity.AddContexts(context2);
             board.RemoveContext(context2);
 
-            Assert.That(activity.ContextGuids, Is.Empty);
+            activity.ContextGuids.Should().BeEmpty();
         }
 
         [Test]
@@ -259,8 +262,8 @@ namespace PCLActivitySet.Test.Domain
             ActivityContext context5 = board.AddNewContext("Context 5");
             board.AddSelectedContexts(context4, context5);
 
-            Assert.That(board.SelectedContextGuids, Is.Not.Empty);
-            Assert.That(board.SelectedContextGuids.Count(), Is.EqualTo(2));
+            board.SelectedContextGuids.Should().NotBeEmpty();
+            board.SelectedContextGuids.Count().Should().Be(2);
         }
 
         [Test]
@@ -275,8 +278,8 @@ namespace PCLActivitySet.Test.Domain
             board.AddSelectedContexts(context1, context2, context3, context4, context5);
             board.RemoveSelectedContexts(context2, context4);
 
-            Assert.That(board.SelectedContextGuids, Is.Not.Empty);
-            Assert.That(board.SelectedContextGuids.Count(), Is.EqualTo(3));
+            board.SelectedContextGuids.Should().NotBeEmpty();
+            board.SelectedContextGuids.Count().Should().Be(3);
         }
 
         [Test]
@@ -289,10 +292,10 @@ namespace PCLActivitySet.Test.Domain
                 .AddToBoard(board);
             board.AddSelectedContexts(context1);
 
-            Assert.That(activity.ContextGuids, Is.Empty);
-            Assert.That(board.SelectedContextGuids, Is.Not.Empty);
-            Assert.That(board.Activities, Is.Not.Empty);
-            Assert.That(board.Activities.Count(), Is.EqualTo(1));
+            activity.ContextGuids.Should().BeEmpty();
+            board.SelectedContextGuids.Should().NotBeEmpty();
+            board.Activities.Should().NotBeEmpty();
+            board.Activities.Count().Should().Be(1);
         }
 
         [Test]
@@ -305,10 +308,10 @@ namespace PCLActivitySet.Test.Domain
                 .AddToBoard(board)
                 .Contexts(context1);
 
-            Assert.That(activity.ContextGuids, Is.Not.Empty);
-            Assert.That(board.SelectedContextGuids, Is.Empty);
-            Assert.That(board.Activities, Is.Not.Empty);
-            Assert.That(board.Activities.Count(), Is.EqualTo(1));
+            activity.ContextGuids.Should().NotBeEmpty();
+            board.SelectedContextGuids.Should().BeEmpty();
+            board.Activities.Should().NotBeEmpty();
+            board.Activities.Count().Should().Be(1);
         }
 
         [Test]
@@ -322,10 +325,10 @@ namespace PCLActivitySet.Test.Domain
                 .Contexts(context1);
             board.AddSelectedContexts(context1);
 
-            Assert.That(activity.ContextGuids, Is.Not.Empty);
-            Assert.That(board.SelectedContextGuids, Is.Not.Empty);
-            Assert.That(board.Activities, Is.Not.Empty);
-            Assert.That(board.Activities.Count(), Is.EqualTo(1));
+            activity.ContextGuids.Should().NotBeEmpty();
+            board.SelectedContextGuids.Should().NotBeEmpty();
+            board.Activities.Should().NotBeEmpty();
+            board.Activities.Count().Should().Be(1);
         }
 
         [Test]
@@ -339,9 +342,9 @@ namespace PCLActivitySet.Test.Domain
                 .Contexts(context1);
             board.AddSelectedContexts(context2);
 
-            Assert.That(activity.ContextGuids, Is.Not.Empty);
-            Assert.That(board.SelectedContextGuids, Is.Not.Empty);
-            Assert.That(board.Activities, Is.Empty);
+            activity.ContextGuids.Should().NotBeEmpty();
+            board.SelectedContextGuids.Should().NotBeEmpty();
+            board.Activities.Should().BeEmpty();
         }
 
         [Test]
@@ -351,11 +354,11 @@ namespace PCLActivitySet.Test.Domain
             string goalName = "New Goal";
             ActivityGoal goal = board.AddNewGoal(goalName);
 
-            Assert.That(goal, Is.Not.Null);
-            Assert.That(goal.Name, Is.EqualTo(goalName));
-            Assert.That(board.Goals, Is.Not.Null);
-            Assert.That(board.Goals.Count(), Is.EqualTo(1));
-            Assert.That(board.Goals, Has.Member(goal));
+            goal.Should().NotBeNull();
+            goal.Name.Should().Be(goalName);
+            board.Goals.Should().NotBeNull();
+            board.Goals.Count().Should().Be(1);
+            board.Goals.Should().Contain(goal);
         }
 
         [Test]
@@ -364,7 +367,7 @@ namespace PCLActivitySet.Test.Domain
             var board = new ActivityBoard();
             ActivityGoal goal = board.AddNewGoal("New Goal");
             board.RemoveGoal(goal);
-            Assert.That(board.Goals, Is.Empty);
+            board.Goals.Should().BeEmpty();
         }
 
         [Test]
@@ -377,8 +380,8 @@ namespace PCLActivitySet.Test.Domain
             board.MoveActivity(activity)
                 .ToGoal(goal);
 
-            Assert.That(activity.GoalGuid, Is.Not.Null);
-            Assert.That(activity.GoalGuid, Is.EqualTo(goal.Guid));
+            activity.GoalGuid.Should().NotBeNull();
+            activity.GoalGuid.Should().Be(goal.Guid);
         }
 
         [Test]
@@ -392,7 +395,7 @@ namespace PCLActivitySet.Test.Domain
                 .ToGoal(goal)
                 .ToGoal(null);
 
-            Assert.That(activity.GoalGuid, Is.Null);
+            activity.GoalGuid.Should().BeNull();
         }
 
         [Test]
@@ -406,7 +409,7 @@ namespace PCLActivitySet.Test.Domain
                 .ToGoal(goal);
             board.RemoveGoal(goal);
 
-            Assert.That(activity.GoalGuid, Is.Null);
+            activity.GoalGuid.Should().BeNull();
         }
 
         [Test]
@@ -416,7 +419,8 @@ namespace PCLActivitySet.Test.Domain
             Activity activity = Activity.FluentNew("An Activity")
                 .AddToBoard(board);
             ActivityGoal goal = new ActivityGoal("Bad Goal");
-            Assert.That(() => board.MoveActivity(activity).ToGoal(goal), Throws.TypeOf<ArgumentException>());
+            Action action = () => board.MoveActivity(activity).ToGoal(goal);
+            action.ShouldThrow<ArgumentException>();
         }
 
         [Test]
@@ -429,7 +433,7 @@ namespace PCLActivitySet.Test.Domain
             board.MoveActivity(activity).ToGoal(newGoal);
             ActivityGoal foundGoal = board.GetGoalFromActivity(activity);
             
-            Assert.That(foundGoal, Is.EqualTo(newGoal));
+            foundGoal.Should().Be(newGoal);
         }
 
         [Test]
@@ -440,7 +444,7 @@ namespace PCLActivitySet.Test.Domain
                 .AddToBoard(board);
             ActivityGoal foundGoal = board.GetGoalFromActivity(activity);
 
-            Assert.That(foundGoal, Is.Null);
+            foundGoal.Should().BeNull();
         }
 
         [Test]
@@ -450,7 +454,8 @@ namespace PCLActivitySet.Test.Domain
             Activity activity = Activity.FluentNew("An Activity")
                 .AddToBoard(board);
             activity.GoalGuid = Guid.NewGuid();
-            Assert.That(() => board.GetGoalFromActivity(activity), Throws.TypeOf<InvalidOperationException>());
+            Action action = () => board.GetGoalFromActivity(activity);
+            action.ShouldThrow<InvalidOperationException>();
         }
 
         [Test]
@@ -466,12 +471,12 @@ namespace PCLActivitySet.Test.Domain
             board.MoveActivity(activity2).ToGoal(goal1);
             ILookup<ActivityGoal, Activity> goalLookup = board.GetGoalLookupFromActivities(activity1, activity2);
 
-            Assert.That(goalLookup, Is.Not.Empty);
-            Assert.That(goalLookup.Count, Is.EqualTo(1));
-            Assert.That(goalLookup.First().Key, Is.EqualTo(goal1));
-            Assert.That(goalLookup.First().Count(), Is.EqualTo(2));
-            Assert.That(goalLookup.First().FirstOrDefault(activity => activity == activity1), Is.Not.Null);
-            Assert.That(goalLookup.First().FirstOrDefault(activity => activity == activity2), Is.Not.Null);
+            goalLookup.Should().NotBeEmpty();
+            goalLookup.Count.Should().Be(1);
+            goalLookup.First().Key.Should().Be(goal1);
+            goalLookup.First().Count().Should().Be(2);
+            goalLookup.First().FirstOrDefault(activity => activity == activity1).Should().NotBeNull();
+            goalLookup.First().FirstOrDefault(activity => activity == activity2).Should().NotBeNull();
         }
 
         [Test]
@@ -484,11 +489,11 @@ namespace PCLActivitySet.Test.Domain
             board.MoveActivity(activity1).ToGoal(goal1);
             ILookup<ActivityGoal, Activity> goalLookup = board.GetGoalLookupFromActivities(activity1, activity1);
 
-            Assert.That(goalLookup, Is.Not.Empty);
-            Assert.That(goalLookup.Count, Is.EqualTo(1));
-            Assert.That(goalLookup.First().Key, Is.EqualTo(goal1));
-            Assert.That(goalLookup.First().Count(), Is.EqualTo(1));
-            Assert.That(goalLookup.First().FirstOrDefault(activity => activity == activity1), Is.Not.Null);
+            goalLookup.Should().NotBeEmpty();
+            goalLookup.Count.Should().Be(1);
+            goalLookup.First().Key.Should().Be(goal1);
+            goalLookup.First().Count().Should().Be(1);
+            goalLookup.First().FirstOrDefault(activity => activity == activity1).Should().NotBeNull();
         }
 
     }

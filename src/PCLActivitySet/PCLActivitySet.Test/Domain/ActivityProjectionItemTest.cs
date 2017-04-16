@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentAssertions;
 using NUnit.Framework;
 using PCLActivitySet.Domain;
 
@@ -11,8 +12,8 @@ namespace PCLActivitySet.Test.Domain
         public void DefaultConstructorInitializesToDefaultValues()
         {
             var item = new ActivityProjectionItem();
-            Assert.That(item.Name, Is.Null);
-            Assert.That(item.DueDate, Is.EqualTo(DateTime.MinValue));
+            item.Name.Should().BeNull();
+            item.DueDate.Should().Be(DateTime.MinValue);
         }
 
         [Test]
@@ -21,8 +22,8 @@ namespace PCLActivitySet.Test.Domain
             string name = "The Name";
             DateTime dueDate = new DateTime(2017, 5, 13);
             var item = new ActivityProjectionItem(name, dueDate);
-            Assert.That(item.Name, Is.EqualTo(name));
-            Assert.That(item.DueDate, Is.EqualTo(dueDate));
+            item.Name.Should().Be(name);
+            item.DueDate.Should().Be(dueDate);
         }
     }
 }

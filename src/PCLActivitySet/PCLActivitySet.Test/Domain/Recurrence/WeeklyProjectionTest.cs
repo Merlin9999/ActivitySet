@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentAssertions;
 using NUnit.Framework;
 using PCLActivitySet.Domain.Recurrence;
 using PCLActivitySet.Dto.Recurrence;
@@ -14,7 +15,7 @@ namespace PCLActivitySet.Test.Domain.Recurrence
             int weekCount = 2;
             EDaysOfWeekFlags daysOfWeek = EDaysOfWeekFlags.Monday;
             DateProjection dateProjection = DateProjection(weekCount, daysOfWeek);
-            Assert.That(dateProjection.GetNext(new DateTime(2017, 2, 28)), Is.EqualTo(new DateTime(2017, 3, 13)));
+            dateProjection.GetNext(new DateTime(2017, 2, 28)).Should().Be(new DateTime(2017, 3, 13));
         }
 
         [Test]
@@ -23,7 +24,8 @@ namespace PCLActivitySet.Test.Domain.Recurrence
             int weekCount = 0;
             EDaysOfWeekFlags daysOfWeek = EDaysOfWeekFlags.Monday;
             DateProjection dateProjection = DateProjection(weekCount, daysOfWeek);
-            Assert.That(() => dateProjection.GetNext(new DateTime(2017, 2, 28)), Throws.TypeOf<InvalidOperationException>());
+            Action action = () => dateProjection.GetNext(new DateTime(2017, 2, 28));
+            action.ShouldThrow<InvalidOperationException>();
         }
 
         [Test]
@@ -32,7 +34,8 @@ namespace PCLActivitySet.Test.Domain.Recurrence
             int weekCount = 2;
             EDaysOfWeekFlags daysOfWeek = EDaysOfWeekFlags.None;
             DateProjection dateProjection = DateProjection(weekCount, daysOfWeek);
-            Assert.That(() => dateProjection.GetNext(new DateTime(2017, 2, 28)), Throws.TypeOf<InvalidOperationException>());
+            Action action = () => dateProjection.GetNext(new DateTime(2017, 2, 28));
+            action.ShouldThrow<InvalidOperationException>();
         }
 
         [Test]
@@ -41,7 +44,7 @@ namespace PCLActivitySet.Test.Domain.Recurrence
             int weekCount = 2;
             EDaysOfWeekFlags daysOfWeek = EDaysOfWeekFlags.Monday;
             DateProjection dateProjection = DateProjection(weekCount, daysOfWeek);
-            Assert.That(dateProjection.GetPrevious(new DateTime(2017, 2, 28)), Is.EqualTo(new DateTime(2017, 2, 20)));
+            dateProjection.GetPrevious(new DateTime(2017, 2, 28)).Should().Be(new DateTime(2017, 2, 20));
         }
 
         [Test]
@@ -50,7 +53,8 @@ namespace PCLActivitySet.Test.Domain.Recurrence
             int weekCount = 0;
             EDaysOfWeekFlags daysOfWeek = EDaysOfWeekFlags.Monday;
             DateProjection dateProjection = DateProjection(weekCount, daysOfWeek);
-            Assert.That(() => dateProjection.GetPrevious(new DateTime(2017, 2, 28)), Throws.TypeOf<InvalidOperationException>());
+            Action action = () => dateProjection.GetPrevious(new DateTime(2017, 2, 28));
+            action.ShouldThrow<InvalidOperationException>();
         }
 
         [Test]
@@ -59,7 +63,8 @@ namespace PCLActivitySet.Test.Domain.Recurrence
             int weekCount = 2;
             EDaysOfWeekFlags daysOfWeek = EDaysOfWeekFlags.None;
             DateProjection dateProjection = DateProjection(weekCount, daysOfWeek);
-            Assert.That(() => dateProjection.GetPrevious(new DateTime(2017, 2, 28)), Throws.TypeOf<InvalidOperationException>());
+            Action action = () => dateProjection.GetPrevious(new DateTime(2017, 2, 28));
+            action.ShouldThrow<InvalidOperationException>();
         }
 
         private static DateProjection DateProjection(int weekCount, EDaysOfWeekFlags daysOfWeek)

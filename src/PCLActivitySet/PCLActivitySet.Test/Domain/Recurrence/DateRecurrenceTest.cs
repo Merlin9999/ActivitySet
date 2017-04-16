@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentAssertions;
 using NUnit.Framework;
 using PCLActivitySet.Domain.Recurrence;
 using PCLActivitySet.Dto.Recurrence;
@@ -14,7 +15,7 @@ namespace PCLActivitySet.Test.Domain.Recurrence
             var recur = new DateRecurrence();
             recur.DateProjectionImpl.GetTranslator().PeriodCount = 1;
             DateTime nextDate = recur.GetNext(new DateTime(2017, 2, 28));
-            Assert.That(nextDate, Is.EqualTo(new DateTime(2017, 3, 1)));
+            nextDate.Should().Be(new DateTime(2017, 3, 1));
         }
 
         [Test]
@@ -24,7 +25,7 @@ namespace PCLActivitySet.Test.Domain.Recurrence
             recur.DateProjectionImpl.GetTranslator().PeriodCount = 1;
             recur.DateProjectionImpl.GetTranslator().DayOfMonth = 29;
             DateTime? nextDate = recur.GetNext(new DateTime(), new DateTime(2017, 2, 28), 0);
-            Assert.That(nextDate, Is.EqualTo(new DateTime(2017, 3, 29)));
+            nextDate.Should().Be(new DateTime(2017, 3, 29));
         }
 
         [Test]
@@ -35,10 +36,10 @@ namespace PCLActivitySet.Test.Domain.Recurrence
             recur.DateProjectionImpl.GetTranslator().DayOfMonth = 29;
 
             DateTime? nextDate1 = recur.GetNext(new DateTime(), new DateTime(2017, 2, 28), 0);
-            Assert.That(nextDate1, Is.EqualTo(new DateTime(2017, 3, 29)));
+            nextDate1.Should().Be(new DateTime(2017, 3, 29));
 
             DateTime? nextDate2 = recur.GetNext(new DateTime(), new DateTime(2017, 2, 28), 1);
-            Assert.That(nextDate2, Is.Null);
+            nextDate2.Should().BeNull();
         }
 
         [Test]
@@ -51,10 +52,10 @@ namespace PCLActivitySet.Test.Domain.Recurrence
             recur.DateProjectionImpl.GetTranslator().DayOfMonth = 29;
 
             DateTime? nextDate1 = recur.GetNext(new DateTime(), new DateTime(2017, 2, 28), 0);
-            Assert.That(nextDate1, Is.EqualTo(new DateTime(2017, 3, 29)));
+            nextDate1.Should().Be(new DateTime(2017, 3, 29));
 
             DateTime? nextDate2 = recur.GetNext(new DateTime(), new DateTime(2017, 3, 29), 1);
-            Assert.That(nextDate2, Is.Null);
+            nextDate2.Should().BeNull();
         }
 
         [Test]
@@ -62,7 +63,8 @@ namespace PCLActivitySet.Test.Domain.Recurrence
         {
             var startDate = new DateTime(2017, 4, 1);
             var endDate = new DateTime(2017, 2, 1);
-            Assert.That(() => new DateRecurrence(EDateProjectionType.Monthly, ERecurFromType.FromCompletedDate, startDate, endDate), Throws.TypeOf<ArgumentException>());
+            Action action = () => new DateRecurrence(EDateProjectionType.Monthly, ERecurFromType.FromCompletedDate, startDate, endDate);
+            action.ShouldThrow<ArgumentException>();
         }
 
         [Test]
@@ -71,7 +73,7 @@ namespace PCLActivitySet.Test.Domain.Recurrence
             var recur = new DateRecurrence(new DailyProjection() { DayCount = 1 }, ERecurFromType.FromCompletedDate);
 
             DateTime? nextDate1 = recur.GetNext(new DateTime(), new DateTime(2017, 2, 28), 0);
-            Assert.That(nextDate1, Is.EqualTo(new DateTime(2017, 3, 1)));
+            nextDate1.Should().Be(new DateTime(2017, 3, 1));
         }
 
         [Test]
@@ -80,10 +82,10 @@ namespace PCLActivitySet.Test.Domain.Recurrence
             var recur = new DateRecurrence(new DailyProjection() { DayCount = 1 }, ERecurFromType.FromCompletedDate, 1);
 
             DateTime? nextDate1 = recur.GetNext(new DateTime(), new DateTime(2017, 2, 28), 0);
-            Assert.That(nextDate1, Is.EqualTo(new DateTime(2017, 3, 1)));
+            nextDate1.Should().Be(new DateTime(2017, 3, 1));
 
             DateTime? nextDate2 = recur.GetNext(new DateTime(), new DateTime(2017, 2, 28), 1);
-            Assert.That(nextDate2, Is.Null);
+            nextDate2.Should().BeNull();
         }
 
         [Test]
@@ -94,10 +96,10 @@ namespace PCLActivitySet.Test.Domain.Recurrence
             var recur = new DateRecurrence(new DailyProjection() { DayCount = 1 }, ERecurFromType.FromCompletedDate, startDate, endDate);
 
             DateTime? nextDate1 = recur.GetNext(new DateTime(), new DateTime(2017, 2, 28), 0);
-            Assert.That(nextDate1, Is.EqualTo(new DateTime(2017, 3, 1)));
+            nextDate1.Should().Be(new DateTime(2017, 3, 1));
 
             DateTime? nextDate2 = recur.GetNext(new DateTime(), new DateTime(2017, 3, 1), 0);
-            Assert.That(nextDate2, Is.Null);
+            nextDate2.Should().BeNull();
         }
 
         [Test]
@@ -105,14 +107,16 @@ namespace PCLActivitySet.Test.Domain.Recurrence
         {
             var startDate = new DateTime(2017, 3, 1);
             var endDate = new DateTime(2017, 2, 1);
-            Assert.That(() => new DateRecurrence(new DailyProjection() { DayCount = 1 }, ERecurFromType.FromCompletedDate, startDate, endDate), Throws.TypeOf<ArgumentException>());
+            Action action = () => new DateRecurrence(new DailyProjection() { DayCount = 1 }, ERecurFromType.FromCompletedDate, startDate, endDate);
+            action.ShouldThrow<ArgumentException>();
         }
 
         [Test]
         public void BadRecurFromTypeError()
         {
             var recur = new DateRecurrence(new DailyProjection() { DayCount = 1 }, (ERecurFromType)int.MaxValue);
-            Assert.That(() => recur.GetNext(new DateTime(), new DateTime(2017, 2, 28), 0), Throws.TypeOf<InvalidOperationException>());
+            Action action = () => recur.GetNext(new DateTime(), new DateTime(2017, 2, 28), 0);
+            action.ShouldThrow<InvalidOperationException>();
         }
     }
 }

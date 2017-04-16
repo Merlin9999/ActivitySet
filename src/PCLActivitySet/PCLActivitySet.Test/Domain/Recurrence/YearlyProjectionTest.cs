@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentAssertions;
 using NUnit.Framework;
 using PCLActivitySet.Domain.Recurrence;
 using PCLActivitySet.Dto.Recurrence;
@@ -14,7 +15,7 @@ namespace PCLActivitySet.Test.Domain.Recurrence
             EMonth month = EMonth.February;
             int dayOfMonth = 31;
             DateProjection dateProjection = DateProjection(month, dayOfMonth);
-            Assert.That(dateProjection.GetNext(new DateTime(2017, 2, 28)), Is.EqualTo(new DateTime(2018, 2, 28)));
+            dateProjection.GetNext(new DateTime(2017, 2, 28)).Should().Be(new DateTime(2018, 2, 28));
         }
 
         [Test]
@@ -23,7 +24,8 @@ namespace PCLActivitySet.Test.Domain.Recurrence
             EMonth month = EMonth.February;
             int dayOfMonth = 0;
             DateProjection dateProjection = DateProjection(month, dayOfMonth);
-            Assert.That(() => dateProjection.GetNext(new DateTime(2017, 2, 28)), Throws.TypeOf<InvalidOperationException>());
+            Action action = () => dateProjection.GetNext(new DateTime(2017, 2, 28));
+            action.ShouldThrow<InvalidOperationException>();
         }
 
         [Test]
@@ -32,7 +34,7 @@ namespace PCLActivitySet.Test.Domain.Recurrence
             EMonth month = EMonth.February;
             int dayOfMonth = 31;
             DateProjection dateProjection = DateProjection(month, dayOfMonth);
-            Assert.That(dateProjection.GetPrevious(new DateTime(2017, 2, 28)), Is.EqualTo(new DateTime(2016, 2, 29)));
+            dateProjection.GetPrevious(new DateTime(2017, 2, 28)).Should().Be(new DateTime(2016, 2, 29));
         }
 
         [Test]
@@ -41,7 +43,8 @@ namespace PCLActivitySet.Test.Domain.Recurrence
             EMonth month = EMonth.February;
             int dayOfMonth = 0;
             DateProjection dateProjection = DateProjection(month, dayOfMonth);
-            Assert.That(() => dateProjection.GetPrevious(new DateTime(2017, 2, 28)), Throws.TypeOf<InvalidOperationException>());
+            Action action = () => dateProjection.GetPrevious(new DateTime(2017, 2, 28));
+            action.ShouldThrow<InvalidOperationException>();
         }
 
         private static DateProjection DateProjection(EMonth month, int dayOfMonth)

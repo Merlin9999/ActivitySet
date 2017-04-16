@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentAssertions;
 using NUnit.Framework;
 using PCLActivitySet.Domain.Recurrence;
 using PCLActivitySet.Dto.Recurrence;
@@ -29,34 +30,34 @@ namespace PCLActivitySet.Test.Domain.Recurrence
             };
 
             prj.ProjectionType = EDateProjectionType.Weekly;
-            Assert.That(DateProjection.ToShortDescription(prj), Is.EqualTo("Weekly"));
+            DateProjection.ToShortDescription(prj).Should().Be("Weekly");
             prj.ProjectionType = EDateProjectionType.Monthly;
-            Assert.That(DateProjection.ToShortDescription(prj), Is.EqualTo("Monthly"));
+            DateProjection.ToShortDescription(prj).Should().Be("Monthly");
             prj.ProjectionType = EDateProjectionType.MonthlyRelative;
-            Assert.That(DateProjection.ToShortDescription(prj), Is.EqualTo("Monthly Relative"));
+            DateProjection.ToShortDescription(prj).Should().Be("Monthly Relative");
             prj.ProjectionType = EDateProjectionType.Yearly;
-            Assert.That(DateProjection.ToShortDescription(prj), Is.EqualTo("Yearly"));
+            DateProjection.ToShortDescription(prj).Should().Be("Yearly");
             prj.ProjectionType = EDateProjectionType.YearlyRelative;
-            Assert.That(DateProjection.ToShortDescription(prj), Is.EqualTo("Yearly Relative"));
+            DateProjection.ToShortDescription(prj).Should().Be("Yearly Relative");
             prj.ProjectionType = EDateProjectionType.Daily;
-            Assert.That(DateProjection.ToShortDescription(prj), Is.EqualTo("Daily"));
+            DateProjection.ToShortDescription(prj).Should().Be("Daily");
 
-            Assert.That(prj.PeriodCount, Is.EqualTo(periodCount));
-            Assert.That(prj.Month, Is.EqualTo(month));
-            Assert.That(prj.DayOfMonth, Is.EqualTo(dayOfMonth));
-            Assert.That(prj.DaysOfWeekExt, Is.EqualTo(dayOfWeekExt));
-            Assert.That(prj.DaysOfWeekFlags, Is.EqualTo(dayOfWeekFlags));
-            Assert.That(prj.WeeksInMonth, Is.EqualTo(weekInMonth));
+            prj.PeriodCount.Should().Be(periodCount);
+            prj.Month.Should().Be(month);
+            prj.DayOfMonth.Should().Be(dayOfMonth);
+            prj.DaysOfWeekExt.Should().Be(dayOfWeekExt);
+            prj.DaysOfWeekFlags.Should().Be(dayOfWeekFlags);
+            prj.WeeksInMonth.Should().Be(weekInMonth);
 
-            Assert.That(DateProjection.ToShortDescription(null), Is.EqualTo("None"));
+            DateProjection.ToShortDescription(null).Should().Be("None");
         }
 
         [Test]
         public void TranslateToInvalidProjectionType()
         {
             var prj = new DateProjection();
-            Assert.That(() => prj.ProjectionType = (EDateProjectionType) int.MaxValue, Throws.TypeOf<InvalidOperationException>());
-
+            Action action = () => prj.ProjectionType = (EDateProjectionType) int.MaxValue;
+            action.ShouldThrow<InvalidOperationException>();
         }
     }
 }

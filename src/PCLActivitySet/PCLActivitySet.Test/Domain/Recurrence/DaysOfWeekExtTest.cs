@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentAssertions;
 using NUnit.Framework;
 using PCLActivitySet.Domain.Recurrence;
 using PCLActivitySet.Dto.Recurrence;
@@ -14,238 +15,240 @@ namespace PCLActivitySet.Test.Domain.Recurrence
         public void DateMatches()
         {
             DateTime date = new DateTime(2017, 2, 19);
-            Assert.That(date.DateMatches(EDaysOfWeekExt.Sunday), Is.True);
-            Assert.That(date.DateMatches(EDaysOfWeekExt.WeekDay), Is.False);
-            Assert.That(date.DateMatches(EDaysOfWeekExt.WeekendDay), Is.True);
-            Assert.That(date.DateMatches(EDaysOfWeekExt.EveryDay), Is.True);
+            date.DateMatches(EDaysOfWeekExt.Sunday).Should().BeTrue();
+            date.DateMatches(EDaysOfWeekExt.WeekDay).Should().BeFalse();
+            date.DateMatches(EDaysOfWeekExt.WeekendDay).Should().BeTrue();
+            date.DateMatches(EDaysOfWeekExt.EveryDay).Should().BeTrue();
         }
 
         [Test]
         public void IsWeekendDayTrue()
         {
-            Assert.That(EDaysOfWeekExt.Sunday.IsWeekendDay(), Is.True);
+            EDaysOfWeekExt.Sunday.IsWeekendDay().Should().BeTrue();
         }
 
         [Test]
         public void IsWeekendDayFalse()
         {
-            Assert.That(EDaysOfWeekExt.Monday.IsWeekendDay(), Is.False);
+            EDaysOfWeekExt.Monday.IsWeekendDay().Should().BeFalse();
         }
 
         [Test]
         public void IsWeekDayTrue()
         {
-            Assert.That(EDaysOfWeekExt.Tuesday.IsWeekDay(), Is.True);
+            EDaysOfWeekExt.Tuesday.IsWeekDay().Should().BeTrue();
         }
 
         [Test]
         public void IsWeekDayFalse()
         {
-            Assert.That(EDaysOfWeekExt.Sunday.IsWeekDay(), Is.False);
+            EDaysOfWeekExt.Sunday.IsWeekDay().Should().BeFalse();
         }
 
         [Test]
         public void IsDayGroupClassifierTrue()
         {
-            Assert.That(EDaysOfWeekExt.WeekDay.IsDayGroupClassifier(), Is.True);
+            EDaysOfWeekExt.WeekDay.IsDayGroupClassifier().Should().BeTrue();
         }
 
         [Test]
         public void IsDayGroupClassifierFalse()
         {
-            Assert.That(EDaysOfWeekExt.Sunday.IsDayGroupClassifier(), Is.False);
+            EDaysOfWeekExt.Sunday.IsDayGroupClassifier().Should().BeFalse();
         }
 
         [Test]
         public void HasWeekDaysTrue()
         {
-            Assert.That(new List<EDaysOfWeekExt>() { EDaysOfWeekExt.Friday, EDaysOfWeekExt.Saturday }.HasWeekDays(), Is.True);
+            new List<EDaysOfWeekExt>() { EDaysOfWeekExt.Friday, EDaysOfWeekExt.Saturday }.HasWeekDays().Should().BeTrue();
         }
 
         [Test]
         public void HasWeekDaysFalse()
         {
-            Assert.That(new List<EDaysOfWeekExt>() { EDaysOfWeekExt.Sunday, EDaysOfWeekExt.Saturday }.HasWeekDays(), Is.False);
+            new List<EDaysOfWeekExt>() { EDaysOfWeekExt.Sunday, EDaysOfWeekExt.Saturday }.HasWeekDays().Should().BeFalse();
         }
 
         [Test]
         public void HasWeekDaysAllowEmptyTrue()
         {
-            Assert.That(new List<EDaysOfWeekExt>().HasWeekDays(true), Is.True);
+            new List<EDaysOfWeekExt>().HasWeekDays(true).Should().BeTrue();
         }
 
         [Test]
         public void HasWeekDaysAllowEmptyFalse()
         {
-            Assert.That(new List<EDaysOfWeekExt>().HasWeekDays(false), Is.False);
+            new List<EDaysOfWeekExt>().HasWeekDays(false).Should().BeFalse();
         }
 
         [Test]
         public void HasWeeendkDaysTrue()
         {
-            Assert.That(new List<EDaysOfWeekExt>() { EDaysOfWeekExt.Friday, EDaysOfWeekExt.Saturday }.HasWeekendDays(), Is.True);
+            new List<EDaysOfWeekExt>() { EDaysOfWeekExt.Friday, EDaysOfWeekExt.Saturday }.HasWeekendDays().Should().BeTrue();
         }
 
         [Test]
         public void HasWeekendDaysFalse()
         {
-            Assert.That(new List<EDaysOfWeekExt>() { EDaysOfWeekExt.Monday, EDaysOfWeekExt.Thursday }.HasWeekendDays(), Is.False);
+            new List<EDaysOfWeekExt>() { EDaysOfWeekExt.Monday, EDaysOfWeekExt.Thursday }.HasWeekendDays().Should().BeFalse();
         }
 
         [Test]
         public void HasWeekendDaysAllowEmptyTrue()
         {
-            Assert.That(new List<EDaysOfWeekExt>().HasWeekendDays(true), Is.True);
+            new List<EDaysOfWeekExt>().HasWeekendDays(true).Should().BeTrue();
         }
 
         [Test]
         public void HasWeekendDaysAllowEmptyFalse()
         {
-            Assert.That(new List<EDaysOfWeekExt>().HasWeekendDays(false), Is.False);
+            new List<EDaysOfWeekExt>().HasWeekendDays(false).Should().BeFalse();
         }
 
         [Test]
         public void HasDayGroupClassifierTrue()
         {
-            Assert.That(new List<EDaysOfWeekExt>() { EDaysOfWeekExt.Friday, EDaysOfWeekExt.WeekDay }.HasDayGroupClassifier(), Is.True);
+            new List<EDaysOfWeekExt>() { EDaysOfWeekExt.Friday, EDaysOfWeekExt.WeekDay }.HasDayGroupClassifier().Should().BeTrue();
         }
 
         [Test]
         public void HasDayGroupClassifierFalse()
         {
-            Assert.That(new List<EDaysOfWeekExt>() { EDaysOfWeekExt.Monday, EDaysOfWeekExt.Saturday }.HasDayGroupClassifier(), Is.False);
+            new List<EDaysOfWeekExt>() { EDaysOfWeekExt.Monday, EDaysOfWeekExt.Saturday }.HasDayGroupClassifier().Should().BeFalse();
         }
 
         [Test]
         public void HasDayGroupClassifierAllowEmptyTrue()
         {
-            Assert.That(new List<EDaysOfWeekExt>().HasDayGroupClassifier(true), Is.True);
+            new List<EDaysOfWeekExt>().HasDayGroupClassifier(true).Should().BeTrue();
         }
 
         [Test]
         public void HasDayGroupClassifierAllowEmptyFalse()
         {
-            Assert.That(new List<EDaysOfWeekExt>().HasDayGroupClassifier(false), Is.False);
+            new List<EDaysOfWeekExt>().HasDayGroupClassifier(false).Should().BeFalse();
         }
         
         [Test]
         public void HasOnlyWeekDaysTrue()
         {
-            Assert.That(new List<EDaysOfWeekExt>() { EDaysOfWeekExt.Tuesday, EDaysOfWeekExt.Wednesday }.HasOnlyWeekDays(), Is.True);
+            new List<EDaysOfWeekExt>() { EDaysOfWeekExt.Tuesday, EDaysOfWeekExt.Wednesday }.HasOnlyWeekDays().Should().BeTrue();
         }
 
         [Test]
         public void HasOnlyWeekDaysFalse()
         {
-            Assert.That(new List<EDaysOfWeekExt>() { EDaysOfWeekExt.Thursday, EDaysOfWeekExt.Saturday }.HasOnlyWeekDays(), Is.False);
+            new List<EDaysOfWeekExt>() { EDaysOfWeekExt.Thursday, EDaysOfWeekExt.Saturday }.HasOnlyWeekDays().Should().BeFalse();
         }
 
         [Test]
         public void HasOnlyWeekDaysAllowEmptyTrue()
         {
-            Assert.That(new List<EDaysOfWeekExt>().HasOnlyWeekDays(true), Is.True);
+            new List<EDaysOfWeekExt>().HasOnlyWeekDays(true).Should().BeTrue();
         }
 
         [Test]
         public void HasOnlyWeekDaysAllowEmptyFalse()
         {
-            Assert.That(new List<EDaysOfWeekExt>().HasOnlyWeekDays(false), Is.False);
+            new List<EDaysOfWeekExt>().HasOnlyWeekDays(false).Should().BeFalse();
         }
 
         [Test]
         public void HasOnlyDayGroupClassifiersTrue()
         {
-            Assert.That(new List<EDaysOfWeekExt>() { EDaysOfWeekExt.WeekDay, EDaysOfWeekExt.WeekendDay }.HasOnlyDayGroupClassifiers, Is.True);
+            new List<EDaysOfWeekExt>() { EDaysOfWeekExt.WeekDay, EDaysOfWeekExt.WeekendDay }.HasOnlyDayGroupClassifiers().Should().BeTrue();
         }
 
         [Test]
         public void HasOnlyDayGroupClassifiersFalse()
         {
-            Assert.That(new List<EDaysOfWeekExt>() { EDaysOfWeekExt.Sunday, EDaysOfWeekExt.EveryDay }.HasOnlyDayGroupClassifiers(), Is.False);
+            new List<EDaysOfWeekExt>() { EDaysOfWeekExt.Sunday, EDaysOfWeekExt.EveryDay }.HasOnlyDayGroupClassifiers().Should().BeFalse();
         }
 
         [Test]
         public void HasOnlyDayGroupClassifiersAllowEmptyTrue()
         {
-            Assert.That(new List<EDaysOfWeekExt>().HasOnlyDayGroupClassifiers(true), Is.True);
+            new List<EDaysOfWeekExt>().HasOnlyDayGroupClassifiers(true).Should().BeTrue();
         }
 
         [Test]
         public void HasOnlyDayGroupClassifiersAllowEmptyFalse()
         {
-            Assert.That(new List<EDaysOfWeekExt>().HasOnlyDayGroupClassifiers(false), Is.False);
+            new List<EDaysOfWeekExt>().HasOnlyDayGroupClassifiers(false).Should().BeFalse();
         }
 
         [Test]
         public void HasOnlyWeeendkDaysTrue()
         {
-            Assert.That(new List<EDaysOfWeekExt>() { EDaysOfWeekExt.Sunday, EDaysOfWeekExt.Saturday }.HasOnlyWeekendDays(), Is.True);
+            new List<EDaysOfWeekExt>() { EDaysOfWeekExt.Sunday, EDaysOfWeekExt.Saturday }.HasOnlyWeekendDays().Should().BeTrue();
         }
 
         [Test]
         public void HasOnlyWeekendDaysFalse()
         {
-            Assert.That(new List<EDaysOfWeekExt>() { EDaysOfWeekExt.Sunday, EDaysOfWeekExt.Monday }.HasOnlyWeekendDays(), Is.False);
+            new List<EDaysOfWeekExt>() { EDaysOfWeekExt.Sunday, EDaysOfWeekExt.Monday }.HasOnlyWeekendDays().Should().BeFalse();
         }
 
         [Test]
         public void HasOnlyWeekendDaysAllowEmptyTrue()
         {
-            Assert.That(new List<EDaysOfWeekExt>().HasOnlyWeekendDays(true), Is.True);
+            new List<EDaysOfWeekExt>().HasOnlyWeekendDays(true).Should().BeTrue();
         }
 
         [Test]
         public void HasOnlyWeekendDaysAllowEmptyFalse()
         {
-            Assert.That(new List<EDaysOfWeekExt>().HasOnlyWeekendDays(false), Is.False);
+            new List<EDaysOfWeekExt>().HasOnlyWeekendDays(false).Should().BeFalse();
         }
 
         [Test]
         public void ConvertFromDaysOfWeek()
         {
-            Assert.That(DaysOfWeekExt.ConvertFrom(EDaysOfWeek.Monday), Is.EqualTo(EDaysOfWeekExt.Monday));
-            Assert.That(DaysOfWeekExt.ConvertFrom(EDaysOfWeek.Tuesday), Is.EqualTo(EDaysOfWeekExt.Tuesday));
-            Assert.That(DaysOfWeekExt.ConvertFrom(EDaysOfWeek.Wednesday), Is.EqualTo(EDaysOfWeekExt.Wednesday));
-            Assert.That(DaysOfWeekExt.ConvertFrom(EDaysOfWeek.Thursday), Is.EqualTo(EDaysOfWeekExt.Thursday));
-            Assert.That(DaysOfWeekExt.ConvertFrom(EDaysOfWeek.Friday), Is.EqualTo(EDaysOfWeekExt.Friday));
-            Assert.That(DaysOfWeekExt.ConvertFrom(EDaysOfWeek.Saturday), Is.EqualTo(EDaysOfWeekExt.Saturday));
-            Assert.That(DaysOfWeekExt.ConvertFrom(EDaysOfWeek.Sunday), Is.EqualTo(EDaysOfWeekExt.Sunday));
-            Assert.That(() => DaysOfWeekExt.ConvertFrom((EDaysOfWeek)int.MaxValue), Throws.TypeOf<ArgumentException>());
+            DaysOfWeekExt.ConvertFrom(EDaysOfWeek.Monday).Should().Be(EDaysOfWeekExt.Monday);
+            DaysOfWeekExt.ConvertFrom(EDaysOfWeek.Tuesday).Should().Be(EDaysOfWeekExt.Tuesday);
+            DaysOfWeekExt.ConvertFrom(EDaysOfWeek.Wednesday).Should().Be(EDaysOfWeekExt.Wednesday);
+            DaysOfWeekExt.ConvertFrom(EDaysOfWeek.Thursday).Should().Be(EDaysOfWeekExt.Thursday);
+            DaysOfWeekExt.ConvertFrom(EDaysOfWeek.Friday).Should().Be(EDaysOfWeekExt.Friday);
+            DaysOfWeekExt.ConvertFrom(EDaysOfWeek.Saturday).Should().Be(EDaysOfWeekExt.Saturday);
+            DaysOfWeekExt.ConvertFrom(EDaysOfWeek.Sunday).Should().Be(EDaysOfWeekExt.Sunday);
+            Action action = () => DaysOfWeekExt.ConvertFrom((EDaysOfWeek) int.MaxValue);
+            action.ShouldThrow<ArgumentException>();
         }
 
         [Test]
         public void ConvertFromEDaysOfWeekFlags()
         {
-            Assert.That(DaysOfWeekExt.ConvertFrom(EDaysOfWeekFlags.Monday).Single(), Is.EqualTo(EDaysOfWeekExt.Monday));
-            Assert.That(DaysOfWeekExt.ConvertFrom(EDaysOfWeekFlags.Tuesday).Single(), Is.EqualTo(EDaysOfWeekExt.Tuesday));
-            Assert.That(DaysOfWeekExt.ConvertFrom(EDaysOfWeekFlags.Wednesday).Single(), Is.EqualTo(EDaysOfWeekExt.Wednesday));
-            Assert.That(DaysOfWeekExt.ConvertFrom(EDaysOfWeekFlags.Thursday).Single(), Is.EqualTo(EDaysOfWeekExt.Thursday));
-            Assert.That(DaysOfWeekExt.ConvertFrom(EDaysOfWeekFlags.Friday).Single(), Is.EqualTo(EDaysOfWeekExt.Friday));
-            Assert.That(DaysOfWeekExt.ConvertFrom(EDaysOfWeekFlags.Saturday).Single(), Is.EqualTo(EDaysOfWeekExt.Saturday));
-            Assert.That(DaysOfWeekExt.ConvertFrom(EDaysOfWeekFlags.Sunday).Single(), Is.EqualTo(EDaysOfWeekExt.Sunday));
+            DaysOfWeekExt.ConvertFrom(EDaysOfWeekFlags.Monday).Single().Should().Be(EDaysOfWeekExt.Monday);
+            DaysOfWeekExt.ConvertFrom(EDaysOfWeekFlags.Tuesday).Single().Should().Be(EDaysOfWeekExt.Tuesday);
+            DaysOfWeekExt.ConvertFrom(EDaysOfWeekFlags.Wednesday).Single().Should().Be(EDaysOfWeekExt.Wednesday);
+            DaysOfWeekExt.ConvertFrom(EDaysOfWeekFlags.Thursday).Single().Should().Be(EDaysOfWeekExt.Thursday);
+            DaysOfWeekExt.ConvertFrom(EDaysOfWeekFlags.Friday).Single().Should().Be(EDaysOfWeekExt.Friday);
+            DaysOfWeekExt.ConvertFrom(EDaysOfWeekFlags.Saturday).Single().Should().Be(EDaysOfWeekExt.Saturday);
+            DaysOfWeekExt.ConvertFrom(EDaysOfWeekFlags.Sunday).Single().Should().Be(EDaysOfWeekExt.Sunday);
         }
 
         [Test]
         public void ConvertFromEDaysOfWeekFlagsWithMultipleDays()
         {
             HashSet<EDaysOfWeekExt> weekendDays = DaysOfWeekExt.ConvertFrom(EDaysOfWeekFlags.Saturday ^ EDaysOfWeekFlags.Sunday);
-            Assert.That(weekendDays, Is.Not.Empty);
-            Assert.That(weekendDays.Count, Is.EqualTo(2));
-            Assert.That(weekendDays.Contains(EDaysOfWeekExt.Saturday), Is.True);
-            Assert.That(weekendDays.Contains(EDaysOfWeekExt.Sunday), Is.True);
+            weekendDays.Should().NotBeEmpty();
+            weekendDays.Count.Should().Be(2);
+            weekendDays.Contains(EDaysOfWeekExt.Saturday).Should().BeTrue();
+            weekendDays.Contains(EDaysOfWeekExt.Sunday).Should().BeTrue();
         }
 
         [Test]
         public void ConvertFromDayOfWeek()
         {
-            Assert.That(DaysOfWeekExt.ConvertFrom(DayOfWeek.Monday), Is.EqualTo(EDaysOfWeekExt.Monday));
-            Assert.That(DaysOfWeekExt.ConvertFrom(DayOfWeek.Tuesday), Is.EqualTo(EDaysOfWeekExt.Tuesday));
-            Assert.That(DaysOfWeekExt.ConvertFrom(DayOfWeek.Wednesday), Is.EqualTo(EDaysOfWeekExt.Wednesday));
-            Assert.That(DaysOfWeekExt.ConvertFrom(DayOfWeek.Thursday), Is.EqualTo(EDaysOfWeekExt.Thursday));
-            Assert.That(DaysOfWeekExt.ConvertFrom(DayOfWeek.Friday), Is.EqualTo(EDaysOfWeekExt.Friday));
-            Assert.That(DaysOfWeekExt.ConvertFrom(DayOfWeek.Saturday), Is.EqualTo(EDaysOfWeekExt.Saturday));
-            Assert.That(DaysOfWeekExt.ConvertFrom(DayOfWeek.Sunday), Is.EqualTo(EDaysOfWeekExt.Sunday));
-            Assert.That(() => DaysOfWeekExt.ConvertFrom((DayOfWeek)int.MaxValue), Throws.TypeOf<ArgumentException>());
+            DaysOfWeekExt.ConvertFrom(DayOfWeek.Monday).Should().Be(EDaysOfWeekExt.Monday);
+            DaysOfWeekExt.ConvertFrom(DayOfWeek.Tuesday).Should().Be(EDaysOfWeekExt.Tuesday);
+            DaysOfWeekExt.ConvertFrom(DayOfWeek.Wednesday).Should().Be(EDaysOfWeekExt.Wednesday);
+            DaysOfWeekExt.ConvertFrom(DayOfWeek.Thursday).Should().Be(EDaysOfWeekExt.Thursday);
+            DaysOfWeekExt.ConvertFrom(DayOfWeek.Friday).Should().Be(EDaysOfWeekExt.Friday);
+            DaysOfWeekExt.ConvertFrom(DayOfWeek.Saturday).Should().Be(EDaysOfWeekExt.Saturday);
+            DaysOfWeekExt.ConvertFrom(DayOfWeek.Sunday).Should().Be(EDaysOfWeekExt.Sunday);
+            Action action = () => DaysOfWeekExt.ConvertFrom((DayOfWeek)int.MaxValue);
+            action.ShouldThrow<ArgumentException>();
         }
     }
 }

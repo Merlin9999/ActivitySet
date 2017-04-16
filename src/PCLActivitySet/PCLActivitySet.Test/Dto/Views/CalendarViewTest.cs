@@ -4,8 +4,8 @@ using PCLActivitySet.Domain.Views;
 using PCLActivitySet.Dto.Views;
 using PCLActivitySet.Test.Helpers;
 using Ploeh.AutoFixture;
-using Ploeh.SemanticComparison.Fluent;
 using System.IO;
+using FluentAssertions;
 
 namespace PCLActivitySet.Test.Dto.Views
 {
@@ -21,8 +21,7 @@ namespace PCLActivitySet.Test.Dto.Views
             CalendarView domain = CalendarView.FromDto(sourceDto);
             CalendarViewDto targetDto = CalendarView.ToDto(domain);
 
-            var sourceDtoLikeness = sourceDto.AsSource().OfLikeness<CalendarViewDto>();
-            sourceDtoLikeness.ShouldEqual(targetDto);
+            sourceDto.ShouldBeEquivalentTo(targetDto);
         }
 
         [Test]
@@ -39,9 +38,7 @@ namespace PCLActivitySet.Test.Dto.Views
                 targetDto = col.FindById(id);
             }
 
-            var sourceDtoLikeness = sourceDto.AsSource().OfLikeness<CalendarViewDto>();
-            sourceDtoLikeness.ShouldEqual(targetDto);
+            sourceDto.ShouldBeEquivalentTo(targetDto);
         }
-
     }
 }

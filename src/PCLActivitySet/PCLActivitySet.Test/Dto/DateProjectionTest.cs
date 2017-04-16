@@ -3,8 +3,8 @@ using NUnit.Framework;
 using PCLActivitySet.Domain.Recurrence;
 using PCLActivitySet.Dto.Recurrence;
 using Ploeh.AutoFixture;
-using Ploeh.SemanticComparison.Fluent;
 using System.IO;
+using FluentAssertions;
 using PCLActivitySet.Test.Helpers;
 
 namespace PCLActivitySet.Test.Dto
@@ -21,8 +21,7 @@ namespace PCLActivitySet.Test.Dto
             DateProjection domain = DateProjection.FromDto(sourceDto);
             DateProjectionDto targetDto = DateProjection.ToDto(domain);
 
-            var sourceDtoLikeness = sourceDto.AsSource().OfLikeness<DateProjectionDto>();
-            sourceDtoLikeness.ShouldEqual(targetDto);
+            sourceDto.ShouldBeEquivalentTo(targetDto);
         }
 
         [Test]
@@ -39,8 +38,7 @@ namespace PCLActivitySet.Test.Dto
                 targetDto = col.FindById(id);
             }
 
-            var sourceDtoLikeness = sourceDto.AsSource().OfLikeness<DateProjectionDto>();
-            sourceDtoLikeness.ShouldEqual(targetDto);
+            sourceDto.ShouldBeEquivalentTo(targetDto);
         }
     }
 }
