@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using FluentAssertions;
+using NUnit.Framework;
 using PCLActivitySet.Domain;
 
 namespace PCLActivitySet.Test.Domain
@@ -10,7 +11,7 @@ namespace PCLActivitySet.Test.Domain
         public void NamePropertyDefaultsToNull()
         {
             var activityList = new ActivityContext();
-            Assert.That(activityList.Name, Is.Null);
+            activityList.Name.Should().BeNull();
         }
 
         [Test]
@@ -19,7 +20,7 @@ namespace PCLActivitySet.Test.Domain
             var activityList = new ActivityContext();
             string testName = "Test Name";
             activityList.Name = testName;
-            Assert.That(activityList.Name, Is.EqualTo(testName));
+            activityList.Name.Should().Be(testName);
         }
     }
 }

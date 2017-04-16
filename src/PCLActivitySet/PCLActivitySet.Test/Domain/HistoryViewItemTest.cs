@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentAssertions;
 using NUnit.Framework;
 using PCLActivitySet.Domain;
 using PCLActivitySet.Domain.Views;
@@ -15,7 +16,7 @@ namespace PCLActivitySet.Test.Domain
             var item = new ActivityHistoryItem() { Name = name };
             var viewItem = new HistoryViewItem(item, null);
 
-            Assert.That(viewItem.Name, Is.EqualTo(name));
+            viewItem.Name.Should().Be(name);
         }
 
         [Test]
@@ -25,7 +26,7 @@ namespace PCLActivitySet.Test.Domain
             var item = new ActivityHistoryItem() { CompletedDate = date };
             var viewItem = new HistoryViewItem(item, null);
 
-            Assert.That(viewItem.Date, Is.EqualTo(date));
+            viewItem.Date.Should().Be(date);
         }
 
         [Test]
@@ -34,7 +35,7 @@ namespace PCLActivitySet.Test.Domain
             var item = new ActivityHistoryItem();
             var viewItem = new HistoryViewItem(item, null);
 
-            Assert.That(viewItem.IsActive, Is.False);
+            viewItem.IsActive.Should().BeFalse();
         }
     }
 }

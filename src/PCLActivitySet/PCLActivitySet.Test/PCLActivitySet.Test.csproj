@@ -75,7 +75,6 @@
     <Compile Include="Domain\ActivityListTest.cs" />
     <Compile Include="Domain\ActivityProjectionItemTest.cs" />
     <Compile Include="Domain\ActivityBoardTest.cs" />
-    <Compile Include="Domain\ActivityTest.cs" />
     <Compile Include="Domain\ActivityViewItemTest.cs" />
     <Compile Include="Domain\HistoryViewItemTest.cs" />
     <Compile Include="Domain\ProjectionViewItemTest.cs" />

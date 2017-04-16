@@ -55,7 +55,7 @@ namespace PCLActivitySet.Test.Dto
                 var id = col.Insert(sourceDto);
                 targetDto = col.FindById(id);
 
-                Assert.That(targetDto.Id, Is.EqualTo(id));
+                targetDto.Id.Should().Be(id);
             }
 
             sourceDto.ShouldBeEquivalentTo(targetDto);
