@@ -28,7 +28,7 @@ namespace PCLActivitySet.Domain
             this.OwningBoard = null;
         }
 
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
 
         public virtual IEnumerable<Activity> Activities => this.OwningBoard.Activities.Where(activity => activity.ActivityListGuid == this.Guid);
 
@@ -36,11 +36,11 @@ namespace PCLActivitySet.Domain
 
         public virtual IEnumerable<IViewItem> ViewItems => this.GenerateViewItems();
 
-        internal ExcludeNonActiveView InternalExcludeNonActiveView => this._excludeNonActiveView ?? (this._excludeNonActiveView = new ExcludeNonActiveView());
-        internal FocusDateView InternalFocusDateView => this._focusDateView ?? (this._focusDateView = new FocusDateView());
-        internal CalendarView InternalCalendarView => this._calendarView ?? (this._calendarView = new CalendarView());
+        internal virtual ExcludeNonActiveView InternalExcludeNonActiveView => this._excludeNonActiveView ?? (this._excludeNonActiveView = new ExcludeNonActiveView());
+        internal virtual FocusDateView InternalFocusDateView => this._focusDateView ?? (this._focusDateView = new FocusDateView());
+        internal virtual CalendarView InternalCalendarView => this._calendarView ?? (this._calendarView = new CalendarView());
 
-        internal IView InternalActiveView { get; set; }
+        internal virtual IView InternalActiveView { get; set; }
 
         protected virtual IEnumerable<IViewItem> GenerateViewItems()
         {
@@ -50,7 +50,7 @@ namespace PCLActivitySet.Domain
                 : view.ViewItemGenerator(this.Activities);
         }
 
-        public void UpdateDto(ActivityListDto dto)
+        public virtual void UpdateDto(ActivityListDto dto)
         {
             dto.Name = this.Name;
 
@@ -81,24 +81,13 @@ namespace PCLActivitySet.Domain
                 throw new NotSupportedException($"Unsupported value for {nameof(this.InternalActiveView)}");
         }
 
-        public void UpdateFromDto(ActivityListDto dto)
+        public virtual void UpdateFromDto(ActivityListDto dto)
         {
             this.Name = dto.Name;
 
-            if (dto.InternalCalendarView == null)
-                ;//this.InternalCalendarView = null;
-            else
-                this.InternalCalendarView.UpdateDto(dto.InternalCalendarView);
-
-            if (dto.InternalExcludeNonActiveView == null)
-                ;//this.InternalExcludeNonActiveView = null;
-            else
-                this.InternalExcludeNonActiveView.UpdateFromDto(dto.InternalExcludeNonActiveView);
-
-            if (dto.InternalFocusDateView == null)
-                ;//this.InternalFocusDateView = null;
-            else
-                this.InternalFocusDateView.UpdateFromDto(dto.InternalFocusDateView);
+            this.InternalCalendarView.UpdateDto(dto.InternalCalendarView);
+            this.InternalExcludeNonActiveView.UpdateFromDto(dto.InternalExcludeNonActiveView);
+            this.InternalFocusDateView.UpdateFromDto(dto.InternalFocusDateView);
 
             switch (dto.SelectedView)
             {
