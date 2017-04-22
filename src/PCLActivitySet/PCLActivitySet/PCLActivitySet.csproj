@@ -45,6 +45,8 @@
     <Compile Include="Db\AbstractLiteDb.cs" />
     <Compile Include="Dto\ActivityDto.cs" />
     <Compile Include="Dto\ActivityHistoryItemDto.cs" />
+    <Compile Include="Dto\ActivityListDto.cs" />
+    <Compile Include="Dto\EActvitiyListViewType.cs" />
     <Compile Include="Dto\Recurrence\DateProjectionDto.cs" />
     <Compile Include="Domain\Recurrence\DaysOfWeekFlags.cs" />
     <Compile Include="Domain\Recurrence\DaysOfWeekExt.cs" />
