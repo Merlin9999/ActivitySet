@@ -45,6 +45,5 @@ namespace PCLActivitySet.Domain
             retVal.UpdateFromDto(dto);
             return retVal;
         }
-
     }
 }
