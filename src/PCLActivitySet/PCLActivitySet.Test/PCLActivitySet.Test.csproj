@@ -59,6 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dto\ActivityBoardTest.cs" />
     <Compile Include="Dto\ActivityContextTest.cs" />
     <Compile Include="Dto\ActivityGoalTest.cs" />
     <Compile Include="Dto\ActivityListTest.cs" />

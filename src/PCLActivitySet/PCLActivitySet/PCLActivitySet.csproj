@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Db\AbstractLiteDbObject.cs" />
+    <Compile Include="Dto\ActivityBoardDto.cs" />
     <Compile Include="Dto\ActivityContextDto.cs" />
     <Compile Include="Dto\ActivityDto.cs" />
     <Compile Include="Dto\ActivityGoalDto.cs" />
