@@ -3,21 +3,28 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using PCLActivitySet.Domain.Fluent;
+using PCLActivitySet.Dto;
 
 namespace PCLActivitySet.Domain
 {
     [DebuggerDisplay("{Name} : {GetType().Name}")]
-    public class ActivityBoard
+    public class ActivityBoard : AbstractDomainEntity<ActivityBoard>
     {
-        private HashSet<Activity> ActivitySet { get; } = new HashSet<Activity>();
+        private HashSet<Activity> _activitySet;
         private HashSet<ActivityList> _setOfActivityLists;
         private HashSet<ActivityContext> _setOfContexts;
         private HashSet<ActivityGoal> _setOfGoals;
         private HashSet<Guid> _setOfSelectedContextGuids;
+        private HashSet<Activity> ActivitySet => this._activitySet ?? (this._activitySet = new HashSet<Activity>());
         private HashSet<ActivityList> SetOfActivityLists => this._setOfActivityLists ?? (this._setOfActivityLists = new HashSet<ActivityList>());
         private HashSet<ActivityContext> SetOfContexts => this._setOfContexts ?? (this._setOfContexts = new HashSet<ActivityContext>());
         private HashSet<Guid> SetOfSelectedContextGuids => this._setOfSelectedContextGuids ?? (this._setOfSelectedContextGuids = new HashSet<Guid>());
-        private HashSet<ActivityGoal> SetOfGoals => this._setOfGoals ?? (this._setOfGoals = new HashSet<ActivityGoal>());
+
+        private HashSet<ActivityGoal> SetOfGoals
+        {
+            get => this._setOfGoals ?? (this._setOfGoals = new HashSet<ActivityGoal>());
+            set => this._setOfGoals = value;
+        }
 
 
         public ActivityBoard()
@@ -184,6 +191,34 @@ namespace PCLActivitySet.Domain
                 .ToLookup(x => x.Goal, x => x.Activity);
 
             return goalToActivitiesLookup;
+        }
+
+        public void UpdateDto(ActivityBoardDto dto)
+        {
+            dto.Guid = this.Guid;
+            dto.Name = this.Name;
+            dto.Goals = this.SetOfGoals.ToList();
+        }
+
+        public void UpdateFromDto(ActivityBoardDto dto)
+        {
+            this.Guid = dto.Guid;
+            this.Name = dto.Name;
+            this.SetOfGoals = new HashSet<ActivityGoal>(dto.Goals);
+        }
+
+        public static ActivityBoardDto ToDto(ActivityBoard model)
+        {
+            var retVal = new ActivityBoardDto();
+            model.UpdateDto(retVal);
+            return retVal;
+        }
+
+        public static ActivityBoard FromDto(ActivityBoardDto dto)
+        {
+            var retVal = new ActivityBoard();
+            retVal.UpdateFromDto(dto);
+            return retVal;
         }
     }
 }

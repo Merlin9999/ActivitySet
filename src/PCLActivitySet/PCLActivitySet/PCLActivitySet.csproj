@@ -42,9 +42,15 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Db\AbstractLiteDb.cs" />
+    <Compile Include="Db\AbstractLiteDbObject.cs" />
+    <Compile Include="Dto\ActivityBoardDto.cs" />
+    <Compile Include="Dto\ActivityContextDto.cs" />
     <Compile Include="Dto\ActivityDto.cs" />
+    <Compile Include="Dto\ActivityGoalDto.cs" />
     <Compile Include="Dto\ActivityHistoryItemDto.cs" />
+    <Compile Include="Dto\ActivityListDto.cs" />
+    <Compile Include="Dto\EActvitiyListViewType.cs" />
+    <Compile Include="Dto\InBoxActivityListDto.cs" />
     <Compile Include="Dto\Recurrence\DateProjectionDto.cs" />
     <Compile Include="Domain\Recurrence\DaysOfWeekFlags.cs" />
     <Compile Include="Domain\Recurrence\DaysOfWeekExt.cs" />
